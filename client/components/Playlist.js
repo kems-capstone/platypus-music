@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Player from './Player';
 import {connect} from 'react-redux';
 import {addSongThunk} from '../store/playlist';
+import SearchForm from './SearchForm'
 
 const audio = document.createElement('audio');
 
@@ -13,24 +14,23 @@ class Playlist extends Component {
       selectedSong: '',
       playing: false
     };
-    this.handleArtistSearch = this.handleArtistSearch.bind(this);
     this.playSong = this.playSong.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   componentDidMount() {
     this.setState({selectedSong: this.props.playlist.currentSong.audioUrl});
   }
-  handleArtistSearch() {
-    console.log('before state', this.state);
-    this.props.addSong(this.state.artistSearch);
-    console.log('after state', this.state);
+
+  handleSubmit(event){
+    event.preventDefault()
+    this.props.addSong(this.props.form.search.values.trackSearch);
   }
 
   playSong() {
-    //Stop any currently playing song
+
     audio.pause();
 
-    //Play newly selected song
     audio.src = this.props.playlist.currentSong.audioUrl;
     this.setState(prevState => ({playing: !prevState.playing}));
     audio.load();
@@ -38,24 +38,12 @@ class Playlist extends Component {
   }
 
   render() {
-    console.log('propppps', this.props);
+
     return (
       <div>
         <Player />
         <br />
-        <form>
-          <input
-            type="text"
-            value={this.state.artistSearch}
-            onChange={event => {
-              this.setState({artistSearch: event.target.value});
-            }}
-            placeholder="search for artist"
-          />
-          <button type="button" onClick={this.handleArtistSearch}>
-            Search
-          </button>
-        </form>
+        <SearchForm  handleSubmit={this.handleSubmit}/>
         <br />
         <br />
         <audio
@@ -66,7 +54,7 @@ class Playlist extends Component {
         />
         <div>
           {this.props.playlist.songList.map(index => {
-            return <div>{index.name}</div>;
+            return <div key={index.id}>{index.name}</div>;
           })}
         </div>
       </div>
@@ -75,7 +63,8 @@ class Playlist extends Component {
 }
 
 const mapStateToProps = state => ({
-  playlist: state.playlist
+  playlist: state.playlist,
+  form: state.form
 });
 
 const mapDispatchToProps = dispatch => ({
