@@ -14,16 +14,51 @@ notifications:
 install:
   - npm ci # faster, goes only from package-lock
 before_script:
-  - psql -c 'create database "boilermaker-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
+  - psql -c 'create database "platypus-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
 script:
-  - npm test             # test the code
-  - npm run build-client # make the bundle
+  'true'
+  # - npm test # test the code
+  # - npm run build-client # make the bundle
 
-# before_deploy:
-#   - rm -rf node_modules # omit from the tarball, since we skip cleanup
-# deploy:
-#   skip_cleanup: true # prevents travis from deleting the build
-#   provider: heroku
-#   app: YOUR-HEROKU-APP-NAME-HERE # see README
-#   api_key:
-#     secure: YOUR-***ENCRYPTED***-API-KEY-HERE # see README
+before_deploy:
+  - rm -rf node_modules # omit from the tarball, since we skip cleanup
+deploy:
+  skip_cleanup: true # prevents travis from deleting the build
+  provider: heroku
+  app: platypus-music # see README
+  api_key:
+    secure: 'loHobAOk4CfkAbiTtVbgRYhAzcGMWdtYH4AHEXHuIspOxmERXXroMMJHLRc5wjj0Oux16gUSyaAxaPVdHsHJfgSnbvvkN+RQhysMGyEHWTEBQF2QsltYQ3FdVnXJJEC3Y1S5Qp2GlTm2Ue3aFQlk0B+8fupeEuA90cDihbYM1YutCFX0prXeEJyyZ77MhMM8KgekLOVCYyLY5iVHduyyhsdq9ALpDHrkDATQgB0E6U2iWezh10ZoFbk5HkUkvFRBTtzWXdr8pyMgDxuV6zw/4JL31B6BOqna/WLolr8GctR/K8Yet/Dx5p70YLR2UwGlmhtZtdUgQM/S8Nzabz3+ZVwDNG6FTuYV+vv6ZL37QwEtz2E7nHbqCML5v3YQ5gfEP6z7A3ThxJRpnKr49xwnzJSobAkBs67bQGT9D0pDRJo0mH8pgkZXW7t6BtDBp56KgUi8KnaCMBrkoxP/5Y6fm0ZmgLa8jGDkAIOgr1BFUPhCPEFe1RxcNQoq2p+iBjjNSmGjvIzLm0C7VwOl0nAjn3/sesqo7x8kkALjFOeLErSJxNJnq55QnUOP1atHMfMton8+DtElYishpq2gcMVabveBvb/kXXTGEpJeTtY48/txYnS+ROTX2euLKkb4qkba8thn9GPYz+1llwkOsSB7A1cYzA6x7bnqiuYVn0IsB2I='
+#
+
+# COMMENTED OUT CODE
+#
+#
+# language: node_js
+# node_js:
+#   - node # uses most recent stable node version
+# services:
+#   - postgresql # starts up postgres
+# addons:
+#   postgresql: '9.6' # highest available postgres version on Travis
+# dist: trusty # uses trusty environment
+# sudo: false # when on trusty, uses Docker containers for speed
+# notifications:
+#   email:
+#     on_success: change # default: change (only when going from broken to fixed)
+#     on_failure: always # default: always (which is annoying, as it should be)
+# install:
+#   - npm ci # faster, goes only from package-lock
+# before_script:
+#   - psql -c 'create database "boilermaker-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
+# script:
+#   - npm test             # test the code
+#   - npm run build-client # make the bundle
+
+# # before_deploy:
+# #   - rm -rf node_modules # omit from the tarball, since we skip cleanup
+# # deploy:
+# #   skip_cleanup: true # prevents travis from deleting the build
+# #   provider: heroku
+# #   app: YOUR-HEROKU-APP-NAME-HERE # see README
+# #   api_key:
+# #     secure: YOUR-***ENCRYPTED***-API-KEY-HERE # see README
