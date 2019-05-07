@@ -8,6 +8,11 @@ import {Menu, Icon, Dropdown, Image, Button} from 'semantic-ui-react'
 
 const Navbar = ({handleClick, isLoggedIn}) => (
   <Menu color="purple" inverted id="navBar" fixed="top">
+    <Menu.Item id="navbar-title-and-image-container">
+      <div id="nav-title">
+        <div className="nav-title-text">Platypus</div>
+      </div>
+    </Menu.Item>
     <Menu.Item>
       <Link className="nav-text" to="/home">
         Home
@@ -18,13 +23,8 @@ const Navbar = ({handleClick, isLoggedIn}) => (
         Dashboard
       </Link>
     </Menu.Item>
-    <Menu.Item id="navbar-title-and-image-container">
-      <div id="nav-title">
-        <div className="nav-title-text">Platypus</div>
-      </div>
-    </Menu.Item>
-
     {isLoggedIn ? (
+      <Menu.Menu position='right' >
       <Menu.Item id="menu-dropdown">
         <Button size="huge">
           <Dropdown text="User" labeled button inverted>
@@ -40,15 +40,17 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           </Dropdown>
         </Button>
       </Menu.Item>
+      </Menu.Menu>
     ) : (
-      <div>
+      <Menu.Menu position='right' >
         <Menu.Item>
           <Link to="/login">Login</Link>
         </Menu.Item>
         <Menu.Item>
           <Link to="/signup">Sign Up</Link>
         </Menu.Item>
-      </div>
+      </Menu.Menu>
+
     )}
   </Menu>
 )

@@ -2,7 +2,18 @@ import React from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {auth} from '../store'
-
+import {Link} from 'react-router-dom'
+import {
+  Button,
+  Form,
+  Grid,
+  Header,
+  Image,
+  Message,
+  Segment,
+  Container,
+  Icon
+} from 'semantic-ui-react'
 /**
  * COMPONENT
  */
@@ -10,28 +21,101 @@ const AuthForm = props => {
   const {name, displayName, handleSubmit, error} = props
 
   return (
-    <div>
-      <form onSubmit={handleSubmit} name={name}>
-        <div>
-          <label htmlFor="email">
-            <small>Email</small>
-          </label>
-          <input name="email" type="text" />
-        </div>
-        <div>
-          <label htmlFor="password">
-            <small>Password</small>
-          </label>
-          <input name="password" type="password" />
-        </div>
-        <div>
-          <button type="submit">{displayName}</button>
-        </div>
-        {error && error.response && <div> {error.response.data} </div>}
-      </form>
-      <a href="/auth/google">{displayName} with Google</a>
-    </div>
-  )
+    <div className="login-form">
+    <Grid textAlign="center" style={{height: '100%'}} verticalAlign="middle">
+          <Image src="/patty.jpeg" style={{textAlign: 'center', maxWidth: 350, maxHeight: 200}}/>{' '}
+    </Grid>
+    <Grid textAlign="center" style={{height: '100%'}} verticalAlign="middle" divided>
+      <Grid.Column style={{maxWidth: 450}}>
+        <Header as="h2" textAlign="center">
+          {name === 'signup'
+            ? 'Sign up for your account'
+            : 'Log into your account'}
+        </Header>
+        <Form size="large" color="blue">
+          <form onSubmit={handleSubmit} name={name}>
+            <Segment stacked>
+              {name === 'signup' ? (
+                <div>
+                  <Form.Field>
+                    <label htmlFor="firstName">
+                      <large>First Name</large>
+                    </label>
+                    <input
+                      name="firstName"
+                      type="text"
+                      placeholder="First Name"
+                    />
+                  </Form.Field>
+
+                  <Form.Field>
+                    <label htmlFor="lastName">
+                      <large>Last Name</large>
+                    </label>
+                    <input
+                      name="lastName"
+                      type="text"
+                      placeholder="Last Name"
+                    />
+                  </Form.Field>
+                </div>
+              ) : null}
+              <br />
+              <Form.Field>
+                <label htmlFor="email">
+                  <large>E-mail Address</large>
+                </label>
+                <input
+                  name="email"
+                  type="text"
+                  placeholder="E-mail Address"
+                />
+              </Form.Field>
+
+              <Form.Field>
+                <label htmlFor="password">
+                  <large>Password</large>
+                </label>
+                <input
+                  name="password"
+                  type="password"
+                  placeholder="Password"
+                />
+              </Form.Field>
+            </Segment>
+            <br />
+
+              <Button color="purple" size="large" type="submit">
+                {displayName}
+              </Button>
+
+
+            {error && error.response && <div> {error.response.data} </div>}
+          </form>
+          <br />
+          <Button>
+            <a href="/auth/google">
+              <font size="2">
+                {displayName} with {'                  '}
+              </font>
+              <Icon name="google" />
+            </a>
+          </Button>
+          <br/>
+          {name === 'signup' ? (
+            <Message>
+              Already have an account? <Link to="/login">Log In</Link>
+            </Message>
+          ) : (
+            <Message>
+            New to us? <Link to="/signup">Sign Up</Link>
+            </Message>
+          )}
+        </Form>
+      </Grid.Column>
+    </Grid>
+  </div>
+)
 }
 
 /**
@@ -63,8 +147,10 @@ const mapDispatch = dispatch => {
       evt.preventDefault()
       const formName = evt.target.name
       const email = evt.target.email.value
+      const firstName = evt.target.firstName.value
+      const lastName = evt.target.lastName.value
       const password = evt.target.password.value
-      dispatch(auth(email, password, formName))
+      dispatch(auth(email, password, formName, firstName, lastName))
     }
   }
 }

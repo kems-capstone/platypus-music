@@ -22,6 +22,8 @@ class Routes extends Component {
         {/* Routes placed here are available to all visitors */}
         <Route exact path="/" component={Homepage} />
         <Route exact path="/home" component={Homepage} />
+        <Route exact path="/signup" component={Signup} />
+        <Route exact path ='/login' component={Login} />
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
@@ -31,7 +33,6 @@ class Routes extends Component {
         )}
         {/* Displays our Login component as a fallback */}
 
-        <Route component={Login} />
         <Route
           path="*"
           render={() => {
