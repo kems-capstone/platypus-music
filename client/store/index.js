@@ -4,8 +4,9 @@ import thunkMiddleware from 'redux-thunk'
 import {composeWithDevTools} from 'redux-devtools-extension'
 import user from './user'
 import playlist from './playlist'
+import { reducer as formReducer } from 'redux-form'
 
-const reducer = combineReducers({user, playlist})
+const reducer = combineReducers({user, playlist, form: formReducer})
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
 )
