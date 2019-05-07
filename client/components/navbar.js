@@ -1,10 +1,10 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
-import {logout} from '../store'
+import React from 'react';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
+import {logout} from '../store';
 
-import {Menu, Icon, Dropdown, Image, Button} from 'semantic-ui-react'
+import {Menu, Icon, Dropdown, Image, Button} from 'semantic-ui-react';
 
 const Navbar = ({handleClick, isLoggedIn}) => (
   <Menu color="purple" inverted id="navBar" fixed="top">
@@ -24,25 +24,25 @@ const Navbar = ({handleClick, isLoggedIn}) => (
       </Link>
     </Menu.Item>
     {isLoggedIn ? (
-      <Menu.Menu position='right' >
-      <Menu.Item id="menu-dropdown">
-        <Button size="huge">
-          <Dropdown text="User" labeled button onClick={handleClick}>
-            <Dropdown.Menu>
-              <Dropdown.Header
-                content={<Link to="/userProfile">User Profile</Link>}
-              />
-              <Dropdown.Header
-
-                content={<Link to="/userProfile">Log Out</Link>}
-              />
-            </Dropdown.Menu>
-          </Dropdown>
-        </Button>
-      </Menu.Item>
+      <Menu.Menu position="right">
+        <Menu.Item id="menu-dropdown">
+          <Button size="huge">
+            <Dropdown text="User" labeled button>
+              <Dropdown.Menu>
+                <Dropdown.Header
+                  content={<Link to="/userProfile">User Profile</Link>}
+                />
+                <Dropdown.Header
+                  onClick={handleClick}
+                  content={<Link to="/userProfile">Log Out</Link>}
+                />
+              </Dropdown.Menu>
+            </Dropdown>
+          </Button>
+        </Menu.Item>
       </Menu.Menu>
     ) : (
-      <Menu.Menu position='right' >
+      <Menu.Menu position="right">
         <Menu.Item>
           <Link to="/login">Login</Link>
         </Menu.Item>
@@ -50,10 +50,9 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           <Link to="/signup">Sign Up</Link>
         </Menu.Item>
       </Menu.Menu>
-
     )}
   </Menu>
-)
+);
 
 /**
  * CONTAINER
@@ -61,18 +60,18 @@ const Navbar = ({handleClick, isLoggedIn}) => (
 const mapState = state => {
   return {
     isLoggedIn: !!state.user.id
-  }
-}
+  };
+};
 
 const mapDispatch = dispatch => {
   return {
     handleClick() {
-      dispatch(logout())
+      dispatch(logout());
     }
-  }
-}
+  };
+};
 
-export default connect(mapState, mapDispatch)(Navbar)
+export default connect(mapState, mapDispatch)(Navbar);
 
 /**
  * PROP TYPES
@@ -80,5 +79,4 @@ export default connect(mapState, mapDispatch)(Navbar)
 Navbar.propTypes = {
   handleClick: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired
-}
-
+};
