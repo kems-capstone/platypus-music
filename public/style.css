@@ -19,3 +19,36 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+
+h1 {
+  color: blue;
+}
+
+.homepage {
+  text-align: center;
+  background-image: url('./yvette-de-wit-118721-unsplash.jpg');
+  min-height: 100vh;
+  background-size: cover;
+  background-size: cover;
+  background-attachment: fixed;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+.homepageText {
+  padding: 60px;
+}
+
+.music-box {
+  background-color: green;
+  height: 100px;
+  width: 250px;
+}
+
+#navBar {
+  display: flex;
+  position: sticky;
+}
