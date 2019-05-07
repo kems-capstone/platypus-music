@@ -2,7 +2,7 @@ const User = require('./user')
 const Room = require('./room')
 const Music = require('./music')
 const User_Rooms = require('./user_rooms')
-const Room_Music = require('./room_music')
+const Room_Music = require('./Room_Music')
 
 Room.belongsToMany(User, {through: User_Rooms})
 User.belongsToMany(Room, {through: User_Rooms})
