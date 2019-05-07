@@ -32,14 +32,13 @@ const AuthForm = props => {
             ? 'Sign up for your account'
             : 'Log into your account'}
         </Header>
-        <Form size="large" color="blue">
-          <form onSubmit={handleSubmit} name={name}>
+        <Form size="large" color="blue" onSubmit={handleSubmit} name={name}>
             <Segment stacked>
               {name === 'signup' ? (
                 <div>
                   <Form.Field>
                     <label htmlFor="firstName">
-                      <large>First Name</large>
+                      <div>First Name</div>
                     </label>
                     <input
                       name="firstName"
@@ -50,7 +49,7 @@ const AuthForm = props => {
 
                   <Form.Field>
                     <label htmlFor="lastName">
-                      <large>Last Name</large>
+                      <div>Last Name</div>
                     </label>
                     <input
                       name="lastName"
@@ -63,7 +62,7 @@ const AuthForm = props => {
               <br />
               <Form.Field>
                 <label htmlFor="email">
-                  <large>E-mail Address</large>
+                  <div>E-mail Address</div>
                 </label>
                 <input
                   name="email"
@@ -74,7 +73,7 @@ const AuthForm = props => {
 
               <Form.Field>
                 <label htmlFor="password">
-                  <large>Password</large>
+                  <div>Password</div>
                 </label>
                 <input
                   name="password"
@@ -91,7 +90,7 @@ const AuthForm = props => {
 
 
             {error && error.response && <div> {error.response.data} </div>}
-          </form>
+
           <br />
           <Button>
             <a href="/auth/google">

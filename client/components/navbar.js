@@ -27,13 +27,13 @@ const Navbar = ({handleClick, isLoggedIn}) => (
       <Menu.Menu position='right' >
       <Menu.Item id="menu-dropdown">
         <Button size="huge">
-          <Dropdown text="User" labeled button inverted>
+          <Dropdown text="User" labeled button onClick={handleClick}>
             <Dropdown.Menu>
               <Dropdown.Header
                 content={<Link to="/userProfile">User Profile</Link>}
               />
               <Dropdown.Header
-                onClick={handleClick}
+
                 content={<Link to="/userProfile">Log Out</Link>}
               />
             </Dropdown.Menu>
@@ -81,3 +81,4 @@ Navbar.propTypes = {
   handleClick: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired
 }
+
