@@ -22,22 +22,22 @@ class Routes extends Component {
         {/* Routes placed here are available to all visitors */}
         <Route exact path="/" component={Homepage} />
         <Route exact path="/home" component={Homepage} />
-        <Route exact path="/dashboard" component={Dashboard} />
-        <Route exact path="/playlist" component={Playlist} />
+        {isLoggedIn && (
+          <Switch>
+            {/* Routes placed here are only available after logging in */}
+            <Route exact path="/dashboard" component={Dashboard} />
+            <Route exact path="/playlist" component={Playlist} />
+          </Switch>
+        )}
+        {/* Displays our Login component as a fallback */}
+
+        <Route component={Login} />
         <Route
           path="*"
           render={() => {
             return <h1>404, we cannot find what you are looking for!</h1>
           }}
         />
-        {isLoggedIn && (
-          <Switch>
-            {/* Routes placed here are only available after logging in */}
-            <Route path="/home" component={UserHome} />
-          </Switch>
-        )}
-        {/* Displays our Login component as a fallback */}
-        <Route component={Login} />
       </Switch>
     )
   }
