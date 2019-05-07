@@ -1,6 +1,7 @@
 import React from 'react'
 import {Field, reduxForm} from 'redux-form'
 
+
 let SearchForm = props => {
   const {handleSubmit} = props
   return (

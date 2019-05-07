@@ -2,11 +2,6 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 
 class Homepage extends Component {
-  constructor(props) {
-    super(props)
-    console.log('Props on homepage', props)
-  }
-
   render() {
     return (
       <div className="homepage" id="homepageBackgrouund">

@@ -52,3 +52,11 @@ h1 {
   display: flex;
   position: sticky;
 }
+
+.nav-title-text{
+  font-weight: 900px;
+  color:  white;
+  font-size: 28px;
+  text-decoration: underline;
+
+}
