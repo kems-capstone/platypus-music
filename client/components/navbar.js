@@ -4,28 +4,53 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
 
+import {Menu, Icon, Dropdown, Image, Button} from 'semantic-ui-react'
+
 const Navbar = ({handleClick, isLoggedIn}) => (
-  <div>
-    <h1>BOILERMAKER</h1>
-    <nav>
-      {isLoggedIn ? (
-        <div>
-          {/* The navbar will show these links after you log in */}
-          <Link to="/home">Home</Link>
-          <a href="#" onClick={handleClick}>
-            Logout
-          </a>
-        </div>
-      ) : (
-        <div>
-          {/* The navbar will show these links before you log in */}
+  <Menu color="purple" inverted id="navBar" fixed="top">
+    <Menu.Item>
+      <Link className="nav-text" to="/home">
+        Home
+      </Link>
+    </Menu.Item>
+    <Menu.Item>
+      <Link className="nav-text" to="/dashboard">
+        Dashboard
+      </Link>
+    </Menu.Item>
+    <Menu.Item id="navbar-title-and-image-container">
+      <div id="nav-title">
+        <div className="nav-title-text">Platypus</div>
+      </div>
+    </Menu.Item>
+
+    {isLoggedIn ? (
+      <Menu.Item id="menu-dropdown">
+        <Button size="huge">
+          <Dropdown text="User" labeled button inverted>
+            <Dropdown.Menu>
+              <Dropdown.Header
+                content={<Link to="/userProfile">User Profile</Link>}
+              />
+              <Dropdown.Header
+                onClick={handleClick}
+                content={<Link to="/userProfile">Log Out</Link>}
+              />
+            </Dropdown.Menu>
+          </Dropdown>
+        </Button>
+      </Menu.Item>
+    ) : (
+      <div>
+        <Menu.Item>
           <Link to="/login">Login</Link>
+        </Menu.Item>
+        <Menu.Item>
           <Link to="/signup">Sign Up</Link>
-        </div>
-      )}
-    </nav>
-    <hr />
-  </div>
+        </Menu.Item>
+      </div>
+    )}
+  </Menu>
 )
 
 /**
