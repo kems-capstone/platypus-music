@@ -50,13 +50,14 @@ class Playlist extends Component {
           src={this.props.playlist.currentSong.audioUrl}
           onClick={this.playSong}
           controls
-          id="audio"
+          id="audioPlayer"
         />
-        <div>
+
+        <ol>
           {this.props.playlist.songList.map(index => {
             return <div key={index.id}>{index.name}</div>;
           })}
-        </div>
+        </ol>
       </div>
     );
   }
