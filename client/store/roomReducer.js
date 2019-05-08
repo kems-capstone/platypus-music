@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const ADD_ROOM = 'ADD_ROOM';
+const GET_ROOM = 'GET_ROOM';
 
 const addRoom = roomObject => {
   return {
