@@ -1,10 +1,10 @@
 const router = require('express').Router();
 const {Room} = require('../db/models');
 
-router.get('/', async (req, res, next) => {
-  const rooms = await Room.findAll({});
-  res.json(rooms);
-});
+// router.get('/', async (req, res, next) => {
+//   const rooms = await Room.findAll({});
+//   res.json(rooms);
+// });
 
 router.post('/', async (req, res, next) => {
   function generateCode() {

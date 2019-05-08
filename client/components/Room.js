@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {getRoomThunk} from '../store/roomReducer';
 
 class Room extends Component {
+  componentDidMount() {}
   render() {
     return (
       <div>
@@ -11,4 +13,10 @@ class Room extends Component {
   }
 }
 
-export default connect(null, null)(Room);
+const mapDispatchToProps = dispatch => {
+  return {
+    getRoomThunk: () => dispatch(getRoomThunk())
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Room);
