@@ -3,6 +3,13 @@ import Player from './Player';
 import {connect} from 'react-redux';
 import {addSongThunk} from '../store/playlist';
 import SearchForm from './SearchForm';
+import io from 'socket.io-client';
+
+const socket = io(window.location.origin);
+
+socket.on('connect', () => {
+  console.log('Connected! hellooooooo');
+});
 
 const audio = document.createElement('audio');
 
@@ -10,11 +17,19 @@ class Playlist extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedSong: ''
+      selectedSong: '',
+      counter: 0
     };
-
+    this.onClick = this.onClick.bind(this);
     this.nextTrack = this.nextTrack.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    console.log(socket);
+    socket.on('addClick', () =>
+      this.setState(prevState => ({counter: prevState.counter + 1}))
+    );
   }
 
   async handleSubmit(event) {
@@ -34,10 +49,19 @@ class Playlist extends Component {
     }
   }
 
+  onClick() {
+    console.log('clicked');
+    socket.emit('addClick', this.state.counter);
+  }
+
   render() {
     console.log('props playlist', this.props.playlist);
     return (
       <div>
+        <h1>{this.state.counter}</h1>
+        <button type="button" onClick={this.onClick}>
+          Click me
+        </button>
         <Player />
         <br />
         <SearchForm handleSubmit={this.handleSubmit} />
