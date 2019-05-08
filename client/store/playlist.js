@@ -25,38 +25,27 @@ const getSong = song => {
     song
   };
 };
-export const listenForDataThunk= data => dispatch => {
+export const listenForDataThunk= () => dispatch => {
+
   socket.on('updateRoom', data => {
-    try {
       console.log('Other props in update store', data)
       dispatch(updateState(data))
-    } catch (error) {
-      console.error(error.message)
-    }
   });
 }
 
 
 
 export const addSongThunk = song => async dispatch => {
-  console.log('in the thunk', song);
+
   try {
     let {data} = await axios.get('/api/music/' + song);
-    socket.emit('updateRoom', data);
+    socket.emit('addedSong', data);
     dispatch(getSong(data));
   } catch (error) {
     console.error(error.message);
   }
 };
-// export const updateStoreThunk = (otherProps) => dispatch => {
-//   try {
-//     console.log('Other props in update store', otherProps)
-//     dispatch(updateState(otherProps))
-//   } catch (error) {
-//     console.error(error.message)
-//   }
 
-// }
 
 export default function(state = inititalState, action) {
   switch (action.type) {

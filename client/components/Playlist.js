@@ -7,9 +7,9 @@ import io from 'socket.io-client';
 
 const socket = io(window.location.origin);
 
-socket.on('connect', () => {
-  console.log('Connected! hellooooooo');
-});
+// socket.on('connect', () => {
+//   console.log('Connected!');
+// });
 
 const audio = document.createElement('audio');
 
@@ -17,38 +17,29 @@ class Playlist extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedSong: '',
-      counter: 0
+      selectedSong: ''
     };
-    this.onClick = this.onClick.bind(this);
+
     this.nextTrack = this.nextTrack.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
-    console.log(socket);
-    this.props.updateStore()
-
-
-    // socket.on('addClick', () =>
-    //   this.setState(prevState => ({counter: prevState.counter + 1}))
-    // );
+    this.props.updateStore();
   }
 
   static getDerivedStateFromProps(props) {
-    if (props.playlist.songList && props.playlist.songList[0])  {
+    if (props.playlist.songList && props.playlist.songList[0]) {
       return {
         selectedSong: props.playlist.songList[0].audioUrl
       };
     }
   }
 
-
   handleSubmit(event) {
     try {
       event.preventDefault();
       this.props.addSong(this.props.form.search.values.trackSearch);
-      // this.setState({selectedSong: this.props.playlist.songList[0].audioUrl});
     } catch (error) {
       console.error(error.message);
     }
@@ -61,19 +52,9 @@ class Playlist extends Component {
     }
   }
 
-  onClick() {
-    console.log('clicked');
-    socket.emit('addClick', this.state.counter);
-  }
-
   render() {
-    console.log('props playlist', this.props.playlist);
     return (
       <div>
-        <h1>{this.state.counter}</h1>
-        <button type="button" onClick={this.onClick}>
-          Click me
-        </button>
         <Player />
         <br />
         <SearchForm handleSubmit={this.handleSubmit} />
@@ -106,8 +87,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   addSong: song => dispatch(addSongThunk(song)),
-  updateStore: () => dispatch(listenForDataThunk()),
-
+  updateStore: () => dispatch(listenForDataThunk())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Playlist);
