@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Player from './Player';
 import {connect} from 'react-redux';
-import {addSongThunk} from '../store/playlist';
+import {addSongThunk, listenForDataThunk} from '../store/playlist';
 import SearchForm from './SearchForm';
 import io from 'socket.io-client';
 
@@ -27,9 +27,8 @@ class Playlist extends Component {
 
   componentDidMount() {
     console.log(socket);
-    socket.on('updateRoom', () => {
-      console.log('in socket CDM');
-    });
+    this.props.updateStore()
+
 
     // socket.on('addClick', () =>
     //   this.setState(prevState => ({counter: prevState.counter + 1}))
@@ -37,13 +36,13 @@ class Playlist extends Component {
   }
 
   static getDerivedStateFromProps(props) {
-    socket.emit('updateRoom', props.playlist.songList);
-    if (props.playlist.songList[0]) {
+    if (props.playlist.songList && props.playlist.songList[0])  {
       return {
         selectedSong: props.playlist.songList[0].audioUrl
       };
     }
   }
+
 
   handleSubmit(event) {
     try {
@@ -106,7 +105,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addSong: song => dispatch(addSongThunk(song))
+  addSong: song => dispatch(addSongThunk(song)),
+  updateStore: () => dispatch(listenForDataThunk()),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Playlist);

@@ -4,16 +4,13 @@ module.exports = io => {
       `A socket connection to the server has been made: ${socket.id}`
     );
 
-    const incrementCount = data => {
-      io.sockets.emit('addClick', data);
-      console.log(data);
-    };
 
     const updateRoom = roomProps => {
-      io.sockets.emit('updateRoom', roomProps);
+      console.log('update room serverside', io.sockets)
+      io.emit('updateRoom', roomProps);
     };
 
-    socket.on('addClick', incrementCount);
+
     socket.on('updateRoom', updateRoom);
 
     socket.on('disconnect', () => {
