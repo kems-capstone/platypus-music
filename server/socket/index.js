@@ -8,7 +8,13 @@ module.exports = io => {
       io.sockets.emit('addClick', data);
       console.log(data);
     };
+
+    const updateRoom = roomProps => {
+      io.sockets.emit('updateRoom', roomProps);
+    };
+
     socket.on('addClick', incrementCount);
+    socket.on('updateRoom', updateRoom);
 
     socket.on('disconnect', () => {
       console.log(`Connection ${socket.id} has left the building`);
