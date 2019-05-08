@@ -27,9 +27,22 @@ class Playlist extends Component {
 
   componentDidMount() {
     console.log(socket);
-    socket.on('addClick', () =>
-      this.setState(prevState => ({counter: prevState.counter + 1}))
-    );
+    socket.on('updateRoom', () => {
+      console.log('in socket CDM');
+    });
+
+    // socket.on('addClick', () =>
+    //   this.setState(prevState => ({counter: prevState.counter + 1}))
+    // );
+  }
+
+  static getDerivedStateFromProps(props) {
+    socket.emit('updateRoom', props.playlist.songList);
+    if (props.playlist.songList[0]) {
+      return {
+        selectedSong: props.playlist.songList[0].audioUrl
+      };
+    }
   }
   static getDerivedStateFromProps(props) {
     if (props.playlist.songList[0]) {
