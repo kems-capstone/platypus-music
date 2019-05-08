@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {Room} = require('../db/models');
+const {Room, Music} = require('../db/models');
 
 // router.get('/', async (req, res, next) => {
 //   const rooms = await Room.findAll({});
