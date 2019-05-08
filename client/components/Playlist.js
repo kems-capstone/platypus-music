@@ -31,12 +31,19 @@ class Playlist extends Component {
       this.setState(prevState => ({counter: prevState.counter + 1}))
     );
   }
+  static getDerivedStateFromProps(props) {
+    if (props.playlist.songList[0]) {
+      return {
+        selectedSong: props.playlist.songList[0].audioUrl
+      };
+    }
+  }
 
-  async handleSubmit(event) {
+  handleSubmit(event) {
     try {
       event.preventDefault();
-      await this.props.addSong(this.props.form.search.values.trackSearch);
-      this.setState({selectedSong: this.props.playlist.songList[0].audioUrl});
+      this.props.addSong(this.props.form.search.values.trackSearch);
+      // this.setState({selectedSong: this.props.playlist.songList[0].audioUrl});
     } catch (error) {
       console.error(error.message);
     }
