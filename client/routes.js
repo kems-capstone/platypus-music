@@ -4,7 +4,14 @@ import {withRouter, Route, Switch} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {Login, Signup, UserHome} from './components';
 import {me} from './store';
-import {Playlist, Dashboard, Homepage, CreateRoom, Room} from './components';
+import {
+  Playlist,
+  Dashboard,
+  Homepage,
+  CreateRoom,
+  Room,
+  JoinRoom
+} from './components';
 
 /**
  * COMPONENT
@@ -31,6 +38,7 @@ class Routes extends Component {
             <Route exact path="/playlist" component={Playlist} />
             <Route exact path="/create-room" component={CreateRoom} />
             <Route exact path="/room" component={Room} />
+            <Route exact path="/joinroom" component={JoinRoom} />
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}

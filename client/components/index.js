@@ -14,3 +14,4 @@ export {default as Playlist} from './Playlist';
 export {default as SearchForm} from './SearchForm';
 export {default as CreateRoom} from './CreateRoom';
 export {default as Room} from './Room';
+export {default as JoinRoom} from './JoinRoom';
