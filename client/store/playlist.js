@@ -11,13 +11,12 @@ const inititalState = {
 const ADD_SONG = 'ADD_SONG';
 const UPDATE_STATE = 'UPDATE_STATE';
 
-const updateState = otherProps =>{
+const updateState = otherProps => {
   return {
     type: UPDATE_STATE,
     otherProps
-  }
-
-}
+  };
+};
 
 const getSong = song => {
   return {
@@ -25,21 +24,22 @@ const getSong = song => {
     song
   };
 };
+
 export const listenForDataThunk= () => dispatch => {
 
   socket.on('updateRoom', data => {
       console.log('Other props in update store', data)
       dispatch(updateState(data))
   });
-}
-
-
+};
 
 export const addSongThunk = song => async dispatch => {
 
   try {
     let {data} = await axios.get('/api/music/' + song);
+
     socket.emit('addedSong', data);
+
     dispatch(getSong(data));
   } catch (error) {
     console.error(error.message);
@@ -50,15 +50,15 @@ export const addSongThunk = song => async dispatch => {
 export default function(state = inititalState, action) {
   switch (action.type) {
     case ADD_SONG:
-    return {
+      return {
         currentSong: action.song,
         songList: [...state.songList, action.song]
       };
     case UPDATE_STATE:
-      return{
+      return {
         currentSong: action.otherProps.audioUrl,
         songList: [...state.songList, action.otherProps]
-      }
+      };
     default:
       return state;
   }
