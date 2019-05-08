@@ -9,6 +9,14 @@ const addRoom = roomObject => {
   };
 };
 
+export const addRoomThunk = roomName => {
+  return async function(dispatch) {
+    console.log('ROOM NAME', roomName);
+    const createdRoom = await axios.post('/api/rooms', {name: roomName});
+    dispatch(addRoom(createdRoom));
+  };
+};
+
 const initialState = {};
 
 export default function(state = initialState, action) {
