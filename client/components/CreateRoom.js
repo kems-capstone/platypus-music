@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Field, reduxForm} from 'redux-form';
 import {Message} from 'semantic-ui-react';
-import {addRoomThunk} from '../store/roomReducer';
+import roomReducer, {addRoomThunk} from '../store/roomReducer';
 
 class CreateRoom extends Component {
   constructor() {
@@ -11,8 +11,11 @@ class CreateRoom extends Component {
   }
   handleSubmit() {
     event.preventDefault();
-    // console.log(this.props.form);
-    console.log(this.props);
+    console.log(
+      'This is the form value: ',
+      this.props.form.createRoom.values.roomName
+    );
+    // this.props.addRoomThunk(this.props.form)
   }
   render() {
     return (
@@ -27,7 +30,7 @@ class CreateRoom extends Component {
             className="form-input"
             type="text"
             component="input"
-            name="room-name"
+            name="roomName"
             placeholder="room name"
           />
           <h3>Room Code:</h3>
@@ -51,10 +54,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addRoomThunk: () => dispatch(addRoomThunk())
+    addRoomThunk: formData => dispatch(addRoomThunk(formData))
   };
 };
 
 export default reduxForm({
-  form: 'creat-room'
+  form: 'createRoom'
 })(connect(mapStateToProps, mapDispatchToProps)(CreateRoom));
