@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {Connect} from 'react-redux';
+import {connect} from 'react-redux';
 import {Field, reduxForm} from 'redux-form';
-import {authenticateKey} from '../store'
+import {authenticateKeyThunk} from '../store'
 
 class JoinRoom extends Component {
   constructor(props) {
@@ -10,7 +10,8 @@ class JoinRoom extends Component {
   }
   handleSubmit() {
     event.preventDefault();
-    console.log(this.props.form);
+    console.log('This is the form info', this.props)
+    this.props.authenticate(this.props.form.joinRoom.values.joinRoom);
   }
   render() {
     return (
@@ -24,11 +25,11 @@ class JoinRoom extends Component {
             className="form-input"
             type="text"
             component="input"
-            name=""
+            name="joinRoom"
             placeholder="Enter your rooms Unique Code"
           />
+        <button type="submit" >Join Room</button>
         </form>
-        <button type="submit">Join Room</button>
       </div>
     );
   }
@@ -37,9 +38,10 @@ const mapStateToProps = (state) => ({
   form: state.form
 })
 const mapDispatchToProps = dispatch => ({
-  authenticate:  (code) => dispatch(authenticateKey(code))
+  authenticate:  (code) => dispatch(authenticateKeyThunk(code))
 })
 
-export default reduxForm({form: 'joinRoom'})(
-  Connect(mapStateToProps, mapDispatchToProps)(JoinRoom)
-);
+
+export default reduxForm({
+  form: 'joinRoom'
+})(connect(mapStateToProps, mapDispatchToProps)(JoinRoom));

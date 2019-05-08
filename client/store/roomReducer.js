@@ -17,6 +17,19 @@ export const addRoomThunk = roomName => {
   };
 };
 
+export const authenticateKeyThunk = key => async dispatch => {
+
+  const roomInfo = await axios.get('/api/rooms/join/' + key)
+
+  if (roomInfo.data){
+    dispatch(addRoom(roomInfo.data))
+
+  } else {
+    console.log("INVALID ROOM KEY")
+    return 'Invalid room key'
+  }
+}
+
 const initialState = {};
 
 export default function(state = initialState, action) {
