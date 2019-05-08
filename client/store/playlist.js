@@ -1,4 +1,7 @@
 import axios from 'axios';
+import io from 'socket.io-client';
+
+const socket = io(window.location.origin);
 
 const inititalState = {
   songList: [],
@@ -18,7 +21,7 @@ export const addSongThunk = song => async dispatch => {
   console.log('in the thunk', song);
   try {
     let {data} = await axios.get('/api/music/' + song);
-    console.log('dataaaaa', data);
+    socket.emit('updateRoom', data);
     dispatch(getSong(data));
   } catch (error) {
     console.error(error.message);
