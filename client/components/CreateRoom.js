@@ -15,6 +15,7 @@ class CreateRoom extends Component {
       'This is the form value: ',
       this.props.form.createRoom.values.roomName
     );
+    this.props.addRoomThunk(this.props.form.createRoom.values.roomName);
     // this.props.addRoomThunk(this.props.form)
   }
   render() {
@@ -48,7 +49,8 @@ class CreateRoom extends Component {
 
 const mapStateToProps = state => {
   return {
-    form: state.form
+    form: state.form,
+    room: state
   };
 };
 
