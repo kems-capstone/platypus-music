@@ -25,19 +25,16 @@ const getSong = song => {
   };
 };
 
-export const listenForDataThunk= () => dispatch => {
-
+export const listenForDataThunk = () => dispatch => {
   socket.on('updateRoom', data => {
-      console.log('Other props in update store', data)
-      dispatch(updateState(data))
+    dispatch(updateState(data));
   });
 };
 
-export const addSongThunk = song => async dispatch => {
-
+export const addSongThunk = (song, roomId = null) => async dispatch => {
   try {
     let {data} = await axios.get('/api/music/' + song);
-
+    const posted = await axios.post(`/api/rooms/${roomId}/music/${song}`);
     socket.emit('addedSong', data);
 
     dispatch(getSong(data));
@@ -46,6 +43,7 @@ export const addSongThunk = song => async dispatch => {
   }
 };
 
+export const voteThunk = (roomId, songId) => dispatch => {};
 
 export default function(state = inititalState, action) {
   switch (action.type) {
