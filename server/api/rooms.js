@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {Room, Music, Room_Music, User_Rooms, User} = require('../db/models');
+const {Room, Music, Room_Music} = require('../db/models');
 
 // router.get('/', async (req, res, next) => {
 //   const rooms = await Room.findAll({});
@@ -24,47 +24,21 @@ router.post('/', async (req, res, next) => {
     roomKey: roomKey,
     closed: false
   });
-  await User_Rooms.create({
-    roomId: createdRoom.id,
-    userId: req.user.id,
-    isHost: true
-  });
   console.log('*****createdRoom in routes: ', createdRoom);
   res.json(createdRoom);
 });
 
 //Authenticate Key Route for Join Room
 router.get('/join/:id', async (req, res, next) => {
-  try {
-    const joinCode = req.params.id;
-    const room = await Room.findOne({
-      where: {
-        roomKey: joinCode,
-        closed: false
-      }
-      // include: [{model: User}]
-    });
-    const members = await room.getUsers();
-
-    if (room.id > 0) {
-      if (members.includes(req.user.id)) {
-        const roomInfo = {room: room, members: members};
-        res.json(roomInfo);
-      } else {
-        await User_Rooms.create({
-          roomId: room.id,
-          userId: req.user.id,
-          isHost: false
-        });
-        const roomInfo = {room: room, members: members};
-        res.json(roomInfo);
-      }
-    } else {
-      res.json(room);
+  const joinCode = req.params.id;
+  const room = await Room.findOne({
+    where: {
+      roomKey: joinCode,
+      closed: false
     }
-  } catch (error) {
-    console.error(error);
-  }
+  });
+
+  res.json(room);
 });
 
 router.post('/:roomId/music/:musicId', async (req, res, next) => {
@@ -83,6 +57,7 @@ router.post('/:roomId/music/:musicId', async (req, res, next) => {
   }
 });
 
+
 router.put('/close', async (req, res, next) => {
   const closedRoom = await Room.update(
     {closed: true},
@@ -94,6 +69,7 @@ router.put('/close', async (req, res, next) => {
   );
   res.json(closedRoom);
 });
+
 
 router.put('/:roomId/music/:musicId', async (req, res, next) => {
   try {
