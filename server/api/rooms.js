@@ -29,8 +29,6 @@ router.post('/', async (req, res, next) => {
 
 //Authenticate Key Route for Join Room
 router.get('/join/:id', async (req, res, next) => {
-  console.log('*****req.body: ', req.body);
-
   const joinCode = req.params.id;
   const room = await Room.findOne({
     where: {
