@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {getRoomThunk} from '../store/roomReducer';
+import {authenticateKeyThunk} from '../store/roomReducer';
 
 class Room extends Component {
   componentDidMount() {}
@@ -15,7 +15,7 @@ class Room extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getRoomThunk: () => dispatch(getRoomThunk())
+    getRoomThunk: () => dispatch(authenticateKeyThunk())
   };
 };
 
