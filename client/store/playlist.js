@@ -26,11 +26,11 @@ const getSong = song => {
   };
 };
 
-const updateVote = (voteValue, song) => {
+const updateVote = (songId, voteValue) => {
   return {
     type: UPDATE_VOTE,
     voteValue,
-    song
+    songId
   };
 };
 
@@ -54,7 +54,6 @@ export const addSongThunk = (song, roomId = null) => async dispatch => {
 
 export const voteThunk = (roomId, songId, voteValue) => async dispatch => {
   try {
-    console.log('songid', songId);
     let {data} = await axios.put(
       `/api/rooms/${roomId}/music/${songId}`,
       voteValue
@@ -80,7 +79,7 @@ export default function(state = inititalState, action) {
       };
     case UPDATE_VOTE:
       let newSonglist = state.songList.filter(song => {
-        if (song.id === action.song.id) {
+        if (song.id === action.songId) {
           if (action.voteValue === 'upVote') {
             song.voteCount++;
           } else {

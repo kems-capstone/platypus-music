@@ -51,11 +51,6 @@ class Playlist extends Component {
     }
   }
 
-  // vote() {
-  //   const {songList} = this.props.playlist
-
-  // }
-
   render() {
     return (
       <div>
@@ -83,11 +78,9 @@ class Playlist extends Component {
                 <button
                   type="button"
                   onClick={() =>
-                    this.props.updateVote(
-                      this.props.room.id,
-                      index.id,
-                      'upVote'
-                    )
+                    this.props.updateVote(this.props.room.id, index.id, {
+                      upVote: 'upVote'
+                    })
                   }
                 >
                   upvote
@@ -95,11 +88,9 @@ class Playlist extends Component {
                 <button
                   type="button"
                   onClick={() =>
-                    this.props.updateVote(
-                      this.props.room.id,
-                      index.id,
-                      'downVote'
-                    )
+                    this.props.updateVote(this.props.room.id, index.id, {
+                      downVote: 'downVote'
+                    })
                   }
                 >
                   downvote
@@ -122,7 +113,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   addSong: (song, room) => dispatch(addSongThunk(song, room)),
   updateStore: () => dispatch(listenForDataThunk()),
-  updateVote: (song, voteValue) => dispatch(voteThunk(song, voteValue))
+  updateVote: (room, song, voteValue) =>
+    dispatch(voteThunk(room, song, voteValue))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Playlist);
