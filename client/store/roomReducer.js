@@ -1,7 +1,20 @@
 import axios from 'axios';
+import io from 'socket.io-client';
+
+const socket = io(window.location.origin);
 
 const ADD_ROOM = 'ADD_ROOM';
 const GET_ROOM = 'GET_ROOM';
+const JOIN_ROOM = 'JOIN_ROOM';
+const UPDATE_ROOM_STATE = 'UPDATE_STATE';
+
+
+const updateRoomState = otherProps => {
+  return {
+    type: UPDATE_ROOM_STATE,
+    otherProps
+  };
+};
 
 const addRoom = roomObject => {
   return {
@@ -10,32 +23,54 @@ const addRoom = roomObject => {
   };
 };
 
-export const addRoomThunk = roomName => {
-  return async function(dispatch) {
-
-    const createdRoom = await axios.post('/api/rooms', {name: roomName});
-
-    // createdRoom.data.hostId = 6<== this is to test guest vs host functionality in room component, will need this thunk to pull host id from through table
-    dispatch(addRoom(createdRoom.data));
+const joinRoom = roomObject => {
+  return {
+    type: JOIN_ROOM,
+    roomObject
   };
 };
 
-export const authenticateKeyThunk = key => async dispatch => {
-  const roomInfo = await axios.get('/api/rooms/join/' + key);
-  // roomInfo.data.hostId = 6  <== this is to test guest vs host functionality in room component, will need this thunk to pull host id from through table
-  if (roomInfo.data) {
-    dispatch(addRoom(roomInfo.data));
+export const listenForRoomDataThunk = () => dispatch => {
+  socket.on('updateRoom', data => {
+    dispatch(updateRoomState(data));
+  });
+};
+
+export const addRoomThunk = (roomName, user) => {
+  return async function(dispatch) {
+    const createdRoom = await axios.post('/api/rooms', {name: roomName});
+
+    const roomInfo = {room: createdRoom.data, members: [user], host: user};
+
+    dispatch(addRoom(roomInfo));
+  };
+};
+
+export const joinRoomThunk = key => async dispatch => {
+  const room = await axios.get('/api/rooms/join/' + key);
+  const roomInfo = {room: room.data.room, members: room.data.members};
+
+  console.log('room info in thunk', roomInfo)
+
+  if (roomInfo.room) {
+    dispatch(joinRoom(roomInfo.data));
   } else {
     return 'Invalid room key';
   }
 };
 
-const initialState = {};
+const initialState = {
+  room: {},
+  members: [],
+  host: ''
+};
 
 export default function(state = initialState, action) {
   switch (action.type) {
     case ADD_ROOM:
       return action.roomObject;
+    case JOIN_ROOM:
+      return {...state, members: action.members};
     default:
       return state;
   }

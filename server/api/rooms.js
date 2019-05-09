@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {Room, Music, Room_Music} = require('../db/models');
+const {Room, Music, Room_Music, User_Rooms, User} = require('../db/models');
 
 // router.get('/', async (req, res, next) => {
 //   const rooms = await Room.findAll({});
@@ -24,21 +24,59 @@ router.post('/', async (req, res, next) => {
     roomKey: roomKey,
     closed: false
   });
+  await User_Rooms.create({
+    roomId: createdRoom.id,
+    userId: req.user.id,
+    isHost: true
+  });
   console.log('*****createdRoom in routes: ', createdRoom);
   res.json(createdRoom);
 });
 
 //Authenticate Key Route for Join Room
 router.get('/join/:id', async (req, res, next) => {
-  const joinCode = req.params.id;
-  const room = await Room.findOne({
-    where: {
-      roomKey: joinCode,
-      closed: false
-    }
-  });
+  try {
+    const joinCode = req.params.id;
+    const room = await Room.findOne({
+      where: {
+        roomKey: joinCode,
+        closed: false
+      }
+    });
+console.log('*****room.id: ', room);
 
-  res.json(room);
+
+
+    if (room.id > 0) {
+
+
+      const members = await room.getUsers();
+
+
+      const memberIds = members.map(member => ( member.id))
+      console.log('*****memberIds: ', memberIds);
+      if (memberIds.includes(req.user.id)) {
+        console.log('MEMBER EXISTs')
+        const roomInfo = {room: room, members: members};
+        res.json(roomInfo);
+      } else {
+        console.log('MEMBER DOESNT EXIST')
+        await User_Rooms.create({
+          roomId: room.id,
+          userId: req.user.id,
+          isHost: false
+        });
+        const newMembers = await room.getUsers();
+
+        const roomInfo = {room: room, members: newMembers};
+        res.json(roomInfo);
+      }
+    } else {
+      res.json(room); // send empty object
+    }
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 router.post('/:roomId/music/:musicId', async (req, res, next) => {
@@ -57,7 +95,6 @@ router.post('/:roomId/music/:musicId', async (req, res, next) => {
   }
 });
 
-
 router.put('/close', async (req, res, next) => {
   const closedRoom = await Room.update(
     {closed: true},
@@ -69,7 +106,6 @@ router.put('/close', async (req, res, next) => {
   );
   res.json(closedRoom);
 });
-
 
 router.put('/:roomId/music/:musicId', async (req, res, next) => {
   try {

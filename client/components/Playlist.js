@@ -51,6 +51,7 @@ class Playlist extends Component {
   }
 
   render() {
+    console.log('*****this.props: ', this.props);
     return (
       <div>
         <Player
@@ -120,7 +121,7 @@ class Playlist extends Component {
 const mapStateToProps = state => ({
   playlist: state.playlist,
   form: state.form,
-  room: state.room,
+  room: state.room.room,
   user: state.user
 });
 

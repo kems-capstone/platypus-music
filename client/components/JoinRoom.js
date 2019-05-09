@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Field, reduxForm} from 'redux-form';
-import {authenticateKeyThunk} from '../store';
+import {joinRoomThunk, listenForRoomDataThunk} from '../store';
 
 class JoinRoom extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  componentDidMount() {
+    // this.props.updateRoomStore();
   }
   handleSubmit() {
     event.preventDefault();
@@ -37,7 +40,8 @@ const mapStateToProps = state => ({
   form: state.form
 });
 const mapDispatchToProps = dispatch => ({
-  authenticate: code => dispatch(authenticateKeyThunk(code))
+  authenticate: code => dispatch(joinRoomThunk(code)),
+  updateRoomStore: () => dispatch(listenForRoomDataThunk())
 });
 
 export default reduxForm({
