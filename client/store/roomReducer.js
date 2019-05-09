@@ -12,16 +12,17 @@ const addRoom = roomObject => {
 
 export const addRoomThunk = roomName => {
   return async function(dispatch) {
-    console.log('*****roomName: ', roomName);
+
     const createdRoom = await axios.post('/api/rooms', {name: roomName});
-    console.log('*****createdRoom: ', createdRoom);
+
+    // createdRoom.data.hostId = 6<== this is to test guest vs host functionality in room component, will need this thunk to pull host id from through table
     dispatch(addRoom(createdRoom.data));
   };
 };
 
 export const authenticateKeyThunk = key => async dispatch => {
   const roomInfo = await axios.get('/api/rooms/join/' + key);
-
+  // roomInfo.data.hostId = 6  <== this is to test guest vs host functionality in room component, will need this thunk to pull host id from through table
   if (roomInfo.data) {
     dispatch(addRoom(roomInfo.data));
   } else {
