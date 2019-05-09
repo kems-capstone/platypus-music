@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {authenticateKeyThunk} from '../store/roomReducer';
+import {joinRoomThunk} from '../store/roomReducer';
 
 import {JoinRoom, Playlist, Player, SearchForm} from '../components';
 import {Menu, Icon, Dropdown, Image, Button, Container, Message} from 'semantic-ui-react';
@@ -12,10 +12,10 @@ class Room extends Component {
 
   }
   render() {
-    console.log(this.props)
+    console.log('991992392932172937',this.props)
     return (
       <Container>
-        {this.props.room.id > 0 ? (
+        {!this.props.room.room.id > 0 ? (
           <JoinRoom />
         ) : (
           <div>
@@ -47,7 +47,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => {
   return {
-    getRoomThunk: key => dispatch(authenticateKeyThunk(key))
+    getRoomThunk: key => dispatch(joinRoomThunk(key))
   };
 };
 

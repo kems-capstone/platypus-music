@@ -42,21 +42,27 @@ router.get('/join/:id', async (req, res, next) => {
         roomKey: joinCode,
         closed: false
       }
-      // include: [{model: User}]
+
     });
 
     if (room.id > 0) {
       const members = await room.getUsers();
-      console.log('*****members: ', members);
-      if (members.includes(req.user.id)) {
-        const roomInfo = {room: room, members: members};
-        res.json(roomInfo);
-      } else {
+
+      if (
+        members.filter(index => {
+          return index.id === req.user.id;
+        })
+      ) {
         await User_Rooms.create({
           roomId: room.id,
           userId: req.user.id,
           isHost: false
         });
+        const newMembers = await room.getUsers()
+
+        const roomInfo = {room: room, members: newMembers};
+        res.json(roomInfo);
+      } else {
         const roomInfo = {room: room, members: members};
         res.json(roomInfo);
       }
