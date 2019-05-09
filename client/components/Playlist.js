@@ -33,7 +33,10 @@ class Playlist extends Component {
   handleSubmit(event) {
     try {
       event.preventDefault();
-      this.props.addSong(this.props.form.search.values.trackSearch, 3);
+      this.props.addSong(
+        this.props.form.search.values.trackSearch,
+        this.props.room.id
+      );
     } catch (error) {
       console.error(error.message);
     }
@@ -48,15 +51,14 @@ class Playlist extends Component {
   }
 
   render() {
-
     return (
       <div>
         <Player
-            selectedSong={this.state.selectedSong}
-            handleSubmit={this.handleSubmit}
-            nextTrack={this.nextTrack}
-          />
-          {/* PUT THIS BACK IN WHEN WE FIX FETCH METHOD */}
+          selectedSong={this.state.selectedSong}
+          handleSubmit={this.handleSubmit}
+          nextTrack={this.nextTrack}
+        />
+        {/* PUT THIS BACK IN WHEN WE FIX FETCH METHOD */}
         {/* {this.props.room.hostId === this.props.user.id ? (
           <Player
             selectedSong={this.state.selectedSong}
@@ -74,7 +76,6 @@ class Playlist extends Component {
           </div>
         )} */}
 
-
         <SearchForm handleSubmit={this.handleSubmit} />
 
         <div>
@@ -82,6 +83,7 @@ class Playlist extends Component {
             return (
               <div key={index.id}>
                 <h4>{index.name}</h4>
+                <h1>{index.voteCount}</h1>
                 <button
                   type="button"
                   onClick={() =>
