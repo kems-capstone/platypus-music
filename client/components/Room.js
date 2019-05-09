@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {authenticateKeyThunk} from '../store/roomReducer';
+
 import {JoinRoom, Playlist, Player, SearchForm} from '../components';
 import {Menu, Icon, Dropdown, Image, Button, Container} from 'semantic-ui-react';
+
 
 class Room extends Component {
   componentDidMount() {}
@@ -32,7 +34,9 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => {
   return {
+
     getRoomThunk: key => dispatch(authenticateKeyThunk(key))
+
   };
 };
 

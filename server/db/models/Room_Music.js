@@ -1,5 +1,5 @@
-const Sequelize = require('sequelize')
-const db = require('../db')
+const Sequelize = require('sequelize');
+const db = require('../db');
 
 const Room_Music = db.define('room_music', {
   roomId: {
@@ -9,8 +9,9 @@ const Room_Music = db.define('room_music', {
     type: Sequelize.INTEGER
   },
   voteCount: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
+    defaultValue: 1
   }
-})
+});
 
-module.exports = Room_Music
+module.exports = Room_Music;
