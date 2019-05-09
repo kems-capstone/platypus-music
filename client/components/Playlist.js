@@ -34,7 +34,10 @@ class Playlist extends Component {
   handleSubmit(event) {
     try {
       event.preventDefault();
-      this.props.addSong(this.props.form.search.values.trackSearch, 3);
+      this.props.addSong(
+        this.props.form.search.values.trackSearch,
+        this.props.room.id
+      );
     } catch (error) {
       console.error(error.message);
     }
