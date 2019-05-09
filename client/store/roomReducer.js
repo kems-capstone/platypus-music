@@ -12,24 +12,20 @@ const addRoom = roomObject => {
 
 export const addRoomThunk = roomName => {
   return async function(dispatch) {
-    console.log('ROOM NAME', roomName);
     const createdRoom = await axios.post('/api/rooms', {name: roomName});
     dispatch(addRoom(createdRoom));
   };
 };
 
 export const authenticateKeyThunk = key => async dispatch => {
+  const roomInfo = await axios.get('/api/rooms/join/' + key);
 
-  const roomInfo = await axios.get('/api/rooms/join/' + key)
-
-  if (roomInfo.data){
-    dispatch(addRoom(roomInfo.data))
-
+  if (roomInfo.data) {
+    dispatch(addRoom(roomInfo.data));
   } else {
-    console.log("INVALID ROOM KEY")
-    return 'Invalid room key'
+    return 'Invalid room key';
   }
-}
+};
 
 const initialState = {};
 

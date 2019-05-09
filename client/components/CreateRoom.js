@@ -11,12 +11,7 @@ class CreateRoom extends Component {
   }
   handleSubmit() {
     event.preventDefault();
-    console.log(
-      'This is the form value: ',
-      this.props.form.createRoom.values.roomName
-    );
     this.props.addRoomThunk(this.props.form.createRoom.values.roomName);
-    // this.props.addRoomThunk(this.props.form)
   }
   render() {
     return (
@@ -42,10 +37,6 @@ class CreateRoom extends Component {
     );
   }
 }
-
-// const CreateRoomForm = reduxForm({
-//   form: 'creat-room'
-// })(CreateRoom);
 
 const mapStateToProps = state => {
   return {
