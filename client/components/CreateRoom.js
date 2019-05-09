@@ -12,10 +12,11 @@ class CreateRoom extends Component {
   }
   handleSubmit() {
     event.preventDefault();
-    this.props.addRoomThunk(this.props.form.createRoom.values.roomName);
+    this.props.addRoomThunk(this.props.form.createRoom.values.roomName, this.props.user);
     this.props.history.push('/room')
   }
   render() {
+    console.log('PROPS IN CREATE ROOM ', this.props)
     return (
       <div className="form-container">
         <h1>Create Room</h1>
@@ -44,7 +45,8 @@ class CreateRoom extends Component {
 const mapStateToProps = state => {
   return {
     form: state.form,
-    room: state
+    room: state.room.room,
+    user: state.user
   };
 };
 

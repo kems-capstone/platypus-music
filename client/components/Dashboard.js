@@ -11,7 +11,7 @@ const Dashboard = props => {
           <button type="button">Create a room</button>
         </Link>
         <br />
-        <Link to="/joinroom">Join a room</Link>
+        <Link to="/room">Join a room</Link>
 
         <br />
         <Link to="/playlist">Go to Playlist</Link>

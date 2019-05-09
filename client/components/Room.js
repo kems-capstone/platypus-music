@@ -11,12 +11,21 @@ class Room extends Component {
     // this.props.getRoomThunk()
 
   }
+  // static getDerivedStateFromProps(props) {
+  //   if (props.room && props.room.id) {
+  //     return {
+  //       selectedSong: props.playlist.songList[0].audioUrl
+  //     };
+  //   }
+  // }
+
+
   render() {
-    console.log('991992392932172937',this.props)
+    console.log('PROPS IN ROOM COMPONENT: ', this.props);
     return (
       <Container>
-        {!this.props.room.room.id > 0 ? (
-          <JoinRoom />
+        {!this.props.room.id ? (
+          <JoinRoom history={this.props.history} />
         ) : (
           <div>
             <div className='roomComponent-roomName'>{this.props.room.name}</div>
@@ -41,7 +50,7 @@ class Room extends Component {
   }
 }
 const mapStateToProps = state => ({
-  room: state.room,
+  room: state.room.room,
   user: state.user,
   playlist: state.playlist
 });
