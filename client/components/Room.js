@@ -7,6 +7,7 @@ import {Menu, Icon, Dropdown, Image, Button, Container} from 'semantic-ui-react'
 class Room extends Component {
   componentDidMount() {}
   render() {
+    console.log('*****this.props in room component: ', this.props);
     return (
       <Container>
         {!this.props.room.id > 0 ? (
