@@ -9,7 +9,7 @@ class JoinRoom extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   componentDidMount() {
-    this.props.updateRoomStore();
+    // this.props.updateRoomStore();
   }
   handleSubmit() {
     event.preventDefault();

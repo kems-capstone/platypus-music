@@ -42,32 +42,46 @@ router.get('/join/:id', async (req, res, next) => {
         roomKey: joinCode,
         closed: false
       }
-
     });
+console.log('*****room.id: ', room);
+
+
 
     if (room.id > 0) {
+
+
       const members = await room.getUsers();
 
-      if (
-        members.filter(index => {
-          return index.id === req.user.id;
-        })
-      ) {
+      // for (let i = 0; i < members.length; i++){
+      //  if (members[i].id === req.user.id){
+      //  console.log('***** members[i].id: ',  members[i].id);
+      //  console.log('*****req.user.id: ', req.user.id);
+
+
+
+      //  }
+      // }
+
+      const memberIds = members.map(member => ( member.id))
+      console.log('*****memberIds: ', memberIds);
+      if (memberIds.includes(req.user.id)) {
+        console.log('MEMBER EXISTs')
+        const roomInfo = {room: room, members: members};
+        res.json(roomInfo);
+      } else {
+        console.log('MEMBER DOESNT EXIST')
         await User_Rooms.create({
           roomId: room.id,
           userId: req.user.id,
           isHost: false
         });
-        const newMembers = await room.getUsers()
+        const newMembers = await room.getUsers();
 
         const roomInfo = {room: room, members: newMembers};
         res.json(roomInfo);
-      } else {
-        const roomInfo = {room: room, members: members};
-        res.json(roomInfo);
       }
     } else {
-      res.json(room);
+      res.json(room); // send empty object
     }
   } catch (error) {
     console.error(error);

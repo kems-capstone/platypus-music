@@ -8,7 +8,7 @@ import {Menu, Icon, Dropdown, Image, Button, Container, Message} from 'semantic-
 
 class Room extends Component {
   componentDidMount() {
-    this.props.getRoomThunk()
+    // this.props.getRoomThunk()
 
   }
   render() {
@@ -47,7 +47,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => {
   return {
-    getRoomThunk: key => dispatch(joinRoomThunk(key))
+    // getRoomThunk: key => dispatch(joinRoomThunk(key))
   };
 };
 
