@@ -34,10 +34,7 @@ class Playlist extends Component {
   handleSubmit(event) {
     try {
       event.preventDefault();
-      this.props.addSong(
-        this.props.form.search.values.trackSearch,
-        this.props.room.id
-      );
+      this.props.addSong(this.props.form.search.values.trackSearch, 3);
     } catch (error) {
       console.error(error.message);
     }
@@ -57,23 +54,36 @@ class Playlist extends Component {
   // }
 
   render() {
+
     return (
       <div>
-        <JoinRoom />
-        <Player />
+        <Player
+            selectedSong={this.state.selectedSong}
+            handleSubmit={this.handleSubmit}
+            nextTrack={this.nextTrack}
+          />
+          {/* PUT THIS BACK IN WHEN WE FIX FETCH METHOD */}
+        {/* {this.props.room.hostId === this.props.user.id ? (
+          <Player
+            selectedSong={this.state.selectedSong}
+            handleSubmit={this.handleSubmit}
+            nextTrack={this.nextTrack}
+          />
+        ) : (
+          <div>
+            <audio
+              autoPlay={true}
+              onEnded={this.nextTrack}
+              src={this.state.selectedSong}
+              id="audioPlayer-guest"
+            />
+          </div>
+        )} */}
+
         <br />
         <SearchForm handleSubmit={this.handleSubmit} />
         <br />
         <br />
-
-        <audio
-          autoPlay={true}
-          onEnded={this.nextTrack}
-          src={this.state.selectedSong}
-          onClick={this.handleSubmit}
-          controls
-          id="audioPlayer"
-        />
 
         <div>
           {this.props.playlist.songList.map(index => {
@@ -94,7 +104,8 @@ class Playlist extends Component {
 const mapStateToProps = state => ({
   playlist: state.playlist,
   form: state.form,
-  room: state.room
+  room: state.room,
+  user: state.user
 });
 
 const mapDispatchToProps = dispatch => ({
