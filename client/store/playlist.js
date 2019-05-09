@@ -10,6 +10,7 @@ const inititalState = {
 
 const ADD_SONG = 'ADD_SONG';
 const UPDATE_STATE = 'UPDATE_STATE';
+const UPDATE_VOTE = 'UPDATE_VOTE';
 
 const updateState = otherProps => {
   return {
@@ -21,6 +22,14 @@ const updateState = otherProps => {
 const getSong = song => {
   return {
     type: ADD_SONG,
+    song
+  };
+};
+
+const updateVote = (voteValue, song) => {
+  return {
+    type: UPDATE_VOTE,
+    voteValue,
     song
   };
 };
@@ -43,11 +52,23 @@ export const addSongThunk = (song, roomId = null) => async dispatch => {
   }
 };
 
-export const voteThunk = (roomId, songId) => dispatch => {};
+export const voteThunk = (roomId, songId, voteValue) => async dispatch => {
+  try {
+    console.log('songid', songId);
+    let {data} = await axios.put(
+      `/api/rooms/${roomId}/music/${songId}`,
+      voteValue
+    );
+    dispatch(updateVote(songId, voteValue));
+  } catch (error) {
+    console.error(error.message);
+  }
+};
 
 export default function(state = inititalState, action) {
   switch (action.type) {
     case ADD_SONG:
+      action.song.voteCount = 1;
       return {
         currentSong: action.song,
         songList: [...state.songList, action.song]
@@ -57,6 +78,18 @@ export default function(state = inititalState, action) {
         currentSong: action.otherProps.audioUrl,
         songList: [...state.songList, action.otherProps]
       };
+    case UPDATE_VOTE:
+      let newSonglist = state.songList.filter(song => {
+        if (song.id === action.song.id) {
+          if (action.voteValue === 'upVote') {
+            song.voteCount++;
+          } else {
+            song.voteCount--;
+          }
+        }
+      });
+
+      return {...state, songList: newSonglist};
     default:
       return state;
   }

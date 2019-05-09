@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Player from './Player';
 import {connect} from 'react-redux';
-import {addSongThunk, listenForDataThunk} from '../store/playlist';
+import {addSongThunk, listenForDataThunk, voteThunk} from '../store/playlist';
 import SearchForm from './SearchForm';
 import io from 'socket.io-client';
 import JoinRoom from './JoinRoom';
@@ -80,8 +80,30 @@ class Playlist extends Component {
             return (
               <div key={index.id}>
                 <h4>{index.name}</h4>
-                <button type="button">upvote</button>
-                <button type="button">downvote</button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    this.props.updateVote(
+                      this.props.room.id,
+                      index.id,
+                      'upVote'
+                    )
+                  }
+                >
+                  upvote
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    this.props.updateVote(
+                      this.props.room.id,
+                      index.id,
+                      'downVote'
+                    )
+                  }
+                >
+                  downvote
+                </button>
               </div>
             );
           })}
@@ -99,7 +121,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   addSong: (song, room) => dispatch(addSongThunk(song, room)),
-  updateStore: () => dispatch(listenForDataThunk())
+  updateStore: () => dispatch(listenForDataThunk()),
+  updateVote: (song, voteValue) => dispatch(voteThunk(song, voteValue))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Playlist);
