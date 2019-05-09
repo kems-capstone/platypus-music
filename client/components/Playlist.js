@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import {addSongThunk, listenForDataThunk, voteThunk} from '../store/playlist';
 import SearchForm from './SearchForm';
 import io from 'socket.io-client';
-import JoinRoom from './JoinRoom';
 
 const socket = io(window.location.origin);
 
@@ -75,10 +74,8 @@ class Playlist extends Component {
           </div>
         )} */}
 
-        <br />
+
         <SearchForm handleSubmit={this.handleSubmit} />
-        <br />
-        <br />
 
         <div>
           {this.props.playlist.songList.map(index => {
