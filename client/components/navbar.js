@@ -8,16 +8,13 @@ import {Menu, Icon, Dropdown, Image, Button} from 'semantic-ui-react';
 
 const Navbar = ({handleClick, isLoggedIn}) => (
   <Menu color="purple" inverted id="navBar" fixed="top">
-    <Menu.Item id="navbar-title-and-image-container">
-      <div id="nav-title">
-        <div className="nav-title-text">Platypus</div>
-      </div>
-    </Menu.Item>
-    <Menu.Item>
-      <Link className="nav-text" to="/home">
-        Home
-      </Link>
-    </Menu.Item>
+    <Link className="nav-text" to="/home">
+      <Menu.Item id="navbar-title-and-image-container">
+        <div id="nav-title">
+          <div className="nav-title-text">Platypus</div>
+        </div>
+      </Menu.Item>
+    </Link>
     <Menu.Item>
       <Link className="nav-text" to="/dashboard">
         Dashboard

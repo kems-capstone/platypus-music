@@ -44,9 +44,10 @@ router.get('/join/:id', async (req, res, next) => {
       }
       // include: [{model: User}]
     });
-    const members = await room.getUsers();
 
     if (room.id > 0) {
+      const members = await room.getUsers();
+      console.log('*****members: ', members);
       if (members.includes(req.user.id)) {
         const roomInfo = {room: room, members: members};
         res.json(roomInfo);

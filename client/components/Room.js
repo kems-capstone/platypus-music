@@ -7,12 +7,15 @@ import {Menu, Icon, Dropdown, Image, Button, Container, Message} from 'semantic-
 
 
 class Room extends Component {
-  componentDidMount() {}
-  render() {
+  componentDidMount() {
+    this.props.getRoomThunk()
 
+  }
+  render() {
+    console.log(this.props)
     return (
       <Container>
-        {!this.props.room.id > 0 ? (
+        {this.props.room.id > 0 ? (
           <JoinRoom />
         ) : (
           <div>
@@ -44,9 +47,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => {
   return {
-
     getRoomThunk: key => dispatch(authenticateKeyThunk(key))
-
   };
 };
 

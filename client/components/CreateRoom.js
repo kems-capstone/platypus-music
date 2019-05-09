@@ -16,7 +16,6 @@ class CreateRoom extends Component {
     this.props.history.push('/room')
   }
   render() {
-    console.log('*****this.props: ', this.props);
     return (
       <div className="form-container">
         <h1>Create Room</h1>
