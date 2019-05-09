@@ -14,8 +14,10 @@ class JoinRoom extends Component {
   handleSubmit() {
     event.preventDefault();
     this.props.authenticate(this.props.form.joinRoom.values.joinRoom);
+    this.props.history.push('/room')
   }
   render() {
+    console.log('PROPS JOIN ROOM COMP ', this.props);
     return (
       <div>
         <form
