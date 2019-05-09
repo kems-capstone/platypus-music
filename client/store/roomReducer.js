@@ -15,7 +15,7 @@ export const addRoomThunk = roomName => {
     console.log('*****roomName: ', roomName);
     const createdRoom = await axios.post('/api/rooms', {name: roomName});
     console.log('*****createdRoom: ', createdRoom);
-    dispatch(addRoom(createdRoom));
+    dispatch(addRoom(createdRoom.data));
   };
 };
 

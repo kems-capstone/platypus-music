@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Field, reduxForm} from 'redux-form';
 import {Message} from 'semantic-ui-react';
 import roomReducer, {addRoomThunk} from '../store/roomReducer';
-import {Link} from 'react-router-dom'
+
 
 class CreateRoom extends Component {
   constructor() {
@@ -13,8 +13,10 @@ class CreateRoom extends Component {
   handleSubmit() {
     event.preventDefault();
     this.props.addRoomThunk(this.props.form.createRoom.values.roomName);
+    this.props.history.push('/room')
   }
   render() {
+    console.log('*****this.props: ', this.props);
     return (
       <div className="form-container">
         <h1>Create Room</h1>
