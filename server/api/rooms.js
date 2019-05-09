@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {Room} = require('../db/models');
+const {Room, Music} = require('../db/models');
 
 // router.get('/', async (req, res, next) => {
 //   const rooms = await Room.findAll({});
@@ -31,20 +31,31 @@ router.post('/', async (req, res, next) => {
 router.get('/join/:id', async (req, res, next) => {
   console.log('*****req.body: ', req.body);
 
-  const joinCode = req.params.id
-  const room =  await Room.findOne({
+  const joinCode = req.params.id;
+  const room = await Room.findOne({
     where: {
       roomKey: joinCode,
       closed: false
     }
-  })
-  console.log('data *******************',room)
+  });
 
-  res.json(room)
+  res.json(room);
+});
 
-})
+router.post('/:roomId/music/:musicId', async (req, res, next) => {
+  try {
+    const room = await Room.findByPk(req.params.roomId);
+    const song = await Music.findByPk(req.params.musicId);
+    if (!room || !song) {
+      res.sendStatus(404);
+    } else {
+      await song.addRoom(room);
 
-
-
+      res.send('created successfully');
+    }
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = router;
