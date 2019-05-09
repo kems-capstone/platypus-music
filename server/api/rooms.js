@@ -56,4 +56,16 @@ router.post('/:roomId/music/:musicId', async (req, res, next) => {
   }
 });
 
+router.put('/close', async (req, res, next) => {
+  const closedRoom = await Room.update(
+    {closed: true},
+    {
+      where: {
+        roomKey: req.body.roomKey
+      }
+    }
+  );
+  res.json(closedRoom);
+});
+
 module.exports = router;
