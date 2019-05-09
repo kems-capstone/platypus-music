@@ -1,22 +1,43 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {getRoomThunk} from '../store/roomReducer';
+import {authenticateKeyThunk} from '../store/roomReducer';
+
+import {JoinRoom, Playlist, Player, SearchForm} from '../components';
+import {Menu, Icon, Dropdown, Image, Button, Container} from 'semantic-ui-react';
+
 
 class Room extends Component {
   componentDidMount() {}
   render() {
     return (
-      <div>
-        <h1>This is a room that was created</h1>
-      </div>
+      <Container>
+        {!this.props.room.id > 0 ? (
+          <JoinRoom />
+        ) : (
+          <div>
+            <h1>{this.props.room.name}</h1>
+            <br/>
+            <Playlist />
+
+
+          </div>
+        )}
+      </Container>
+
     );
   }
 }
-
+const mapStateToProps = state => ({
+  room: state.room,
+  user: state.user,
+  playlist: state.playlist
+});
 const mapDispatchToProps = dispatch => {
   return {
-    getRoomThunk: () => dispatch(getRoomThunk())
+
+    getRoomThunk: key => dispatch(authenticateKeyThunk(key))
+
   };
 };
 
-export default connect(null, mapDispatchToProps)(Room);
+export default connect(mapStateToProps, mapDispatchToProps)(Room);
