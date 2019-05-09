@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {Field, reduxForm} from 'redux-form';
 import {Message} from 'semantic-ui-react';
 import roomReducer, {addRoomThunk} from '../store/roomReducer';
+import {Link} from 'react-router-dom'
 
 class CreateRoom extends Component {
   constructor() {
@@ -31,6 +32,7 @@ class CreateRoom extends Component {
           />
           <h3>Room Code:</h3>
           <Message>1234</Message>
+
           <button type="submit">Create Room</button>
         </form>
       </div>
