@@ -60,16 +60,26 @@ router.put('/:roomId/music/:musicId', async (req, res, next) => {
   try {
     const room = await Room.findByPk(req.params.roomId);
     const song = await Music.findByPk(req.params.musicId);
-
-    let updatedRoom = await Room_Music.increment('voteCount', {
-      by: 1,
-      where: {
-        roomId: room.id,
-        musicId: song.id
-      }
-    });
-
-    res.send(updatedRoom);
+    console.log('body', req.body);
+    if (req.body.upVote === 'upVote') {
+      let increment = await Room_Music.increment('voteCount', {
+        by: 1,
+        where: {
+          roomId: room.id,
+          musicId: song.id
+        }
+      });
+      res.send(increment);
+    } else {
+      let decrement = await Room_Music.decrement('voteCount', {
+        by: 1,
+        where: {
+          roomId: room.id,
+          musicId: song.id
+        }
+      });
+      res.send(decrement);
+    }
   } catch (error) {
     next(error);
   }
