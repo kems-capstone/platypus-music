@@ -12,7 +12,7 @@ class CreateRoom extends Component {
   }
   handleSubmit() {
     event.preventDefault();
-    this.props.addRoomThunk(this.props.form.createRoom.values.roomName);
+    this.props.addRoomThunk(this.props.form.createRoom.values.roomName, this.props.user);
     this.props.history.push('/room')
   }
   render() {
@@ -45,13 +45,14 @@ class CreateRoom extends Component {
 const mapStateToProps = state => {
   return {
     form: state.form,
-    room: state
+    room: state.room,
+    user: state.user
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    addRoomThunk: formData => dispatch(addRoomThunk(formData))
+    addRoomThunk: (formData, user) => dispatch(addRoomThunk(formData, user))
   };
 };
 
