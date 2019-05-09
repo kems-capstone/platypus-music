@@ -24,6 +24,7 @@ router.post('/', async (req, res, next) => {
     roomKey: roomKey,
     closed: false
   });
+  console.log('*****createdRoom in routes: ', createdRoom);
   res.json(createdRoom);
 });
 
