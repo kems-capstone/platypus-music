@@ -33,7 +33,10 @@ class Playlist extends Component {
   handleSubmit(event) {
     try {
       event.preventDefault();
-      this.props.addSong(this.props.form.search.values.trackSearch, 3);
+      this.props.addSong(
+        this.props.form.search.values.trackSearch,
+        this.props.room.id
+      );
     } catch (error) {
       console.error(error.message);
     }
@@ -48,15 +51,15 @@ class Playlist extends Component {
   }
 
   render() {
-
+    console.log('*****this.props: ', this.props);
     return (
       <div>
         <Player
-            selectedSong={this.state.selectedSong}
-            handleSubmit={this.handleSubmit}
-            nextTrack={this.nextTrack}
-          />
-          {/* PUT THIS BACK IN WHEN WE FIX FETCH METHOD */}
+          selectedSong={this.state.selectedSong}
+          handleSubmit={this.handleSubmit}
+          nextTrack={this.nextTrack}
+        />
+        {/* PUT THIS BACK IN WHEN WE FIX FETCH METHOD */}
         {/* {this.props.room.hostId === this.props.user.id ? (
           <Player
             selectedSong={this.state.selectedSong}
@@ -74,7 +77,6 @@ class Playlist extends Component {
           </div>
         )} */}
 
-
         <SearchForm handleSubmit={this.handleSubmit} />
 
         <div>
@@ -82,26 +84,31 @@ class Playlist extends Component {
             return (
               <div key={index.id}>
                 <h4>{index.name}</h4>
-                <button
-                  type="button"
-                  onClick={() =>
-                    this.props.updateVote(this.props.room.id, index.id, {
-                      upVote: 'upVote'
-                    })
-                  }
-                >
-                  upvote
-                </button>
-                <button
-                  type="button"
-                  onClick={() =>
-                    this.props.updateVote(this.props.room.id, index.id, {
-                      downVote: 'downVote'
-                    })
-                  }
-                >
-                  downvote
-                </button>
+                <h1>{index.voteCount}</h1>
+                {this.props.playlist.songList[0].id !== index.id && (
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        this.props.updateVote(this.props.room.id, index.id, {
+                          upVote: 'upVote'
+                        })
+                      }
+                    >
+                      upvote
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        this.props.updateVote(this.props.room.id, index.id, {
+                          downVote: 'downVote'
+                        })
+                      }
+                    >
+                      downvote
+                    </button>{' '}
+                  </div>
+                )}
               </div>
             );
           })}
@@ -114,7 +121,7 @@ class Playlist extends Component {
 const mapStateToProps = state => ({
   playlist: state.playlist,
   form: state.form,
-  room: state.room,
+  room: state.room.room,
   user: state.user
 });
 

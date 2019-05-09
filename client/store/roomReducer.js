@@ -22,6 +22,7 @@ const addRoom = roomObject => {
     roomObject
   };
 };
+
 const joinRoom = roomObject => {
   return {
     type: JOIN_ROOM,

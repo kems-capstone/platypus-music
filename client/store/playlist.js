@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import axios from 'axios';
 import io from 'socket.io-client';
 
@@ -40,10 +41,10 @@ export const listenForDataThunk = () => dispatch => {
   });
 };
 
-export const addSongThunk = (song, roomId = null) => async dispatch => {
+export const addSongThunk = (songId, roomId = null) => async dispatch => {
   try {
-    let {data} = await axios.get('/api/music/' + song);
-    const posted = await axios.post(`/api/rooms/${roomId}/music/${song}`);
+    let {data} = await axios.get('/api/music/' + songId);
+    await axios.post(`/api/rooms/${roomId}/music/${songId}`);
     socket.emit('addedSong', data);
 
     dispatch(getSong(data));
@@ -68,6 +69,7 @@ export default function(state = inititalState, action) {
   switch (action.type) {
     case ADD_SONG:
       action.song.voteCount = 1;
+      console.log('before return vote count', action.song.voteCount);
       return {
         currentSong: action.song,
         songList: [...state.songList, action.song]
@@ -78,17 +80,28 @@ export default function(state = inititalState, action) {
         songList: [...state.songList, action.otherProps]
       };
     case UPDATE_VOTE:
-      let newSonglist = state.songList.filter(song => {
+      let songList = state.songList.map(song => {
         if (song.id === action.songId) {
-          if (action.voteValue === 'upVote') {
+          if (action.voteValue.upVote === 'upVote') {
             song.voteCount++;
+            return song;
           } else {
             song.voteCount--;
+            return song;
           }
         }
+        return song;
+      });
+      let firstSong = songList[0];
+      let notFirstSong = songList.slice(1);
+
+      notFirstSong.sort((a, b) => {
+        return a.voteCount > b.voteCount
+          ? -1
+          : b.voteCount > a.voteCount ? 1 : 0;
       });
 
-      return {...state, songList: newSonglist};
+      return {...state, songList: [firstSong, ...notFirstSong]};
     default:
       return state;
   }

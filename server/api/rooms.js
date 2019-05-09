@@ -52,15 +52,6 @@ console.log('*****room.id: ', room);
 
       const members = await room.getUsers();
 
-      // for (let i = 0; i < members.length; i++){
-      //  if (members[i].id === req.user.id){
-      //  console.log('***** members[i].id: ',  members[i].id);
-      //  console.log('*****req.user.id: ', req.user.id);
-
-
-
-      //  }
-      // }
 
       const memberIds = members.map(member => ( member.id))
       console.log('*****memberIds: ', memberIds);
