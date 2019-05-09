@@ -84,26 +84,30 @@ class Playlist extends Component {
               <div key={index.id}>
                 <h4>{index.name}</h4>
                 <h1>{index.voteCount}</h1>
-                <button
-                  type="button"
-                  onClick={() =>
-                    this.props.updateVote(this.props.room.id, index.id, {
-                      upVote: 'upVote'
-                    })
-                  }
-                >
-                  upvote
-                </button>
-                <button
-                  type="button"
-                  onClick={() =>
-                    this.props.updateVote(this.props.room.id, index.id, {
-                      downVote: 'downVote'
-                    })
-                  }
-                >
-                  downvote
-                </button>
+                {this.props.playlist.songList[0].id !== index.id && (
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        this.props.updateVote(this.props.room.id, index.id, {
+                          upVote: 'upVote'
+                        })
+                      }
+                    >
+                      upvote
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        this.props.updateVote(this.props.room.id, index.id, {
+                          downVote: 'downVote'
+                        })
+                      }
+                    >
+                      downvote
+                    </button>{' '}
+                  </div>
+                )}
               </div>
             );
           })}

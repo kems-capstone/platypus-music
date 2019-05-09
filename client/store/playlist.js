@@ -92,7 +92,16 @@ export default function(state = inititalState, action) {
         }
         return song;
       });
-      return {...state, songList};
+      let firstSong = songList[0];
+      let notFirstSong = songList.slice(1);
+
+      notFirstSong.sort((a, b) => {
+        return a.voteCount > b.voteCount
+          ? -1
+          : b.voteCount > a.voteCount ? 1 : 0;
+      });
+
+      return {...state, songList: [firstSong, ...notFirstSong]};
     default:
       return state;
   }
