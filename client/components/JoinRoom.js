@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Field, reduxForm} from 'redux-form';
-import {joinRoomThunk, listenForRoomDataThunk} from '../store';
+import {joinRoomThunk, listenForRoomDataThunk, getRoomThunk} from '../store';
 
 class JoinRoom extends Component {
   constructor(props) {
@@ -11,14 +11,16 @@ class JoinRoom extends Component {
   componentDidMount() {
     // this.props.updateRoomStore();
   }
-  handleSubmit() {
+  async handleSubmit() {
     event.preventDefault();
-    let key = this.props.form.joinRoom.values.joinRoom
-    key = key.toUpperCase()
+    let key = this.props.form.joinRoom.values.joinRoom;
+    console.log('props in join room component', this.props);
 
+    console.log('keyyyy', key);
+    key = key.toUpperCase();
 
-    this.props.authenticate(key);
-    this.props.history.push('/room')
+    await this.props.authenticate(key);
+    this.props.history.push('/room');
   }
   render() {
     return (
@@ -42,11 +44,13 @@ class JoinRoom extends Component {
   }
 }
 const mapStateToProps = state => ({
-  form: state.form
+  form: state.form,
+  user: state.user
 });
 const mapDispatchToProps = dispatch => ({
   authenticate: code => dispatch(joinRoomThunk(code)),
-  updateRoomStore: () => dispatch(listenForRoomDataThunk())
+  updateRoomStore: () => dispatch(listenForRoomDataThunk()),
+  getRoomThunk: userId => dispatch(getRoomThunk(userId))
 });
 
 export default reduxForm({
