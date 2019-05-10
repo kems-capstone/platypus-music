@@ -29,6 +29,13 @@ const joinRoom = roomInfo => {
   };
 };
 
+const getRoom = roomData => {
+  return {
+    type: GET_ROOM,
+    payload: roomData
+  };
+};
+
 export const listenForRoomDataThunk = () => dispatch => {
   socket.on('updateRoom', data => {
     dispatch(updateRoomState(data));
@@ -38,13 +45,13 @@ export const listenForRoomDataThunk = () => dispatch => {
 export const addRoomThunk = (roomName, user) => {
   return async function(dispatch) {
     const createdRoom = await axios.post('/api/rooms', {name: roomName});
-
     dispatch(addRoom(createdRoom.data));
   };
 };
 
 export const joinRoomThunk = key => async dispatch => {
   const room = await axios.get('/api/rooms/join/' + key);
+
 
   const roomInfo = {
     room: room.data.room,
@@ -58,6 +65,14 @@ export const joinRoomThunk = key => async dispatch => {
   }
 };
 
+export const getRoomThunk = userId => {
+  return async function(dispatch) {
+    console.log('THIS IS THE USERID IN THE THUNK', userId);
+    const roomData = await axios.get('/api/rooms/current-room/' + userId);
+    dispatch(getRoom(roomData.data));
+  };
+};
+
 const initialState = {
   room: {},
   members: [],
@@ -66,6 +81,8 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case GET_ROOM:
+      return {...state, room: action.payload};
     case ADD_ROOM:
       return action.roomObject;
     case JOIN_ROOM:

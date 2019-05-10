@@ -47,6 +47,7 @@ router.get('/join/:id', async (req, res, next) => {
       }
     });
 
+
     let host = {};
 
     if (room.id > 0) {
@@ -61,7 +62,6 @@ router.get('/join/:id', async (req, res, next) => {
 
       //
       const memberIds = members.map(member => member.id);
-
       if (memberIds.includes(req.user.id)) {
         const roomInfo = {room: room, members: members, host: host};
         res.json(roomInfo);
@@ -81,6 +81,36 @@ router.get('/join/:id', async (req, res, next) => {
     }
   } catch (error) {
     console.error(error);
+  }
+});
+
+router.get('/current-room/:userId', async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+    console.log('THIS IS THE BODY', req.body);
+    console.log('THIS IS THE USERID', userId);
+    const roomInfo = await User.findOne({
+      where: {
+        id: userId
+      },
+      include: [
+        {
+          model: Room,
+          where: {
+            closed: false
+          }
+        }
+      ]
+    });
+    const roomId = roomInfo.rooms[0].id;
+    const playlistInfo = await Room_Music.findAll({
+      where: {
+        roomId: roomId
+      }
+    });
+    res.json({playlistInfo: playlistInfo, roomInfo: roomInfo});
+  } catch (error) {
+    next(error);
   }
 });
 
