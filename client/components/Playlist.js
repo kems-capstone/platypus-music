@@ -52,15 +52,17 @@ class Playlist extends Component {
 
   render() {
     console.log('PROPS IN PLAYLIST COMPONENT: ', this.props);
+
+
     return (
       <div>
-        <Player
+        {/* <Player
           selectedSong={this.state.selectedSong}
           handleSubmit={this.handleSubmit}
           nextTrack={this.nextTrack}
-        />
+        /> */}
         {/* PUT THIS BACK IN WHEN WE FIX FETCH METHOD */}
-        {/* {this.props.room.hostId === this.props.user.id ? (
+        {this.props.room.host.id && this.props.room.host.id === this.props.user.id ? (
           <Player
             selectedSong={this.state.selectedSong}
             handleSubmit={this.handleSubmit}
@@ -68,14 +70,9 @@ class Playlist extends Component {
           />
         ) : (
           <div>
-            <audio
-              autoPlay={true}
-              onEnded={this.nextTrack}
-              src={this.state.selectedSong}
-              id="audioPlayer-guest"
-            />
+            <h4>Something can go here later</h4>
           </div>
-        )} */}
+        )}
 
         <SearchForm handleSubmit={this.handleSubmit} />
 
@@ -121,7 +118,7 @@ class Playlist extends Component {
 const mapStateToProps = state => ({
   playlist: state.playlist,
   form: state.form,
-  room: state.room.room,
+  room: state.room,
   user: state.user
 });
 

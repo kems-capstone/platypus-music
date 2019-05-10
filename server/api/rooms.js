@@ -29,8 +29,17 @@ router.post('/', async (req, res, next) => {
     userId: req.user.id,
     isHost: true
   });
-  console.log('*****createdRoom in routes: ', createdRoom);
-  res.json(createdRoom);
+  const members = await createdRoom.getUsers();
+  let host = {}
+  members.forEach(member=> {
+    if (member.user_rooms.isHost === true){
+      host = member
+    }
+  })
+  let roomInfo = {room: createdRoom, host: host, members: members}
+
+  console.log('*****createdRoom in routes: ', roomInfo);
+  res.json(roomInfo);
 });
 
 //Authenticate Key Route for Join Room
@@ -41,23 +50,31 @@ router.get('/join/:id', async (req, res, next) => {
       where: {
         roomKey: joinCode,
         closed: false
-      }
+      },
+
     });
 console.log('*****room.id: ', room);
 
-
+    let host = {}
 
     if (room.id > 0) {
 
 
       const members = await room.getUsers();
 
+      //
+      members.forEach(member=> {
+        if (member.user_rooms.isHost === true){
+          host = member
+        }
+      })
 
+      //
       const memberIds = members.map(member => ( member.id))
       console.log('*****memberIds: ', memberIds);
       if (memberIds.includes(req.user.id)) {
         console.log('MEMBER EXISTs')
-        const roomInfo = {room: room, members: members};
+        const roomInfo = {room: room, members: members, host: host};
         res.json(roomInfo);
       } else {
         console.log('MEMBER DOESNT EXIST')
@@ -68,7 +85,7 @@ console.log('*****room.id: ', room);
         });
         const newMembers = await room.getUsers();
 
-        const roomInfo = {room: room, members: newMembers};
+        const roomInfo = {room: room, members: newMembers, host: host};
         res.json(roomInfo);
       }
     } else {
