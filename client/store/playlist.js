@@ -39,6 +39,11 @@ export const listenForDataThunk = () => dispatch => {
     dispatch(updateState(data));
   });
 };
+export const listenForVoteThunk = () => dispatch => {
+  socket.on("voteUpdated", updatedSong => {
+    dispatch(updateVote(updatedSong));
+  });
+};
 
 export const addSongThunk = (songId, roomId = null) => async dispatch => {
   try {
@@ -59,8 +64,14 @@ export const voteThunk = (roomId, songId, voteValue) => async dispatch => {
       voteValue
     );
 
+
     let songVote = data.song;
     songVote.voteCount = data.change[0][0][0].voteCount;
+
+
+    socket.emit('songVoted', songVote);
+
+
     dispatch(updateVote(songVote));
   } catch (error) {
     console.error(error.message);
