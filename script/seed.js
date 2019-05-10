@@ -18,33 +18,33 @@ async function seed() {
     User.create({
       email: 'platy@email.com',
       password: '123',
-      firstName: 'Patty',
-      lastName: 'Platypusowitz',
+      firstName: 'patty',
+      lastName: 'platypusowitz',
       roomId: 1
     }),
     User.create({
-      email: 'Okapi@canopyForest.com',
+      email: 'okapi@canopyforest.com',
       password: '123',
-      firstName: 'Cappy',
-      lastName: 'OKapi'
+      firstName: 'cappy',
+      lastName: 'okapi'
     }),
     User.create({
-      email: 'Bear@forest.com',
+      email: 'bear@forest.com',
       password: '123',
-      firstName: 'Bear',
-      lastName: 'Bearsmith'
+      firstName: 'bear',
+      lastName: 'bearsmith'
     }),
     User.create({
-      email: 'Elephant@savanah.com',
+      email: 'elephant@savanah.com',
       password: '123',
-      firstName: 'Elle',
-      lastName: 'Elephante'
+      firstName: 'elle',
+      lastName: 'elephante'
     }),
     User.create({
-      email: 'Panda@schina.com',
+      email: 'panda@schina.com',
       password: '123',
-      firstName: 'Paul',
-      lastName: 'Panderson'
+      firstName: 'paul',
+      lastName: 'panderson'
     })
   ]);
   console.log(`seeded ${users.length} users`);

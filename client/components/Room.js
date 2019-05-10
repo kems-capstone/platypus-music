@@ -8,16 +8,8 @@ import {Menu, Icon, Dropdown, Image, Button, Container, Message} from 'semantic-
 
 class Room extends Component {
   componentDidMount() {
-    // this.props.getRoomThunk()
-
   }
-  // static getDerivedStateFromProps(props) {
-  //   if (props.room && props.room.id) {
-  //     return {
-  //       selectedSong: props.playlist.songList[0].audioUrl
-  //     };
-  //   }
-  // }
+
 
 
   render() {
@@ -30,7 +22,7 @@ class Room extends Component {
           <div>
             <div className='roomComponent-roomName'>{this.props.room.name}</div>
             <div className='roomComponent-roomKey-header'>Room Key:{"  "}
-            <span className='roomComponent-roomKey-code'>
+            <span id='roomComponent-roomKey-code'>
 
             {this.props.room.roomKey}
             </span>

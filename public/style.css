@@ -24,6 +24,11 @@ h1 {
   color: blue;
 }
 
+:root {
+  font-size: 12px;
+
+}
+
 .homepage {
   text-align: center;
   background-image: url('./yvette-de-wit-118721-unsplash.jpg');
@@ -59,4 +64,26 @@ h1 {
   font-size: 28px;
   text-decoration: underline;
 
+}
+
+/* CREATE ROOM COMPONENT */
+
+#createRoom-formContainer{
+  padding: 10px;
+  display: flex;
+
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background-color: orange
+
+}
+
+
+/* ROOM COMPONENT */
+
+#roomComponent-roomKey-code{
+  font-family: 'Bree Serif', serif;
+
+  letter-spacing: 0.2em;
 }
