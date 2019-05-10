@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Player from './Player';
 import {connect} from 'react-redux';
-import {addSongThunk, listenForDataThunk, voteThunk, listenForVoteThunk} from '../store/playlist';
+import {addSongThunk, listenForAddPlaylistThunk, voteThunk, listenForVoteThunk, listenforSongEndThunk} from '../store/playlist';
 import SearchForm from './SearchForm';
 import io from 'socket.io-client';
 
@@ -19,8 +19,9 @@ class Playlist extends Component {
   }
 
   componentDidMount() {
-    this.props.updateStore();
+    this.props.addedToPlaylist();
     this.props.listenForVotes()
+    // this.props.listenForSongEnd()
   }
 
   static getDerivedStateFromProps(props) {
@@ -28,6 +29,8 @@ class Playlist extends Component {
       return {
         selectedSong: props.playlist.songList[0].audioUrl
       };
+    } else {
+      return ''
     }
   }
 
@@ -46,8 +49,10 @@ class Playlist extends Component {
 
   nextTrack() {
     if (this.props.playlist.songList.length >= 1) {
-      this.props.playlist.songList.shift();
-      socket.emit('updateRoom', this.props.playlist.songList);
+      // this.props.playlist.songList.shift();
+      let newPlaylist = this.props.playlist.songList.slice(1)
+      socket.emit('songEnded', newPlaylist);
+
       this.setState({selectedSong: this.props.playlist.songList[0].audioUrl});
     }
   }
@@ -131,10 +136,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   addSong: (song, room) => dispatch(addSongThunk(song, room)),
-  updateStore: () => dispatch(listenForDataThunk()),
+  addedToPlaylist: () => dispatch(listenForAddPlaylistThunk()),
   updateVote: (room, song, voteValue) =>
     dispatch(voteThunk(room, song, voteValue)),
-  listenForVotes: ()=>dispatch(listenForVoteThunk())
+  listenForVotes: ()=>dispatch(listenForVoteThunk()),
+  // listenForSongEnd: () => dispatch(listenforSongEndThunk())
 
 });
 

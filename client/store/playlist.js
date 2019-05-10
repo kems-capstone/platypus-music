@@ -10,13 +10,19 @@ const inititalState = {
 };
 
 const ADD_SONG = 'ADD_SONG';
-const UPDATE_STATE = 'UPDATE_STATE';
+const ADD_PLAYLIST_SONG = 'ADD_PLAYLIST_SONG';
 const UPDATE_VOTE = 'UPDATE_VOTE';
 
-const updateState = otherProps => {
+const addPlaylistSong = songList => {
   return {
-    type: UPDATE_STATE,
-    otherProps
+    type: ADD_PLAYLIST_SONG,
+    songList
+  };
+};
+const songEnded = songList => {
+  return {
+    type: ADD_PLAYLIST_SONG,
+    songList
   };
 };
 
@@ -34,9 +40,17 @@ const updateVote = newSongData => {
   };
 };
 
-export const listenForDataThunk = () => dispatch => {
-  socket.on('updateRoom', data => {
-    dispatch(updateState(data));
+
+//////SOCKETS
+
+export const listenForAddPlaylistThunk = () => dispatch => {
+  socket.on('songAdded', data => {
+    dispatch(getSong(data));
+  });
+};
+export const listenEndSongThunk = () => dispatch => {
+  socket.on('songEnded', data => {
+    dispatch(addPlaylistSong(data));
   });
 };
 export const listenForVoteThunk = () => dispatch => {
@@ -44,6 +58,15 @@ export const listenForVoteThunk = () => dispatch => {
     dispatch(updateVote(updatedSong));
   });
 };
+
+
+
+
+
+
+
+
+/////////////
 
 export const addSongThunk = (songId, roomId = null) => async dispatch => {
   try {
@@ -86,10 +109,10 @@ export default function(state = inititalState, action) {
         currentSong: action.song,
         songList: [...state.songList, action.song]
       };
-    case UPDATE_STATE:
+    case ADD_PLAYLIST_SONG:
       return {
-        currentSong: action.otherProps.audioUrl,
-        songList: [...state.songList, action.otherProps]
+        currentSong: action.songList.audioUrl,
+        songList: [...state.songList, action.song]
       };
 
     case UPDATE_VOTE:
