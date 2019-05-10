@@ -13,8 +13,12 @@ class JoinRoom extends Component {
   }
   handleSubmit() {
     event.preventDefault();
-    this.props.authenticate(this.props.form.joinRoom.values.joinRoom);
-    this.props.history.push('/room');
+    let key = this.props.form.joinRoom.values.joinRoom
+    key = key.toUpperCase()
+
+
+    this.props.authenticate(key);
+    this.props.history.push('/room')
   }
   render() {
     return (

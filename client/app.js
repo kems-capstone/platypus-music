@@ -8,9 +8,9 @@ const App = () => {
   return (
     <div>
       <Navbar />
-      <Container>
+
         <Routes />
-      </Container>
+
     </div>
   )
 }

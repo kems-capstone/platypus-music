@@ -21,13 +21,7 @@ class Room extends Component {
     // console.log(userId);
     // this.props.getRoomThunk()
   }
-  // static getDerivedStateFromProps(props) {
-  //   if (props.room && props.room.id) {
-  //     return {
-  //       selectedSong: props.playlist.songList[0].audioUrl
-  //     };
-  //   }
-  // }
+
 
   render() {
     return (

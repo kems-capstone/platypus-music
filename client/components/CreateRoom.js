@@ -19,7 +19,7 @@ class CreateRoom extends Component {
   }
   render() {
     return (
-      <div className="form-container">
+      <div id="createRoom-formContainer">
         <h1>Create Room</h1>
         <form
           className="form-popup"
@@ -33,10 +33,10 @@ class CreateRoom extends Component {
             name="roomName"
             placeholder="room name"
           />
-          <h3>Room Code:</h3>
-          <Message>1234</Message>
 
           <button type="submit">Create Room</button>
+          <Message><p id='createRoom-codeExplanation'>Your room code will be displayed in your room</p>
+          <p id='createRoom-codeExplanation'>Give your friends your room code so they can join you!</p></Message>
         </form>
       </div>
     );

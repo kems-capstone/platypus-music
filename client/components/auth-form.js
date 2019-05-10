@@ -145,8 +145,8 @@ const mapDispatchLogin = dispatch => {
     handleSubmit(evt) {
       evt.preventDefault()
       const formName = evt.target.name
-      const email = evt.target.email.value
-      const password = evt.target.password.value
+      const email = evt.target.email.value.toLowerCase()
+      const password = evt.target.password.value.toLowerCase()
       dispatch(auth(email, password, formName))
     }
   }
@@ -156,10 +156,10 @@ const mapDispatchSignup = dispatch => {
     handleSubmit(evt) {
       evt.preventDefault()
       const formName = evt.target.name
-      const email = evt.target.email.value
-      const firstName = evt.target.firstName.value
-      const lastName = evt.target.lastName.value
-      const password = evt.target.password.value
+      const email = evt.target.email.value.toLowerCase()
+      const firstName = evt.target.firstName.value.toLowerCase()
+      const lastName = evt.target.lastName.value.toLowerCase()
+      const password = evt.target.password.value.toLowerCase()
       dispatch(auth(email, password, formName, firstName, lastName))
     }
   }
