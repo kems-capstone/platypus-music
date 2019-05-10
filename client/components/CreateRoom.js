@@ -12,6 +12,7 @@ class CreateRoom extends Component {
   }
   handleSubmit() {
     event.preventDefault();
+    console.log('STARTS HEEEEEEEEEERRRRRRRREEEEEEEEEEEE')
     this.props.addRoomThunk(this.props.form.createRoom.values.roomName, this.props.user);
     this.props.history.push('/room')
   }
