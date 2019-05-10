@@ -45,9 +45,6 @@ export const listenForRoomDataThunk = () => dispatch => {
 export const addRoomThunk = (roomName, user) => {
   return async function(dispatch) {
     const createdRoom = await axios.post('/api/rooms', {name: roomName});
-    // const roomInfo = {room: createdRoom.data, members: [user], host: user};
-    // console.log('*****roomInfo CREATE: ', roomInfo);
-    console.log('IN ADD ROOM THUNK', createdRoom.data);
     dispatch(addRoom(createdRoom.data));
   };
 };
@@ -55,7 +52,7 @@ export const addRoomThunk = (roomName, user) => {
 export const joinRoomThunk = key => async dispatch => {
   const room = await axios.get('/api/rooms/join/' + key);
 
-  // console.log('*****room THUNK RETURN : ', room);
+
   const roomInfo = {
     room: room.data.room,
     members: room.data.members,

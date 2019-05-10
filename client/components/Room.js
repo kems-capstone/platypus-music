@@ -30,14 +30,11 @@ class Room extends Component {
   // }
 
   render() {
-    console.log(
-      'PROPS IN ROOM COMPONENT FOR ROOM FOR ROOM_INFO WITH ROOMS: ',
-      this.props.room.roomInfo
-    );
     return (
       <Container>
         {this.props.room.roomInfo && this.props.room.roomInfo.rooms[0].id ? (
           <div>
+persisting-room-and-playlist
             <div className="roomComponent-roomName">
               {this.props.room.roomInfo.rooms[0].name}
             </div>
@@ -45,6 +42,13 @@ class Room extends Component {
               Room Key:{'  '}
               <span className="roomComponent-roomKey-code">
                 {this.props.room.roomInfo.rooms[0].roomKey}
+
+            <div className="roomComponent-roomName">{this.props.room.name}</div>
+            <div className="roomComponent-roomKey-header">
+              Room Key:{'  '}
+              <span className="roomComponent-roomKey-code">
+                {this.props.room.roomKey}
+
               </span>
             </div>
 

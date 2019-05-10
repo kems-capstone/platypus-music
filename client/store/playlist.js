@@ -27,11 +27,10 @@ const getSong = song => {
   };
 };
 
-const updateVote = (songId, voteValue) => {
+const updateVote = newSongData => {
   return {
     type: UPDATE_VOTE,
-    voteValue,
-    songId
+    newSongData
   };
 };
 
@@ -59,7 +58,10 @@ export const voteThunk = (roomId, songId, voteValue) => async dispatch => {
       `/api/rooms/${roomId}/music/${songId}`,
       voteValue
     );
-    dispatch(updateVote(songId, voteValue));
+
+    let songVote = data.song;
+    songVote.voteCount = data.change[0][0][0].voteCount;
+    dispatch(updateVote(songVote));
   } catch (error) {
     console.error(error.message);
   }
@@ -69,7 +71,6 @@ export default function(state = inititalState, action) {
   switch (action.type) {
     case ADD_SONG:
       action.song.voteCount = 1;
-      console.log('before return vote count', action.song.voteCount);
       return {
         currentSong: action.song,
         songList: [...state.songList, action.song]
@@ -79,28 +80,20 @@ export default function(state = inititalState, action) {
         currentSong: action.otherProps.audioUrl,
         songList: [...state.songList, action.otherProps]
       };
+
     case UPDATE_VOTE:
-      let songList = state.songList.map(song => {
-        if (song.id === action.songId) {
-          if (action.voteValue.upVote === 'upVote') {
-            song.voteCount++;
-            return song;
-          } else {
-            song.voteCount--;
-            return song;
-          }
-        }
-        return song;
-      });
-      let firstSong = songList[0];
-      let notFirstSong = songList.slice(1);
+      let filtered = state.songList.filter(
+        song => song.id !== action.newSongData.id
+      );
+      let newState = [...filtered, action.newSongData];
+      let firstSong = newState[0];
+      let notFirstSong = newState.slice(1);
 
       notFirstSong.sort((a, b) => {
         return a.voteCount > b.voteCount
           ? -1
           : b.voteCount > a.voteCount ? 1 : 0;
       });
-
       return {...state, songList: [firstSong, ...notFirstSong]};
     default:
       return state;
