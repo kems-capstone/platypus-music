@@ -109,8 +109,13 @@ router.get('/current-room', async (req, res, next) => {
         }
       ]
     });
-    console.log(roomInfo);
-    res.json(roomInfo);
+    const roomId = roomInfo.rooms[0].id;
+    const playlistInfo = await Room_Music.findAll({
+      where: {
+        roomId: roomId
+      }
+    });
+    res.json(playlistInfo);
   } catch (error) {
     next(error);
   }
