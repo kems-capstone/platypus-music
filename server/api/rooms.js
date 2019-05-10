@@ -93,9 +93,11 @@ router.get('/join/:id', async (req, res, next) => {
   }
 });
 
-router.get('/current-room', async (req, res, next) => {
+router.get('/current-room/:userId', async (req, res, next) => {
   try {
-    const userId = req.body.userId;
+    const userId = req.params.userId;
+    console.log('THIS IS THE BODY', req.body);
+    console.log('THIS IS THE USERID', userId);
     const roomInfo = await User.findOne({
       where: {
         id: userId

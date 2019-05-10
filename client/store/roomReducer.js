@@ -70,7 +70,8 @@ export const joinRoomThunk = key => async dispatch => {
 
 export const getRoomThunk = userId => {
   return async function(dispatch) {
-    const roomData = await axios.get('/api/rooms/current-room', userId);
+    console.log('THIS IS THE USERID IN THE THUNK', userId);
+    const roomData = await axios.get('/api/rooms/current-room/' + userId);
     dispatch(getRoom(roomData.data));
   };
 };

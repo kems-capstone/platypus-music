@@ -17,6 +17,7 @@ class Room extends Component {
   componentDidMount() {
     const userId = this.props.user.id;
     this.props.getRoomThunk(userId);
+    console.log('THIS IS THE PROPS FOR THE ROOM COMPONENT', this.props);
     // console.log(userId);
     // this.props.getRoomThunk()
   }
@@ -29,24 +30,29 @@ class Room extends Component {
   // }
 
   render() {
-    console.log('PROPS IN ROOM COMPONENT: ', this.props);
+    console.log(
+      'PROPS IN ROOM COMPONENT FOR ROOM FOR ROOM_INFO WITH ROOMS: ',
+      this.props.room.roomInfo
+    );
     return (
       <Container>
-        {!this.props.room.id ? (
-          <JoinRoom history={this.props.history} room={this.props.room} />
-        ) : (
+        {this.props.room.roomInfo && this.props.room.roomInfo.rooms[0].id ? (
           <div>
-            <div className="roomComponent-roomName">{this.props.room.name}</div>
+            <div className="roomComponent-roomName">
+              {this.props.room.roomInfo.rooms[0].name}
+            </div>
             <div className="roomComponent-roomKey-header">
               Room Key:{'  '}
               <span className="roomComponent-roomKey-code">
-                {this.props.room.roomKey}
+                {this.props.room.roomInfo.rooms[0].roomKey}
               </span>
             </div>
 
             <br />
             <Playlist />
           </div>
+        ) : (
+          <JoinRoom history={this.props.history} room={this.props.room} />
         )}
       </Container>
     );
