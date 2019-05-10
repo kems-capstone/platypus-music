@@ -35,7 +35,7 @@ class Playlist extends Component {
       event.preventDefault();
       this.props.addSong(
         this.props.form.search.values.trackSearch,
-        this.props.room.id
+        this.props.room.room.id
       );
     } catch (error) {
       console.error(error.message);
@@ -87,7 +87,7 @@ class Playlist extends Component {
                     <button
                       type="button"
                       onClick={() =>
-                        this.props.updateVote(this.props.room.id, index.id, {
+                        this.props.updateVote(this.props.room.room.id, index.id, {
                           upVote: 'upVote'
                         })
                       }
@@ -97,7 +97,7 @@ class Playlist extends Component {
                     <button
                       type="button"
                       onClick={() =>
-                        this.props.updateVote(this.props.room.id, index.id, {
+                        this.props.updateVote(this.props.room.room.id, index.id, {
                           downVote: 'downVote'
                         })
                       }
