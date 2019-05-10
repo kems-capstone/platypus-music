@@ -30,13 +30,13 @@ router.post('/', async (req, res, next) => {
     isHost: true
   });
   const members = await createdRoom.getUsers();
-  let host = {}
-  members.forEach(member=> {
-    if (member.user_rooms.isHost === true){
-      host = member
+  let host = {};
+  members.forEach(member => {
+    if (member.user_rooms.isHost === true) {
+      host = member;
     }
-  })
-  let roomInfo = {room: createdRoom, host: host, members: members}
+  });
+  let roomInfo = {room: createdRoom, host: host, members: members};
 
   console.log('*****createdRoom in routes: ', roomInfo);
   res.json(roomInfo);
@@ -50,34 +50,31 @@ router.get('/join/:id', async (req, res, next) => {
       where: {
         roomKey: joinCode,
         closed: false
-      },
-
+      }
     });
-console.log('*****room.id: ', room);
+    console.log('*****room.id: ', room);
 
-    let host = {}
+    let host = {};
 
     if (room.id > 0) {
-
-
       const members = await room.getUsers();
 
       //
-      members.forEach(member=> {
-        if (member.user_rooms.isHost === true){
-          host = member
+      members.forEach(member => {
+        if (member.user_rooms.isHost === true) {
+          host = member;
         }
-      })
+      });
 
       //
-      const memberIds = members.map(member => ( member.id))
+      const memberIds = members.map(member => member.id);
       console.log('*****memberIds: ', memberIds);
       if (memberIds.includes(req.user.id)) {
-        console.log('MEMBER EXISTs')
+        console.log('MEMBER EXISTs');
         const roomInfo = {room: room, members: members, host: host};
         res.json(roomInfo);
       } else {
-        console.log('MEMBER DOESNT EXIST')
+        console.log('MEMBER DOESNT EXIST');
         await User_Rooms.create({
           roomId: room.id,
           userId: req.user.id,
@@ -93,6 +90,29 @@ console.log('*****room.id: ', room);
     }
   } catch (error) {
     console.error(error);
+  }
+});
+
+router.get('/current-room', async (req, res, next) => {
+  try {
+    const userId = req.body.userId;
+    const roomInfo = await User.findOne({
+      where: {
+        id: userId
+      },
+      include: [
+        {
+          model: Room,
+          where: {
+            closed: false
+          }
+        }
+      ]
+    });
+    console.log(roomInfo);
+    res.json(roomInfo);
+  } catch (error) {
+    next(error);
   }
 });
 
