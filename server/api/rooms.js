@@ -115,7 +115,7 @@ router.get('/current-room', async (req, res, next) => {
         roomId: roomId
       }
     });
-    res.json(playlistInfo);
+    res.json({playlistInfo: playlistInfo, roomInfo: roomInfo});
   } catch (error) {
     next(error);
   }
