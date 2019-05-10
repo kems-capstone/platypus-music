@@ -34,7 +34,6 @@ class Room extends Component {
       <Container>
         {this.props.room.roomInfo && this.props.room.roomInfo.rooms[0].id ? (
           <div>
-persisting-room-and-playlist
             <div className="roomComponent-roomName">
               {this.props.room.roomInfo.rooms[0].name}
             </div>
@@ -42,18 +41,10 @@ persisting-room-and-playlist
               Room Key:{'  '}
               <span className="roomComponent-roomKey-code">
                 {this.props.room.roomInfo.rooms[0].roomKey}
-
-            <div className="roomComponent-roomName">{this.props.room.name}</div>
-            <div className="roomComponent-roomKey-header">
-              Room Key:{'  '}
-              <span className="roomComponent-roomKey-code">
-                {this.props.room.roomKey}
-
               </span>
+              <br />
+              <Playlist />
             </div>
-
-            <br />
-            <Playlist />
           </div>
         ) : (
           <JoinRoom history={this.props.history} room={this.props.room} />
