@@ -53,7 +53,6 @@ class Playlist extends Component {
   render() {
     console.log('PROPS IN PLAYLIST COMPONENT: ', this.props);
 
-
     return (
       <div>
         {/* <Player
@@ -62,10 +61,10 @@ class Playlist extends Component {
           nextTrack={this.nextTrack}
         /> */}
         {/* PUT THIS BACK IN WHEN WE FIX FETCH METHOD */}
-        {this.props.room.host.id && this.props.room.host.id === this.props.user.id ? (
+        {this.props.room.host.id &&
+        this.props.room.host.id === this.props.user.id ? (
           <Player
             selectedSong={this.state.selectedSong}
-            handleSubmit={this.handleSubmit}
             nextTrack={this.nextTrack}
           />
         ) : (
@@ -87,9 +86,13 @@ class Playlist extends Component {
                     <button
                       type="button"
                       onClick={() =>
-                        this.props.updateVote(this.props.room.room.id, index.id, {
-                          upVote: 'upVote'
-                        })
+                        this.props.updateVote(
+                          this.props.room.room.id,
+                          index.id,
+                          {
+                            upVote: 'upVote'
+                          }
+                        )
                       }
                     >
                       upvote
@@ -97,9 +100,13 @@ class Playlist extends Component {
                     <button
                       type="button"
                       onClick={() =>
-                        this.props.updateVote(this.props.room.room.id, index.id, {
-                          downVote: 'downVote'
-                        })
+                        this.props.updateVote(
+                          this.props.room.room.id,
+                          index.id,
+                          {
+                            downVote: 'downVote'
+                          }
+                        )
                       }
                     >
                       downvote

@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react';
 
 export default class Player extends Component {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
   }
   render() {
     return (
@@ -11,11 +11,10 @@ export default class Player extends Component {
           autoPlay={true}
           onEnded={this.props.nextTrack}
           src={this.props.selectedSong}
-          onClick={this.props.handleSubmit}
           controls
           id="audioPlayer-host"
         />
       </div>
-    )
+    );
   }
 }

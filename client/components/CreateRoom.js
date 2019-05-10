@@ -4,7 +4,6 @@ import {Field, reduxForm} from 'redux-form';
 import {Message} from 'semantic-ui-react';
 import roomReducer, {addRoomThunk} from '../store/roomReducer';
 
-
 class CreateRoom extends Component {
   constructor() {
     super();
@@ -12,12 +11,13 @@ class CreateRoom extends Component {
   }
   handleSubmit() {
     event.preventDefault();
-    console.log('STARTS HEEEEEEEEEERRRRRRRREEEEEEEEEEEE')
-    this.props.addRoomThunk(this.props.form.createRoom.values.roomName, this.props.user);
-    this.props.history.push('/room')
+    this.props.addRoomThunk(
+      this.props.form.createRoom.values.roomName,
+      this.props.user
+    );
+    this.props.history.push('/room');
   }
   render() {
-    console.log('PROPS IN CREATE ROOM ', this.props)
     return (
       <div className="form-container">
         <h1>Create Room</h1>
