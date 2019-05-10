@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {joinRoomThunk} from '../store/roomReducer';
+import {joinRoomThunk, getRoomThunk} from '../store/roomReducer';
 
 import {JoinRoom, Playlist, Player, SearchForm} from '../components';
 import {
@@ -16,8 +16,8 @@ import {
 class Room extends Component {
   componentDidMount() {
     const userId = this.props.user.id;
+    this.props.getRoomThunk(userId);
     // console.log(userId);
-    console.log('All the props for room', this.props);
     // this.props.getRoomThunk()
   }
   // static getDerivedStateFromProps(props) {
@@ -60,6 +60,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return {
     // getRoomThunk: key => dispatch(joinRoomThunk(key))
+    getRoomThunk: userId => dispatch(getRoomThunk(userId))
   };
 };
 

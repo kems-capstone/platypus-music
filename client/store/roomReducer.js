@@ -8,7 +8,6 @@ const GET_ROOM = 'GET_ROOM';
 const JOIN_ROOM = 'JOIN_ROOM';
 const UPDATE_ROOM_STATE = 'UPDATE_STATE';
 
-
 const updateRoomState = otherProps => {
   return {
     type: UPDATE_ROOM_STATE,
@@ -30,6 +29,13 @@ const joinRoom = roomInfo => {
   };
 };
 
+const getRoom = roomData => {
+  return {
+    type: GET_ROOM,
+    payload: roomData
+  };
+};
+
 export const listenForRoomDataThunk = () => dispatch => {
   socket.on('updateRoom', data => {
     dispatch(updateRoomState(data));
@@ -41,7 +47,7 @@ export const addRoomThunk = (roomName, user) => {
     const createdRoom = await axios.post('/api/rooms', {name: roomName});
     // const roomInfo = {room: createdRoom.data, members: [user], host: user};
     // console.log('*****roomInfo CREATE: ', roomInfo);
-    console.log('IN ADD ROOM THUNK',createdRoom.data)
+    console.log('IN ADD ROOM THUNK', createdRoom.data);
     dispatch(addRoom(createdRoom.data));
   };
 };
@@ -50,12 +56,23 @@ export const joinRoomThunk = key => async dispatch => {
   const room = await axios.get('/api/rooms/join/' + key);
 
   // console.log('*****room THUNK RETURN : ', room);
-  const roomInfo = {room: room.data.room, members: room.data.members, host: room.data.host};
+  const roomInfo = {
+    room: room.data.room,
+    members: room.data.members,
+    host: room.data.host
+  };
   if (roomInfo.room) {
     dispatch(joinRoom(roomInfo));
   } else {
     return 'Invalid room key';
   }
+};
+
+export const getRoomThunk = userId => {
+  return async function(dispatch) {
+    const roomData = await axios.get('/api/rooms/current-room', userId);
+    dispatch(getRoom(roomData.data));
+  };
 };
 
 const initialState = {
@@ -66,8 +83,10 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case GET_ROOM:
+      return {...state, room: action.payload};
     case ADD_ROOM:
-      return action.roomObject
+      return action.roomObject;
     case JOIN_ROOM:
       return action.roomInfo;
     default:
