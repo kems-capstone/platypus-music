@@ -51,8 +51,6 @@ class Playlist extends Component {
   }
 
   render() {
-    console.log('PROPS IN PLAYLIST COMPONENT: ', this.props);
-
     return (
       <div>
         {/* <Player

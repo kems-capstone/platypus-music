@@ -3,13 +3,19 @@ import {connect} from 'react-redux';
 import {joinRoomThunk} from '../store/roomReducer';
 
 import {JoinRoom, Playlist, Player, SearchForm} from '../components';
-import {Menu, Icon, Dropdown, Image, Button, Container, Message} from 'semantic-ui-react';
-
+import {
+  Menu,
+  Icon,
+  Dropdown,
+  Image,
+  Button,
+  Container,
+  Message
+} from 'semantic-ui-react';
 
 class Room extends Component {
   componentDidMount() {
     // this.props.getRoomThunk()
-
   }
   // static getDerivedStateFromProps(props) {
   //   if (props.room && props.room.id) {
@@ -19,33 +25,26 @@ class Room extends Component {
   //   }
   // }
 
-
   render() {
-    console.log('PROPS IN ROOM COMPONENT: ', this.props);
     return (
       <Container>
         {!this.props.room.id ? (
           <JoinRoom history={this.props.history} />
         ) : (
           <div>
-            <div className='roomComponent-roomName'>{this.props.room.name}</div>
-            <div className='roomComponent-roomKey-header'>Room Key:{"  "}
-            <span className='roomComponent-roomKey-code'>
-
-            {this.props.room.roomKey}
-            </span>
-
+            <div className="roomComponent-roomName">{this.props.room.name}</div>
+            <div className="roomComponent-roomKey-header">
+              Room Key:{'  '}
+              <span className="roomComponent-roomKey-code">
+                {this.props.room.roomKey}
+              </span>
             </div>
 
-            <br/>
+            <br />
             <Playlist />
-
-
           </div>
         )}
-
       </Container>
-
     );
   }
 }
