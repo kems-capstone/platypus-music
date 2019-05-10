@@ -37,8 +37,8 @@ class Routes extends Component {
             <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/playlist" component={Playlist} />
             <Route exact path="/create-room" component={CreateRoom} />
+            <Route exact path="/joinroom" component={JoinRoom} />
             <Route exact path="/room" component={Room} />
-
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}

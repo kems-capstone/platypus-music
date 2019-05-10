@@ -9,9 +9,9 @@ class CreateRoom extends Component {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  handleSubmit() {
+  async handleSubmit() {
     event.preventDefault();
-    this.props.addRoomThunk(
+    await this.props.addRoomThunk(
       this.props.form.createRoom.values.roomName,
       this.props.user
     );
@@ -35,8 +35,14 @@ class CreateRoom extends Component {
           />
 
           <button type="submit">Create Room</button>
-          <Message><p id='createRoom-codeExplanation'>Your room code will be displayed in your room</p>
-          <p id='createRoom-codeExplanation'>Give your friends your room code so they can join you!</p></Message>
+          <Message>
+            <p id="createRoom-codeExplanation">
+              Your room code will be displayed in your room
+            </p>
+            <p id="createRoom-codeExplanation">
+              Give your friends your room code so they can join you!
+            </p>
+          </Message>
         </form>
       </div>
     );
