@@ -1,11 +1,6 @@
 const router = require('express').Router();
 const {Room, Music, Room_Music, User_Rooms, User} = require('../db/models');
 
-// router.get('/', async (req, res, next) => {
-//   const rooms = await Room.findAll({});
-//   res.json(rooms);
-// });
-
 router.post('/', async (req, res, next) => {
   function generateCode() {
     let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
@@ -30,15 +25,14 @@ router.post('/', async (req, res, next) => {
     isHost: true
   });
   const members = await createdRoom.getUsers();
-  let host = {}
-  members.forEach(member=> {
-    if (member.user_rooms.isHost === true){
-      host = member
+  let host = {};
+  members.forEach(member => {
+    if (member.user_rooms.isHost === true) {
+      host = member;
     }
-  })
-  let roomInfo = {room: createdRoom, host: host, members: members}
+  });
+  let roomInfo = {room: createdRoom, host: host, members: members};
 
-  console.log('*****createdRoom in routes: ', roomInfo);
   res.json(roomInfo);
 });
 
@@ -50,34 +44,28 @@ router.get('/join/:id', async (req, res, next) => {
       where: {
         roomKey: joinCode,
         closed: false
-      },
-
+      }
     });
-console.log('*****room.id: ', room);
 
-    let host = {}
+
+    let host = {};
 
     if (room.id > 0) {
-
-
       const members = await room.getUsers();
 
       //
-      members.forEach(member=> {
-        if (member.user_rooms.isHost === true){
-          host = member
+      members.forEach(member => {
+        if (member.user_rooms.isHost === true) {
+          host = member;
         }
-      })
+      });
 
       //
-      const memberIds = members.map(member => ( member.id))
-      console.log('*****memberIds: ', memberIds);
+      const memberIds = members.map(member => member.id);
       if (memberIds.includes(req.user.id)) {
-        console.log('MEMBER EXISTs')
         const roomInfo = {room: room, members: members, host: host};
         res.json(roomInfo);
       } else {
-        console.log('MEMBER DOESNT EXIST')
         await User_Rooms.create({
           roomId: room.id,
           userId: req.user.id,
@@ -93,6 +81,36 @@ console.log('*****room.id: ', room);
     }
   } catch (error) {
     console.error(error);
+  }
+});
+
+router.get('/current-room/:userId', async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+    console.log('THIS IS THE BODY', req.body);
+    console.log('THIS IS THE USERID', userId);
+    const roomInfo = await User.findOne({
+      where: {
+        id: userId
+      },
+      include: [
+        {
+          model: Room,
+          where: {
+            closed: false
+          }
+        }
+      ]
+    });
+    const roomId = roomInfo.rooms[0].id;
+    const playlistInfo = await Room_Music.findAll({
+      where: {
+        roomId: roomId
+      }
+    });
+    res.json({playlistInfo: playlistInfo, roomInfo: roomInfo});
+  } catch (error) {
+    next(error);
   }
 });
 
@@ -126,27 +144,28 @@ router.put('/close', async (req, res, next) => {
 
 router.put('/:roomId/music/:musicId', async (req, res, next) => {
   try {
-    const room = await Room.findByPk(req.params.roomId);
-    const song = await Music.findByPk(req.params.musicId);
-    console.log('body', req.body);
     if (req.body.upVote === 'upVote') {
-      let increment = await Room_Music.increment('voteCount', {
+      let change = await Room_Music.increment('voteCount', {
         by: 1,
         where: {
-          roomId: room.id,
-          musicId: song.id
-        }
+          roomId: req.params.roomId,
+          musicId: req.params.musicId
+        },
+        include: [{model: Music}]
       });
-      res.send(increment);
+      const song = await Music.findByPk(req.params.musicId);
+      res.send({change, song});
     } else {
-      let decrement = await Room_Music.decrement('voteCount', {
+      let change = await Room_Music.decrement('voteCount', {
         by: 1,
         where: {
-          roomId: room.id,
-          musicId: song.id
-        }
+          roomId: req.params.roomId,
+          musicId: req.params.musicId
+        },
+        include: [{model: Music}]
       });
-      res.send(decrement);
+      const song = await Music.findByPk(req.params.musicId);
+      res.send({change, song});
     }
   } catch (error) {
     next(error);

@@ -58,12 +58,16 @@ h1 {
   position: sticky;
 }
 
-.nav-title-text{
+.nav-title-text {
   font-weight: 900px;
-  color:  white;
+  color: white;
   font-size: 28px;
   text-decoration: underline;
+}
 
+.form-popup,
+.form-input {
+  margin-top: 50px;
 }
 
 /* CREATE ROOM COMPONENT */

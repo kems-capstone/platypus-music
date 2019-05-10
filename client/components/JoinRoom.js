@@ -21,7 +21,6 @@ class JoinRoom extends Component {
     this.props.history.push('/room')
   }
   render() {
-    console.log('PROPS JOIN ROOM COMP ', this.props);
     return (
       <div>
         <form
