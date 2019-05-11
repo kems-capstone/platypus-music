@@ -52,7 +52,6 @@ export const addRoomThunk = (roomName, user) => {
 export const joinRoomThunk = key => async dispatch => {
   const room = await axios.get('/api/rooms/join/' + key);
 
-
   const roomInfo = {
     room: room.data.room,
     members: room.data.members,
@@ -61,13 +60,12 @@ export const joinRoomThunk = key => async dispatch => {
   if (roomInfo.room) {
     dispatch(joinRoom(roomInfo));
   } else {
-    return  "INVALID";
+    return 'INVALID';
   }
 };
 
 export const getRoomThunk = userId => {
   return async function(dispatch) {
-    console.log('THIS IS THE USERID IN THE THUNK', userId);
     const roomData = await axios.get('/api/rooms/current-room/' + userId);
     dispatch(getRoom(roomData.data));
   };

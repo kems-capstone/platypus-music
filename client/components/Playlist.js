@@ -37,7 +37,7 @@ class Playlist extends Component {
   handleSubmit(event) {
     try {
       event.preventDefault();
-      console.log('peops in playlist', this.props);
+
       this.props.addSong(
         this.props.form.search.values.trackSearch,
         this.props.room.room.roomInfo.rooms[0].id
@@ -50,8 +50,9 @@ class Playlist extends Component {
   nextTrack() {
     if (this.props.playlist.songList.length >= 1) {
 
-      let newPlaylist = this.props.playlist.songList.slice(1)
-      socket.emit('endedSong', newPlaylist);
+
+      socket.emit('endedSong', this.props.playlist.songList);
+     console.log('***** socket endedSong fired on PlayC  id = ',  socket.id);
 
       this.setState({selectedSong: this.props.playlist.songList[0].audioUrl});
     }

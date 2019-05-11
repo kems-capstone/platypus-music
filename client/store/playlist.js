@@ -20,6 +20,7 @@ const addPlaylistSong = songList => {
   };
 };
 const removePlaylistSong= songList => {
+  console.log('*****removePlaylistSong action dispatcher fired  songlist =  ', songList);
   return {
     type: REMOVE_PLAYLIST_SONG,
     songList
@@ -50,6 +51,8 @@ export const listenForAddPlaylistThunk = () => dispatch => {
 };
 export const listenForEndSongThunk = () => dispatch => {
   socket.on('songEnded', data => {
+    console.log('Listener in store fired !!!!!!!!!!', data)
+    console.log('Socket id in store = ', socket.id)
     dispatch(removePlaylistSong(data));
   });
 };
@@ -86,15 +89,9 @@ export const voteThunk = (roomId, songId, voteValue) => async dispatch => {
       `/api/rooms/${roomId}/music/${songId}`,
       voteValue
     );
-
-
     let songVote = data.song;
     songVote.voteCount = data.change[0][0][0].voteCount;
-
-
     socket.emit('songVoted', songVote);
-
-
     dispatch(updateVote(songVote));
   } catch (error) {
     console.error(error.message);
@@ -109,14 +106,24 @@ export default function(state = inititalState, action) {
         currentSong: action.song,
         songList: [...state.songList, action.song]
       };
+
+
+
+
     case REMOVE_PLAYLIST_SONG:
+      console.log('in reducer action', action)
       let newSonglist = state.songList.slice(1)
-      console.log("ACTIONNNNN",  action)
+
       console.log("newSongList", newSonglist)
       return {
         currentSong: newSonglist,
         songList: newSonglist
       };
+
+
+
+
+
 
     case UPDATE_VOTE:
       let filtered = state.songList.filter(

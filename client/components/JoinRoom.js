@@ -14,9 +14,7 @@ class JoinRoom extends Component {
   async handleSubmit() {
     event.preventDefault();
     let key = this.props.form.joinRoom.values.joinRoom;
-    console.log('props in join room component', this.props);
 
-    console.log('keyyyy', key);
     key = key.toUpperCase();
 
     await this.props.authenticate(key);

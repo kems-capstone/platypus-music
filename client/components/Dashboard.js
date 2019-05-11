@@ -5,7 +5,7 @@ import {getRoomThunk} from '../store';
 import {connect} from 'react-redux';
 
 const Dashboard = props => {
-  console.log('props in dashboard', props);
+
   return (
     <div>
       <h1>Welcome back user</h1>
