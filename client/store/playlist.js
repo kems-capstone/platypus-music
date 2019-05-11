@@ -27,7 +27,7 @@ const removePlaylistSong= songList => {
   };
 };
 
-const getSong = song => {
+const addSong = song => {
   return {
     type: ADD_SONG,
     song
@@ -46,7 +46,7 @@ const updateVote = newSongData => {
 
 export const listenForAddPlaylistThunk = () => dispatch => {
   socket.on('songAdded', data => {
-    dispatch(getSong(data));
+    dispatch(addSong(data));
   });
 };
 export const listenForEndSongThunk = () => dispatch => {
@@ -76,8 +76,6 @@ export const addSongThunk = (songId, roomId = null) => async dispatch => {
     let {data} = await axios.get('/api/music/' + songId);
     await axios.post(`/api/rooms/${roomId}/music/${songId}`);
     socket.emit('addedSong', data);
-
-    dispatch(getSong(data));
   } catch (error) {
     console.error(error.message);
   }
@@ -102,6 +100,7 @@ export default function(state = inititalState, action) {
   switch (action.type) {
     case ADD_SONG:
       action.song.voteCount = 1;
+      console.log('*****action: ', action);
       return {
         currentSong: action.song,
         songList: [...state.songList, action.song]

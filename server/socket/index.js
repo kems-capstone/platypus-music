@@ -9,7 +9,7 @@ module.exports = io => {
     );
 
     const addSongToPlaylist = songList => {
-      socket.broadcast.emit('songAdded', songList);
+      io.emit('songAdded', songList);
     };
     const removeSongFromPlaylist = songList => {
       console.log('*****songList function on server fired: ', songList);
