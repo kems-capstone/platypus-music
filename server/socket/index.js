@@ -9,6 +9,8 @@ module.exports = io => {
     );
 
     const addSongToPlaylist = songList => {
+      console.log('*****songList function on server fired: ', songList);
+      console.log('*****socket id on server in remove song from playlist: ', socket.id);
       io.emit('songAdded', songList);
     };
     const removeSongFromPlaylist = songList => {

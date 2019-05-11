@@ -46,6 +46,8 @@ const updateVote = newSongData => {
 
 export const listenForAddPlaylistThunk = () => dispatch => {
   socket.on('songAdded', data => {
+    console.log('Listener in store fired !!!!!!!!!!', data)
+    console.log('Socket id in store = ', socket.id)
     dispatch(addSong(data));
   });
 };
@@ -76,6 +78,7 @@ export const addSongThunk = (songId, roomId = null) => async dispatch => {
     let {data} = await axios.get('/api/music/' + songId);
     await axios.post(`/api/rooms/${roomId}/music/${songId}`);
     socket.emit('addedSong', data);
+    console.log('socket add thunk emitted socket id ', socket.id)
   } catch (error) {
     console.error(error.message);
   }
