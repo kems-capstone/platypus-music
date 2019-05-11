@@ -85,9 +85,16 @@ h1 {
 
 
 /* ROOM COMPONENT */
-
+.roomComponent-roomName{
+  font-size: 2em;
+  font-weight: bolder;
+  text-align: center;
+  margin: 25px 0px;
+}
 #roomComponent-roomKey-code{
   font-family: 'Bree Serif', serif;
-
+  font-size: 1.25em;
   letter-spacing: 0.2em;
+  padding: 7px;
+  text-align: center
 }

@@ -30,7 +30,7 @@ class Room extends Component {
             </div>
             <div className="roomComponent-roomKey-header">
               Room Key:{'  '}
-              <span className="roomComponent-roomKey-code">
+              <span id="roomComponent-roomKey-code">
                 {this.props.room.roomInfo.rooms[0].roomKey}
               </span>
               <br />
