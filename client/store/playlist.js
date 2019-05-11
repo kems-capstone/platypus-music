@@ -10,7 +10,7 @@ const inititalState = {
 };
 
 const ADD_SONG = 'ADD_SONG';
-const ADD_PLAYLIST_SONG = 'ADD_PLAYLIST_SONG';
+const REMOVE_PLAYLIST_SONG = 'REMOVE_PLAYLIST_SONG';
 const UPDATE_VOTE = 'UPDATE_VOTE';
 
 const addPlaylistSong = songList => {
@@ -19,9 +19,9 @@ const addPlaylistSong = songList => {
     songList
   };
 };
-const songEnded = songList => {
+const removePlaylistSong= songList => {
   return {
-    type: ADD_PLAYLIST_SONG,
+    type: REMOVE_PLAYLIST_SONG,
     songList
   };
 };
@@ -48,9 +48,9 @@ export const listenForAddPlaylistThunk = () => dispatch => {
     dispatch(getSong(data));
   });
 };
-export const listenEndSongThunk = () => dispatch => {
+export const listenForEndSongThunk = () => dispatch => {
   socket.on('songEnded', data => {
-    dispatch(addPlaylistSong(data));
+    dispatch(removePlaylistSong(data));
   });
 };
 export const listenForVoteThunk = () => dispatch => {
@@ -109,10 +109,13 @@ export default function(state = inititalState, action) {
         currentSong: action.song,
         songList: [...state.songList, action.song]
       };
-    case ADD_PLAYLIST_SONG:
+    case REMOVE_PLAYLIST_SONG:
+      let newSonglist = state.songList.slice(1)
+      console.log("ACTIONNNNN",  action)
+      console.log("newSongList", newSonglist)
       return {
-        currentSong: action.songList.audioUrl,
-        songList: [...state.songList, action.song]
+        currentSong: newSonglist,
+        songList: newSonglist
       };
 
     case UPDATE_VOTE:

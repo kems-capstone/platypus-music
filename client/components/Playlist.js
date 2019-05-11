@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Player from './Player';
 import {connect} from 'react-redux';
-import {addSongThunk, listenForAddPlaylistThunk, voteThunk, listenForVoteThunk, listenforSongEndThunk} from '../store/playlist';
+import {addSongThunk, listenForAddPlaylistThunk, voteThunk, listenForVoteThunk, listenForEndSongThunk} from '../store/playlist';
 import SearchForm from './SearchForm';
 import io from 'socket.io-client';
 
@@ -21,7 +21,7 @@ class Playlist extends Component {
   componentDidMount() {
     this.props.addedToPlaylist();
     this.props.listenForVotes()
-    // this.props.listenForSongEnd()
+    this.props.listenForSongEnd()
   }
 
   static getDerivedStateFromProps(props) {
@@ -49,9 +49,9 @@ class Playlist extends Component {
 
   nextTrack() {
     if (this.props.playlist.songList.length >= 1) {
-      // this.props.playlist.songList.shift();
+
       let newPlaylist = this.props.playlist.songList.slice(1)
-      socket.emit('songEnded', newPlaylist);
+      socket.emit('endedSong', newPlaylist);
 
       this.setState({selectedSong: this.props.playlist.songList[0].audioUrl});
     }
@@ -60,12 +60,6 @@ class Playlist extends Component {
   render() {
     return (
       <div>
-        {/* <Player
-          selectedSong={this.state.selectedSong}
-          handleSubmit={this.handleSubmit}
-          nextTrack={this.nextTrack}
-        /> */}
-        {/* PUT THIS BACK IN WHEN WE FIX FETCH METHOD */}
         {this.props.room.host.id &&
         this.props.room.host.id === this.props.user.id ? (
           <Player
@@ -140,7 +134,7 @@ const mapDispatchToProps = dispatch => ({
   updateVote: (room, song, voteValue) =>
     dispatch(voteThunk(room, song, voteValue)),
   listenForVotes: ()=>dispatch(listenForVoteThunk()),
-  // listenForSongEnd: () => dispatch(listenforSongEndThunk())
+  listenForSongEnd: () => dispatch(listenForEndSongThunk())
 
 });
 

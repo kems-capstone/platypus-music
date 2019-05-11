@@ -1,3 +1,7 @@
+
+
+
+
 module.exports = io => {
   io.on('connection', socket => {
     console.log(
@@ -15,9 +19,13 @@ module.exports = io => {
       socket.broadcast.emit('voteUpdated', updatedSong)
     }
 
+
+
+
+
+
     socket.on('addedSong', addSongToPlaylist);
     socket.on('endedSong', removeSongFromPlaylist)
-
     socket.on('songVoted', updateVotes)
 
     socket.on('disconnect', () => {
