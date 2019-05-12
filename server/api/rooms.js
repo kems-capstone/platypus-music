@@ -95,16 +95,20 @@ router.get('/current-room/:userId', async (req, res, next) => {
           model: Room,
           where: {
             closed: false
-          }
+          },
+          include: [{model: Music}]
         }
       ]
     });
+
     const roomId = roomInfo.rooms[0].id;
     const playlistInfo = await Room_Music.findAll({
       where: {
-        roomId: roomId
-      }
+        roomId: roomId,
+        hasPlayed: false
+      },
     });
+
     res.json({playlistInfo: playlistInfo, roomInfo: roomInfo});
   } catch (error) {
     next(error);

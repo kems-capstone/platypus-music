@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Player from './Player';
 import {connect} from 'react-redux';
-import {addSongThunk, listenForAddPlaylistThunk, voteThunk, listenForVoteThunk, listenForEndSongThunk} from '../store/playlist';
+import {addSongThunk, listenForAddPlaylistThunk, voteThunk, listenForVoteThunk, listenForEndSongThunk, listenForUpdatePlaylistThunk} from '../store/playlist';
 import SearchForm from './SearchForm';
 import io from 'socket.io-client';
 
@@ -22,6 +22,7 @@ class Playlist extends Component {
     this.props.addedToPlaylist();
     this.props.listenForVotes()
     this.props.listenForSongEnd()
+    this.props.fetchRoomPlaylist()
   }
 
   static getDerivedStateFromProps(props) {
@@ -135,7 +136,8 @@ const mapDispatchToProps = dispatch => ({
   updateVote: (room, song, voteValue) =>
     dispatch(voteThunk(room, song, voteValue)),
   listenForVotes: ()=>dispatch(listenForVoteThunk()),
-  listenForSongEnd: () => dispatch(listenForEndSongThunk())
+  listenForSongEnd: () => dispatch(listenForEndSongThunk()),
+  fetchRoomPlaylist: () => dispatch(listenForUpdatePlaylistThunk()),
 
 });
 

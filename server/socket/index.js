@@ -19,10 +19,16 @@ module.exports = io => {
     const updateVotes = (updatedSong) => {
       socket.broadcast.emit('voteUpdated', updatedSong)
     }
+    const updatePlaylist = (roomPlaylist) => {
+
+      console.log('*****: GOT PLAYLIST ON SERVER ', roomPlaylist);
+      socket.broadcast.emit('getRoomGotPlaylist', roomPlaylist)
+    }
 
     socket.on('addedSong', addSongToPlaylist);
     socket.on('endedSong', removeSongFromPlaylist)
     socket.on('songVoted', updateVotes)
+    socket.on('getRoomGotPlaylist', updatePlaylist)
 
     socket.on('disconnect', () => {
       console.log(`Connection ${socket.id} has left the building`);

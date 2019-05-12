@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {joinRoomThunk, getRoomThunk} from '../store/roomReducer';
+import {joinRoomThunk, getRoomThunk} from '../store';
 
 import {JoinRoom, Playlist, Player, SearchForm} from '../components';
 import {
@@ -17,7 +17,10 @@ class Room extends Component {
   componentDidMount() {
     const userId = this.props.user.id;
 
+
     this.props.getRoomThunk(userId);
+    console.log('*****this.props in CDM ROom: ', this.props);
+
   }
 
   render() {
@@ -52,7 +55,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return {
     // getRoomThunk: key => dispatch(joinRoomThunk(key))
-    getRoomThunk: userId => dispatch(getRoomThunk(userId))
+    getRoomThunk: userId => dispatch(getRoomThunk(userId)),
+
   };
 };
 
