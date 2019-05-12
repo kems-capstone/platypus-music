@@ -52,30 +52,37 @@ const updateVote = newSongData => {
 
 export const listenForAddPlaylistThunk = () => dispatch => {
   socket.on('songAdded', data => {
-    console.log('*****playlist 1')
     dispatch(addSong(data));
   });
 };
 export const listenForEndSongThunk = () => dispatch => {
   socket.on('songEnded', data => {
-    console.log('*****playlist 2')
     dispatch(removePlaylistSong(data));
   });
 };
 export const listenForVoteThunk = () => dispatch => {
   socket.on('voteUpdated', updatedSong => {
-    console.log('*****playlist 3')
     dispatch(updateVote(updatedSong));
   });
 };
 export const listenForUpdatePlaylistThunk = () => dispatch => {
-  console.log('LISTEN FOR UPDATE PLAYLIST THUNK');
-  socket.on('getRoomGotPlaylist', playlist =>{
-    console.log('get room goot playlist in Playlist.js', playlist);
+  socket.on('getRoomGotPlaylist', playlist => {
+    let unplayedMusic = playlist.playlistInfo; // has votes
+    let allMusic = playlist.roomInfo.rooms[0].music; //Has info
 
+    let list = [];
+    for (let i = 0; i < unplayedMusic.length; i++) {
+      allMusic.forEach(index => {
+        if (index.id === unplayedMusic[i].musicId) {
+          let item = index;
+          item.voteCount = unplayedMusic[i].voteCount;
+          list.push(item);
+        }
+      });
+    }
 
-    dispatch(updatePlaylist(playlist));
-  })
+    dispatch(updatePlaylist(list));
+  });
 };
 
 /////////////
@@ -83,10 +90,10 @@ export const listenForUpdatePlaylistThunk = () => dispatch => {
 export const addSongThunk = (songId, roomId = null) => async dispatch => {
   try {
     let {data} = await axios.get('/api/music/' + songId);
-    await axios.post(`/api/rooms/${roomId}/music/${songId}`);
-    socket.emit('addedSong', data);
 
-    console.log('socket add thunk emitted socket id ', socket.id);
+    await axios.post(`/api/rooms/${roomId}/music/${songId}`);
+
+    socket.emit('addedSong', data);
   } catch (error) {
     console.error(error.message);
   }
@@ -108,7 +115,6 @@ export const voteThunk = (roomId, songId, voteValue) => async dispatch => {
 };
 
 export default function(state = inititalState, action) {
-  console.log('*****action: ', action);
   switch (action.type) {
     case ADD_SONG:
       action.song.voteCount = 1;

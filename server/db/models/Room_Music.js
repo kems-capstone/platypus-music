@@ -11,6 +11,10 @@ const Room_Music = db.define('room_music', {
   voteCount: {
     type: Sequelize.INTEGER,
     defaultValue: 1
+  },
+  hasPlayed: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
   }
 });
 

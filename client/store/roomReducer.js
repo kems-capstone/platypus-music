@@ -69,10 +69,10 @@ export const joinRoomThunk = key => async dispatch => {
 export const getRoomThunk = userId => {
   return async function(dispatch) {
     const roomData = await axios.get('/api/rooms/current-room/' + userId);
-    socket.emit('getRoomGotPlaylist', roomData.data.roomInfo.rooms[0].music)
+    socket.emit('getRoomGotPlaylist', roomData.data)
 
     dispatch(getRoom(roomData.data));
-    console.log('000000000000XXXXXXXXX',roomData.data.roomInfo.rooms[0].music)
+    console.log('000000000000XXXXXXXXX',roomData.data)
   };
 };
 
