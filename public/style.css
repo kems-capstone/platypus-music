@@ -26,7 +26,6 @@ h1 {
 
 :root {
   font-size: 12px;
-
 }
 
 .homepage {
@@ -72,29 +71,31 @@ h1 {
 
 /* CREATE ROOM COMPONENT */
 
-#createRoom-formContainer{
+#createRoom-formContainer {
   padding: 10px;
   display: flex;
 
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  background-color: orange
-
+  background-color: orange;
 }
 
-
 /* ROOM COMPONENT */
-.roomComponent-roomName{
+.roomComponent-roomName {
   font-size: 2em;
   font-weight: bolder;
   text-align: center;
   margin: 25px 0px;
 }
-#roomComponent-roomKey-code{
+#roomComponent-roomKey-code {
   font-family: 'Bree Serif', serif;
   font-size: 1.25em;
   letter-spacing: 0.2em;
   padding: 7px;
-  text-align: center
+  text-align: center;
+}
+#close {
+  background-color: rgba(255, 0, 0, 0.637);
+  border-radius: 10%;
 }

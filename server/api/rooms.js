@@ -106,7 +106,7 @@ router.get('/current-room/:userId', async (req, res, next) => {
       where: {
         roomId: roomId,
         hasPlayed: false
-      },
+      }
     });
 
     res.json({playlistInfo: playlistInfo, roomInfo: roomInfo});
@@ -168,6 +168,16 @@ router.put('/:roomId/music/:musicId', async (req, res, next) => {
       const song = await Music.findByPk(req.params.musicId);
       res.send({change, song});
     }
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put('/:roomId', async (req, res, next) => {
+  try {
+    const room = await Room.findByPk(req.params.roomId);
+    room.update({closed: true});
+    res.sendStatus(203);
   } catch (error) {
     next(error);
   }
