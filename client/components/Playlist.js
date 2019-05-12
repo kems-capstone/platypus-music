@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Player from './Player';
 import {connect} from 'react-redux';
-import {addSongThunk, listenForDataThunk, voteThunk, listenForVoteThunk} from '../store/playlist';
+import {addSongThunk, listenForAddPlaylistThunk, voteThunk, listenForVoteThunk, listenForEndSongThunk} from '../store/playlist';
 import SearchForm from './SearchForm';
 import io from 'socket.io-client';
 
@@ -19,8 +19,9 @@ class Playlist extends Component {
   }
 
   componentDidMount() {
-    this.props.updateStore();
+    this.props.addedToPlaylist();
     this.props.listenForVotes()
+    this.props.listenForSongEnd()
   }
 
   static getDerivedStateFromProps(props) {
@@ -28,13 +29,15 @@ class Playlist extends Component {
       return {
         selectedSong: props.playlist.songList[0].audioUrl
       };
+    } else {
+      return ''
     }
   }
 
   handleSubmit(event) {
     try {
       event.preventDefault();
-      console.log('peops in playlist', this.props);
+
       this.props.addSong(
         this.props.form.search.values.trackSearch,
         this.props.room.room.roomInfo.rooms[0].id
@@ -46,8 +49,11 @@ class Playlist extends Component {
 
   nextTrack() {
     if (this.props.playlist.songList.length >= 1) {
-      this.props.playlist.songList.shift();
-      socket.emit('updateRoom', this.props.playlist.songList);
+
+
+      socket.emit('endedSong', this.props.playlist.songList);
+     console.log('***** socket endedSong fired on PlayC  id = ',  socket.id);
+
       this.setState({selectedSong: this.props.playlist.songList[0].audioUrl});
     }
   }
@@ -55,12 +61,6 @@ class Playlist extends Component {
   render() {
     return (
       <div>
-        {/* <Player
-          selectedSong={this.state.selectedSong}
-          handleSubmit={this.handleSubmit}
-          nextTrack={this.nextTrack}
-        /> */}
-        {/* PUT THIS BACK IN WHEN WE FIX FETCH METHOD */}
         {this.props.room.host.id &&
         this.props.room.host.id === this.props.user.id ? (
           <Player
@@ -131,10 +131,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   addSong: (song, room) => dispatch(addSongThunk(song, room)),
-  updateStore: () => dispatch(listenForDataThunk()),
+  addedToPlaylist: () => dispatch(listenForAddPlaylistThunk()),
   updateVote: (room, song, voteValue) =>
     dispatch(voteThunk(room, song, voteValue)),
-  listenForVotes: ()=>dispatch(listenForVoteThunk())
+  listenForVotes: ()=>dispatch(listenForVoteThunk()),
+  listenForSongEnd: () => dispatch(listenForEndSongThunk())
 
 });
 

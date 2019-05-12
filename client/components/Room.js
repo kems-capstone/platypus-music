@@ -16,19 +16,11 @@ import {
 class Room extends Component {
   componentDidMount() {
     const userId = this.props.user.id;
-    console.log(
-      'these are the props in room component in component did mount',
-      this.props
-    );
 
     this.props.getRoomThunk(userId);
-
-    // console.log(userId);
-    // this.props.getRoomThunk();
   }
 
   render() {
-    console.log('THIS IS THE PROPS FOR THE ROOM COMPONENT', this.props);
     return (
       <Container>
         {this.props.room.roomInfo && this.props.room.roomInfo.rooms[0].id ? (
@@ -38,7 +30,7 @@ class Room extends Component {
             </div>
             <div className="roomComponent-roomKey-header">
               Room Key:{'  '}
-              <span className="roomComponent-roomKey-code">
+              <span id="roomComponent-roomKey-code">
                 {this.props.room.roomInfo.rooms[0].roomKey}
               </span>
               <br />

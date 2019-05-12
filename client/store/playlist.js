@@ -10,17 +10,24 @@ const inititalState = {
 };
 
 const ADD_SONG = 'ADD_SONG';
-const UPDATE_STATE = 'UPDATE_STATE';
+const REMOVE_PLAYLIST_SONG = 'REMOVE_PLAYLIST_SONG';
 const UPDATE_VOTE = 'UPDATE_VOTE';
 
-const updateState = otherProps => {
+const addPlaylistSong = songList => {
   return {
-    type: UPDATE_STATE,
-    otherProps
+    type: ADD_PLAYLIST_SONG,
+    songList
+  };
+};
+const removePlaylistSong= songList => {
+  console.log('*****removePlaylistSong action dispatcher fired  songlist =  ', songList);
+  return {
+    type: REMOVE_PLAYLIST_SONG,
+    songList
   };
 };
 
-const getSong = song => {
+const addSong = song => {
   return {
     type: ADD_SONG,
     song
@@ -34,9 +41,21 @@ const updateVote = newSongData => {
   };
 };
 
-export const listenForDataThunk = () => dispatch => {
-  socket.on('updateRoom', data => {
-    dispatch(updateState(data));
+
+//////SOCKETS
+
+export const listenForAddPlaylistThunk = () => dispatch => {
+  socket.on('songAdded', data => {
+    console.log('Listener in store fired !!!!!!!!!!', data)
+    console.log('Socket id in store = ', socket.id)
+    dispatch(addSong(data));
+  });
+};
+export const listenForEndSongThunk = () => dispatch => {
+  socket.on('songEnded', data => {
+    console.log('Listener in store fired !!!!!!!!!!', data)
+    console.log('Socket id in store = ', socket.id)
+    dispatch(removePlaylistSong(data));
   });
 };
 export const listenForVoteThunk = () => dispatch => {
@@ -45,13 +64,21 @@ export const listenForVoteThunk = () => dispatch => {
   });
 };
 
+
+
+
+
+
+
+
+/////////////
+
 export const addSongThunk = (songId, roomId = null) => async dispatch => {
   try {
     let {data} = await axios.get('/api/music/' + songId);
     await axios.post(`/api/rooms/${roomId}/music/${songId}`);
     socket.emit('addedSong', data);
-
-    dispatch(getSong(data));
+    console.log('socket add thunk emitted socket id ', socket.id)
   } catch (error) {
     console.error(error.message);
   }
@@ -63,15 +90,9 @@ export const voteThunk = (roomId, songId, voteValue) => async dispatch => {
       `/api/rooms/${roomId}/music/${songId}`,
       voteValue
     );
-
-
     let songVote = data.song;
     songVote.voteCount = data.change[0][0][0].voteCount;
-
-
     socket.emit('songVoted', songVote);
-
-
     dispatch(updateVote(songVote));
   } catch (error) {
     console.error(error.message);
@@ -82,15 +103,29 @@ export default function(state = inititalState, action) {
   switch (action.type) {
     case ADD_SONG:
       action.song.voteCount = 1;
+      console.log('*****action: ', action);
       return {
         currentSong: action.song,
         songList: [...state.songList, action.song]
       };
-    case UPDATE_STATE:
+
+
+
+
+    case REMOVE_PLAYLIST_SONG:
+      console.log('in reducer action', action)
+      let newSonglist = state.songList.slice(1)
+
+      console.log("newSongList", newSonglist)
       return {
-        currentSong: action.otherProps.audioUrl,
-        songList: [...state.songList, action.otherProps]
+        currentSong: newSonglist,
+        songList: newSonglist
       };
+
+
+
+
+
 
     case UPDATE_VOTE:
       let filtered = state.songList.filter(
