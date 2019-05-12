@@ -1,5 +1,6 @@
 import axios from 'axios';
 import io from 'socket.io-client';
+import listenForUpdatePlaylistThunk from './playlist'
 
 const socket = io(window.location.origin);
 
@@ -46,6 +47,7 @@ export const addRoomThunk = (roomName, user) => {
   return async function(dispatch) {
     const createdRoom = await axios.post('/api/rooms', {name: roomName});
     dispatch(addRoom(createdRoom.data));
+
   };
 };
 
@@ -67,9 +69,10 @@ export const joinRoomThunk = key => async dispatch => {
 export const getRoomThunk = userId => {
   return async function(dispatch) {
     const roomData = await axios.get('/api/rooms/current-room/' + userId);
-
+    socket.emit('getRoomGotPlaylist', roomData.data.roomInfo.rooms[0].music)
 
     dispatch(getRoom(roomData.data));
+    console.log('000000000000XXXXXXXXX',roomData.data.roomInfo.rooms[0].music)
   };
 };
 
