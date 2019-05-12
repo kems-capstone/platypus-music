@@ -67,7 +67,6 @@ class Playlist extends Component {
 
   render() {
     const roomId = this.props.room.room.roomInfo.rooms[0].id;
-    console.log('roomid', roomId);
     return (
       <div>
         {this.props.room.host.id &&
