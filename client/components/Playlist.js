@@ -1,9 +1,17 @@
 import React, {Component} from 'react';
 import Player from './Player';
 import {connect} from 'react-redux';
-import {addSongThunk, listenForAddPlaylistThunk, voteThunk, listenForVoteThunk, listenForEndSongThunk} from '../store/playlist';
+import {
+  addSongThunk,
+  listenForAddPlaylistThunk,
+  voteThunk,
+  listenForVoteThunk,
+  listenForEndSongThunk,
+  listenForUpdatePlaylistThunk
+} from '../store/playlist';
 import SearchForm from './SearchForm';
 import io from 'socket.io-client';
+import {closeRoomThunk} from '../store';
 
 const socket = io(window.location.origin);
 
@@ -20,8 +28,9 @@ class Playlist extends Component {
 
   componentDidMount() {
     this.props.addedToPlaylist();
-    this.props.listenForVotes()
-    this.props.listenForSongEnd()
+    this.props.listenForVotes();
+    this.props.listenForSongEnd();
+    this.props.fetchRoomPlaylist();
   }
 
   static getDerivedStateFromProps(props) {
@@ -30,7 +39,7 @@ class Playlist extends Component {
         selectedSong: props.playlist.songList[0].audioUrl
       };
     } else {
-      return ''
+      return '';
     }
   }
 
@@ -49,24 +58,35 @@ class Playlist extends Component {
 
   nextTrack() {
     if (this.props.playlist.songList.length >= 1) {
-
-
       socket.emit('endedSong', this.props.playlist.songList);
-     console.log('***** socket endedSong fired on PlayC  id = ',  socket.id);
+      console.log('***** socket endedSong fired on PlayC  id = ', socket.id);
 
       this.setState({selectedSong: this.props.playlist.songList[0].audioUrl});
     }
   }
 
   render() {
+    const roomId = this.props.room.room.roomInfo.rooms[0].id;
+    console.log('roomid', roomId);
     return (
       <div>
         {this.props.room.host.id &&
         this.props.room.host.id === this.props.user.id ? (
-          <Player
-            selectedSong={this.state.selectedSong}
-            nextTrack={this.nextTrack}
-          />
+          <div>
+            <Player
+              selectedSong={this.state.selectedSong}
+              nextTrack={this.nextTrack}
+            />
+            <button
+              type="button"
+              id="close"
+              onClick={roomId =>
+                this.props.closeRoom(this.props.room.room.roomInfo.rooms[0].id)
+              }
+            >
+              Close this room
+            </button>
+          </div>
         ) : (
           <div>
             <h4>Something can go here later</h4>
@@ -134,9 +154,10 @@ const mapDispatchToProps = dispatch => ({
   addedToPlaylist: () => dispatch(listenForAddPlaylistThunk()),
   updateVote: (room, song, voteValue) =>
     dispatch(voteThunk(room, song, voteValue)),
-  listenForVotes: ()=>dispatch(listenForVoteThunk()),
-  listenForSongEnd: () => dispatch(listenForEndSongThunk())
-
+  listenForVotes: () => dispatch(listenForVoteThunk()),
+  listenForSongEnd: () => dispatch(listenForEndSongThunk()),
+  fetchRoomPlaylist: () => dispatch(listenForUpdatePlaylistThunk()),
+  closeRoom: roomId => dispatch(closeRoomThunk(roomId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Playlist);
