@@ -19,31 +19,33 @@ class CreateRoom extends Component {
   }
   render() {
     return (
-      <div id="createRoom-formContainer">
+      <div>
         <h1>Create Room</h1>
-        <form
-          className="form-popup"
-          name="createRoomForm"
-          onSubmit={this.handleSubmit}
-        >
-          <Field
-            className="form-input"
-            type="text"
-            component="input"
-            name="roomName"
-            placeholder="room name"
-          />
+        <div id="createRoom-formContainer">
+          <form
+            className="form-popup"
+            name="createRoomForm"
+            onSubmit={this.handleSubmit}
+          >
+            <Field
+              className="form-input"
+              type="text"
+              component="input"
+              name="roomName"
+              placeholder="room name"
+            />
 
-          <button type="submit">Create Room</button>
-          <Message>
-            <p id="createRoom-codeExplanation">
-              Your room code will be displayed in your room
-            </p>
-            <p id="createRoom-codeExplanation">
-              Give your friends your room code so they can join you!
-            </p>
-          </Message>
-        </form>
+            <button type="submit">Create Room</button>
+            <Message>
+              <p id="createRoom-codeExplanation">
+                Your room code will be displayed in your room
+              </p>
+              <p id="createRoom-codeExplanation">
+                Give your friends your room code so they can join you!
+              </p>
+            </Message>
+          </form>
+        </div>
       </div>
     );
   }
