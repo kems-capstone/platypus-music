@@ -4,12 +4,16 @@ const {Room, Music, Room_Music, User_Rooms, User} = require('../db/models');
 router.post('/', async (req, res, next) => {
 
   //See if a room is open and if so close it
-  const  user = await User.findAll({where: {
-    id: req.user.id,
-  }, include: [{model: Room, where: {closed: false}}]
+
+  // IN ITS CURRENT STATE ITS CLOSING ALL THE ROOMS NOT JUST THE USERS ROOM
+  const  user = await Room.update({closed: true}, {
+    where:
+    {closed: false},
+
+    include: [{model: User, where: {id: req.user.id,}}]
 })
 
-console.log('*****userrr: ', user[0].datas);
+console.log('*****userrr: ', user);
 
 
 
