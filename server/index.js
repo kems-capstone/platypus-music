@@ -13,6 +13,7 @@ const socketio = require('socket.io')
 const busboy = require('connect-busboy');
 const busboyBodyParser = require('busboy-body-parser');
 
+
 module.exports = app
 
 // This is a global Mocha hook, used for resource cleanup.
@@ -46,12 +47,12 @@ passport.deserializeUser(async (id, done) => {
 const createApp = () => {
   // logging middleware
   app.use(morgan('dev'))
-  app.unlock(busboy())
+
 
   // body parsing middleware
   app.use(express.json())
   app.use(express.urlencoded({extended: true}))
-  app.use(busboyBodyParser())
+
 
   // compression middleware
   app.use(compression())
