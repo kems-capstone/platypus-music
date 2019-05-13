@@ -2,6 +2,17 @@ const router = require('express').Router();
 const {Room, Music, Room_Music, User_Rooms, User} = require('../db/models');
 
 router.post('/', async (req, res, next) => {
+
+  //See if a room is open and if so close it
+  const  user = await User.findAll({where: {
+    id: req.user.id,
+  }, include: [{model: Room, where: {closed: false}}]
+})
+
+console.log('*****userrr: ', user[0].datas);
+
+
+
   function generateCode() {
     let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
     let roomCode = '';
@@ -12,6 +23,9 @@ router.post('/', async (req, res, next) => {
     }
     return roomCode;
   }
+
+
+
   const roomName = req.body.name;
   const roomKey = generateCode();
   const createdRoom = await Room.create({
