@@ -177,7 +177,7 @@ router.put('/:roomId', async (req, res, next) => {
   try {
     const room = await Room.findByPk(req.params.roomId);
     room.update({closed: true});
-    res.sendStatus(203);
+    res.sendStatus(200);
   } catch (error) {
     next(error);
   }
