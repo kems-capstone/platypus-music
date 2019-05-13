@@ -13,6 +13,7 @@ const ADD_SONG = 'ADD_SONG';
 const REMOVE_PLAYLIST_SONG = 'REMOVE_PLAYLIST_SONG';
 const UPDATE_VOTE = 'UPDATE_VOTE';
 const UPDATE_PLAYLIST = 'UPDATE_PLAYLIST';
+const DELETE_SONG = 'DELETE_SONG';
 
 const addPlaylistSong = songList => {
   return {
@@ -45,6 +46,13 @@ const updateVote = newSongData => {
   return {
     type: UPDATE_VOTE,
     newSongData
+  };
+};
+
+const deleteSong = songId => {
+  return {
+    type: DELETE_SONG,
+    songId
   };
 };
 
@@ -89,11 +97,9 @@ export const listenForUpdatePlaylistThunk = () => dispatch => {
 
 export const addSongThunk = (song, roomId = null) => async dispatch => {
   try {
-
     let {data} = await axios.get('/api/music/' + song);
     await axios.post(`/api/rooms/${roomId}/music/${song}`);
     socket.emit('addedSong', data);
-
   } catch (error) {
     console.error(error.message);
   }
@@ -117,7 +123,20 @@ export const voteThunk = (roomId, songId, voteValue) => async dispatch => {
 };
 
 export const songPlayed = (songId, roomId) => async dispatch => {
-  await axios.put(`/api/music/${songId}/room/${roomId}`);
+  try {
+    await axios.put(`/api/music/${songId}/room/${roomId}`);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteSongThunk = (songId, roomId) => async dispatch => {
+  try {
+    await axios.delete(`/api/music/${songId}/room/${roomId}`);
+    dispatch(deleteSong(songId));
+  } catch (error) {
+    console.error(error.message);
+  }
 };
 
 export default function(state = inititalState, action) {
@@ -156,6 +175,9 @@ export default function(state = inititalState, action) {
           : b.voteCount > a.voteCount ? 1 : 0;
       });
       return {...state, songList: [firstSong, ...notFirstSong]};
+    case DELETE_SONG:
+      let shortened = state.songList.filter(song => song.id !== action.songId);
+      return {...state, songList: shortened};
     default:
       return state;
   }

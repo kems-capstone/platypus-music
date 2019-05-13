@@ -8,7 +8,8 @@ import {
   listenForVoteThunk,
   listenForEndSongThunk,
   listenForUpdatePlaylistThunk,
-  songPlayed
+  songPlayed,
+  deleteSongThunk
 } from '../store/playlist';
 import SearchForm from './SearchForm';
 import UiSearchForm from './UiSearchForm';
@@ -138,6 +139,20 @@ class Playlist extends Component {
                     </button>{' '}
                   </div>
                 )}
+                {this.props.room.host.id &&
+                  this.props.room.host.id === this.props.user.id && (
+                    <button
+                      type="button"
+                      onClick={(songId, roomId) =>
+                        this.props.deleteSong(
+                          index.id,
+                          this.props.room.room.roomInfo.rooms[0].id
+                        )
+                      }
+                    >
+                      Delete song
+                    </button>
+                  )}
               </div>
             );
           })}
@@ -164,7 +179,8 @@ const mapDispatchToProps = dispatch => ({
   listenForSongEnd: () => dispatch(listenForEndSongThunk()),
   fetchRoomPlaylist: () => dispatch(listenForUpdatePlaylistThunk()),
   closeRoom: roomId => dispatch(closeRoomThunk(roomId)),
-  songPlayed: (songid, roomid) => dispatch(songPlayed(songid, roomid))
+  songPlayed: (songid, roomid) => dispatch(songPlayed(songid, roomid)),
+  deleteSong: (songId, roomId) => dispatch(deleteSongThunk(songId, roomId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Playlist);

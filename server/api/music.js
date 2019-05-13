@@ -30,4 +30,18 @@ router.put('/:songId/room/:roomId', async (req, res, next) => {
   }
 });
 
+router.delete('/:musicId/room/:roomId', async (req, res, next) => {
+  try {
+    await Room_Music.destroy({
+      where: {
+        musicId: req.params.musicId,
+        roomId: req.params.roomId
+      }
+    });
+    res.sendStatus(204);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
