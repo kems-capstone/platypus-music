@@ -7,7 +7,8 @@ import {
   voteThunk,
   listenForVoteThunk,
   listenForEndSongThunk,
-  listenForUpdatePlaylistThunk
+  listenForUpdatePlaylistThunk,
+  songPlayed
 } from '../store/playlist';
 import SearchForm from './SearchForm';
 import io from 'socket.io-client';
@@ -58,6 +59,10 @@ class Playlist extends Component {
 
   nextTrack() {
     if (this.props.playlist.songList.length >= 1) {
+      this.props.songPlayed(
+        this.props.playlist.songList[0].id,
+        this.props.room.room.roomInfo.rooms[0].id
+      );
       socket.emit('endedSong', this.props.playlist.songList);
       console.log('***** socket endedSong fired on PlayC  id = ', socket.id);
 
@@ -67,7 +72,6 @@ class Playlist extends Component {
 
   render() {
     const roomId = this.props.room.room.roomInfo.rooms[0].id;
-    console.log('roomid', roomId);
     return (
       <div>
         {this.props.room.host.id &&
@@ -157,7 +161,8 @@ const mapDispatchToProps = dispatch => ({
   listenForVotes: () => dispatch(listenForVoteThunk()),
   listenForSongEnd: () => dispatch(listenForEndSongThunk()),
   fetchRoomPlaylist: () => dispatch(listenForUpdatePlaylistThunk()),
-  closeRoom: roomId => dispatch(closeRoomThunk(roomId))
+  closeRoom: roomId => dispatch(closeRoomThunk(roomId)),
+  songPlayed: (songid, roomid) => dispatch(songPlayed(songid, roomid))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Playlist);

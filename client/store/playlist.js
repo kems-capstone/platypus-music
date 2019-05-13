@@ -114,6 +114,10 @@ export const voteThunk = (roomId, songId, voteValue) => async dispatch => {
   }
 };
 
+export const songPlayed = (songId, roomId) => async dispatch => {
+  await axios.put(`/api/music/${songId}/room/${roomId}`);
+};
+
 export default function(state = inititalState, action) {
   switch (action.type) {
     case ADD_SONG:
