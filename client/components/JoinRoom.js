@@ -11,14 +11,14 @@ class JoinRoom extends Component {
   componentDidMount() {
     // this.props.updateRoomStore();
   }
-  async handleSubmit() {
+handleSubmit() {
     event.preventDefault();
     let key = this.props.form.joinRoom.values.joinRoom;
 
     key = key.toUpperCase();
 
-    await this.props.authenticate(key);
-    this.props.history.push('/room');
+  this.props.authenticate(key);
+
   }
   render() {
     return (

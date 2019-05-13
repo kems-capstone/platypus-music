@@ -21,7 +21,7 @@ module.exports = io => {
     }
     const updatePlaylist = (roomPlaylist) => {
 
-      console.log('*****: GOT PLAYLIST ON SERVER ', roomPlaylist);
+
       socket.broadcast.emit('getRoomGotPlaylist', roomPlaylist)
     }
 

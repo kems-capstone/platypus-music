@@ -1,7 +1,48 @@
 const router = require('express').Router();
 const {Room, Music, Room_Music, User_Rooms, User} = require('../db/models');
 
+//CREATE ROOM ROUTE
+//If host change Closed to true   If guest- destory assoc
+
+
+
+
 router.post('/', async (req, res, next) => {
+
+  //FIND IF THEY ARE HOST
+  const roomsHosted = await User_Rooms.findAll({
+    where: {userId: req.user.id, isHost: true}
+  })
+  console.log('*****userRoomInstance: ', roomsHosted);
+//ARE THEY HOST? Yes? Close the room
+  if (roomsHosted.length){
+   const hostedRoom = await Room.findAll({
+      where: {
+        id: roomsHosted[0].roomId
+      }
+    })
+    hostedRoom[0].closed = true
+    hostedRoom[0].save()
+  }
+
+//IF YOU ARE A GUEST
+// find all rooms they in that are open
+  const allOpenRooms = await Room.findAll({
+    where: {closed: false},
+    include: [{model: User}]
+  });
+
+  //LOOP THRU THE ROOMS AND DESTROY ASSOCIATIONS
+  for (let i = 0; i < allOpenRooms.length; i++) {
+    for (let j = 0; j < allOpenRooms[i].users.length; j++) {
+      if (allOpenRooms[i].users[j].id === req.user.id) {
+        await User_Rooms.destroy({
+          where: {roomId: allOpenRooms[i].id, userId: req.user.id}
+        });
+      }
+    }
+  }
+
   function generateCode() {
     let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
     let roomCode = '';
@@ -12,6 +53,7 @@ router.post('/', async (req, res, next) => {
     }
     return roomCode;
   }
+
   const roomName = req.body.name;
   const roomKey = generateCode();
   const createdRoom = await Room.create({
@@ -25,10 +67,10 @@ router.post('/', async (req, res, next) => {
     isHost: true
   });
   const members = await createdRoom.getUsers();
-  let host = {};
+  let host = false;
   members.forEach(member => {
     if (member.user_rooms.isHost === true) {
-      host = member;
+      host = true;
     }
   });
   let roomInfo = {room: createdRoom, host: host, members: members};
