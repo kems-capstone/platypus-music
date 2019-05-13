@@ -19,7 +19,7 @@ class Room extends Component {
 
 
     this.props.getRoomThunk(userId);
-    console.log('*****this.props in CDM ROom: ', this.props);
+
 
   }
 

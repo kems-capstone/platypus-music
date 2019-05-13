@@ -9,13 +9,13 @@ class CreateRoom extends Component {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  async handleSubmit() {
+  handleSubmit() {
     event.preventDefault();
-    await this.props.addRoomThunk(
+   this.props.addRoomThunk(
       this.props.form.createRoom.values.roomName,
       this.props.user
     );
-    this.props.history.push('/room');
+
   }
   render() {
     return (

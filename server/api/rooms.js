@@ -1,19 +1,17 @@
 const router = require('express').Router();
 const {Room, Music, Room_Music, User_Rooms, User} = require('../db/models');
 
+
+//CREATE ROOM ROUTE
 router.post('/', async (req, res, next) => {
 
-  //See if a room is open and if so close it
 
-  // IN ITS CURRENT STATE ITS CLOSING ALL THE ROOMS NOT JUST THE USERS ROOM
-  const  user = await Room.update({closed: true}, {
-    where:
-    {closed: false},
+  const  allOpenRooms= await Room.findAll({
+    where: {closed: false},
+    include: [{model: User}]
+  })
 
-    include: [{model: User, where: {id: req.user.id,}}]
-})
-
-console.log('*****userrr: ', user);
+console.log('*****allOpenRooms: ', allOpenRooms, allOpenRooms[0].users);
 
 
 
