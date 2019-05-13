@@ -188,4 +188,27 @@ router.put('/:roomId', async (req, res, next) => {
   }
 });
 
+router.get('/refresh', async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const roomInfo = await User.findOne({
+      where: {
+        id: userId
+      },
+      include: [
+        {
+          model: Room,
+          where: {
+            closed: false
+          }
+        }
+      ]
+    });
+
+    res.json(roomInfo);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

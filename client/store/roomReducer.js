@@ -9,6 +9,7 @@ const GET_ROOM = 'GET_ROOM';
 const JOIN_ROOM = 'JOIN_ROOM';
 const UPDATE_ROOM_STATE = 'UPDATE_STATE';
 const CLOSE_ROOM = 'CLOSE_ROOM';
+const REFRESH_ROOM = 'REFRESH_ROOM';
 
 const updateRoomState = otherProps => {
   return {
@@ -42,6 +43,13 @@ const closeRoom = roomId => {
   return {
     type: CLOSE_ROOM,
     roomId
+  };
+};
+
+const refreshHost = isHost => {
+  return {
+    type: REFRESH_ROOM,
+    isHost
   };
 };
 
@@ -79,7 +87,6 @@ export const getRoomThunk = userId => {
     socket.emit('getRoomGotPlaylist', roomData.data);
 
     dispatch(getRoom(roomData.data));
-    console.log('000000000000XXXXXXXXX', roomData.data);
   };
 };
 
@@ -88,16 +95,28 @@ export const closeRoomThunk = roomId => async dispatch => {
   dispatch(closeRoom(roomId));
 };
 
+export const refreshRoom = () => async dispatch => {
+  let isHost = false;
+  const roomData = await axios.get('/api/rooms/refresh');
+  if (roomData.data.rooms[0].user_rooms.isHost === true) {
+    isHost = true;
+  }
+  dispatch(refreshHost(isHost));
+  console.log('000000000000XXXXXXXXX', isHost);
+};
+
 const initialState = {
   room: {},
   members: [],
-  host: ''
+  host: false
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
     case GET_ROOM:
       return {...state, room: action.payload};
+    case REFRESH_ROOM:
+      return {...state, host: action.isHost};
     case ADD_ROOM:
       return action.roomObject;
     case JOIN_ROOM:
