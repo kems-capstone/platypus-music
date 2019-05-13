@@ -74,10 +74,10 @@ class Playlist extends Component {
 
   render() {
     const roomId = this.props.room.room.roomInfo.rooms[0].id;
+    console.log('host', this.props.room, 'user', this.props.user);
     return (
       <div>
-        {this.props.room.host.id &&
-        this.props.room.host.id === this.props.user.id ? (
+        {this.props.room.host ? (
           <div>
             <Player
               selectedSong={this.state.selectedSong}
