@@ -87,13 +87,13 @@ export const listenForUpdatePlaylistThunk = () => dispatch => {
 
 /////////////
 
-export const addSongThunk = (songId, roomId = null) => async dispatch => {
+export const addSongThunk = (song, roomId = null) => async dispatch => {
   try {
-    let {data} = await axios.get('/api/music/' + songId);
 
-    await axios.post(`/api/rooms/${roomId}/music/${songId}`);
-
+    let {data} = await axios.get('/api/music/' + song);
+    await axios.post(`/api/rooms/${roomId}/music/${song}`);
     socket.emit('addedSong', data);
+
   } catch (error) {
     console.error(error.message);
   }
@@ -105,9 +105,11 @@ export const voteThunk = (roomId, songId, voteValue) => async dispatch => {
       `/api/rooms/${roomId}/music/${songId}`,
       voteValue
     );
+
     let songVote = data.song;
     songVote.voteCount = data.change[0][0][0].voteCount;
     socket.emit('songVoted', songVote);
+
     dispatch(updateVote(songVote));
   } catch (error) {
     console.error(error.message);
