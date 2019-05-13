@@ -1,6 +1,7 @@
 import axios from 'axios';
 import io from 'socket.io-client';
 import listenForUpdatePlaylistThunk from './playlist';
+import history from '../history'
 
 const socket = io(window.location.origin);
 
@@ -63,12 +64,12 @@ export const addRoomThunk = (roomName, user) => {
   return async function(dispatch) {
     const createdRoom = await axios.post('/api/rooms', {name: roomName});
     dispatch(addRoom(createdRoom.data));
+    history.push('/room');
   };
 };
 
 export const joinRoomThunk = key => async dispatch => {
   const room = await axios.get('/api/rooms/join/' + key);
-  console.log('room', room);
   const roomInfo = {
     room: room.data.room,
     members: room.data.members,
@@ -76,6 +77,7 @@ export const joinRoomThunk = key => async dispatch => {
   };
   if (roomInfo.room) {
     dispatch(joinRoom(roomInfo));
+   history.push('/room');
   } else {
     return 'INVALID';
   }
@@ -102,7 +104,7 @@ export const refreshRoom = () => async dispatch => {
     isHost = true;
   }
   dispatch(refreshHost(isHost));
-  console.log('000000000000XXXXXXXXX', isHost);
+
 };
 
 const initialState = {

@@ -30,6 +30,7 @@ class Playlist extends Component {
   }
 
   componentDidMount() {
+    console.log('CDM playlist', this.props)
     this.props.addedToPlaylist();
     this.props.listenForVotes();
     this.props.listenForSongEnd();
@@ -52,7 +53,7 @@ class Playlist extends Component {
     try {
       event.preventDefault();
 
-      console.log('right before props.addsong');
+
       props.addSong(result.title, this.props.room.room.roomInfo.rooms[0].id);
     } catch (error) {
       console.error(error.message);
@@ -66,7 +67,7 @@ class Playlist extends Component {
         this.props.room.room.roomInfo.rooms[0].id
       );
       socket.emit('endedSong', this.props.playlist.songList);
-      console.log('***** socket endedSong fired on PlayC  id = ', socket.id);
+
 
       this.setState({selectedSong: this.props.playlist.songList[0].audioUrl});
     }
@@ -74,10 +75,10 @@ class Playlist extends Component {
 
   render() {
     const roomId = this.props.room.room.roomInfo.rooms[0].id;
-    console.log('host', this.props.room, 'user', this.props.user);
+    console.log('*****this.props.room.host: ', this.props.room.host);
     return (
       <div>
-        {this.props.room.host ? (
+        {this.props.room.host === true ? (
           <div>
             <Player
               selectedSong={this.state.selectedSong}
