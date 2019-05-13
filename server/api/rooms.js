@@ -133,10 +133,15 @@ router.get('/current-room/:userId', async (req, res, next) => {
   }
 });
 
-router.post('/:roomId/music/:musicId', async (req, res, next) => {
+router.post('/:roomId/music/:song', async (req, res, next) => {
   try {
     const room = await Room.findByPk(req.params.roomId);
-    const song = await Music.findByPk(req.params.musicId);
+    let songToSearch = req.params.song.replace(/([a-z])([A-Z])/g, '$1 $2');
+    const song = await Music.findOne({
+      where: {
+        name: songToSearch
+      }
+    });
     if (!room || !song) {
       res.sendStatus(404);
     } else {
@@ -195,7 +200,30 @@ router.put('/:roomId', async (req, res, next) => {
   try {
     const room = await Room.findByPk(req.params.roomId);
     room.update({closed: true});
-    res.sendStatus(203);
+    res.sendStatus(200);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/refresh', async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const roomInfo = await User.findOne({
+      where: {
+        id: userId
+      },
+      include: [
+        {
+          model: Room,
+          where: {
+            closed: false
+          }
+        }
+      ]
+    });
+
+    res.json(roomInfo);
   } catch (error) {
     next(error);
   }

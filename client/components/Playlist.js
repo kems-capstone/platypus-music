@@ -7,9 +7,12 @@ import {
   voteThunk,
   listenForVoteThunk,
   listenForEndSongThunk,
-  listenForUpdatePlaylistThunk
+  listenForUpdatePlaylistThunk,
+  songPlayed,
+  deleteSongThunk
 } from '../store/playlist';
 import SearchForm from './SearchForm';
+import UiSearchForm from './UiSearchForm';
 import io from 'socket.io-client';
 import {closeRoomThunk} from '../store';
 
@@ -23,7 +26,7 @@ class Playlist extends Component {
     };
 
     this.nextTrack = this.nextTrack.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmitWithProps = this.handleSubmitWithProps.bind(this);
   }
 
   componentDidMount() {
@@ -43,14 +46,14 @@ class Playlist extends Component {
     }
   }
 
-  handleSubmit(event) {
+  handleSubmitWithProps(event, result, props) {
+    result.title = result.title.replace(/\s/g, '');
+
     try {
       event.preventDefault();
 
-      this.props.addSong(
-        this.props.form.search.values.trackSearch,
-        this.props.room.room.roomInfo.rooms[0].id
-      );
+      console.log('right before props.addsong');
+      props.addSong(result.title, this.props.room.room.roomInfo.rooms[0].id);
     } catch (error) {
       console.error(error.message);
     }
@@ -58,6 +61,10 @@ class Playlist extends Component {
 
   nextTrack() {
     if (this.props.playlist.songList.length >= 1) {
+      this.props.songPlayed(
+        this.props.playlist.songList[0].id,
+        this.props.room.room.roomInfo.rooms[0].id
+      );
       socket.emit('endedSong', this.props.playlist.songList);
       console.log('***** socket endedSong fired on PlayC  id = ', socket.id);
 
@@ -67,11 +74,10 @@ class Playlist extends Component {
 
   render() {
     const roomId = this.props.room.room.roomInfo.rooms[0].id;
-    console.log('roomid', roomId);
+    console.log('host', this.props.room, 'user', this.props.user);
     return (
       <div>
-        {this.props.room.host.id &&
-        this.props.room.host.id === this.props.user.id ? (
+        {this.props.room.host ? (
           <div>
             <Player
               selectedSong={this.state.selectedSong}
@@ -93,7 +99,7 @@ class Playlist extends Component {
           </div>
         )}
 
-        <SearchForm handleSubmit={this.handleSubmit} />
+        <UiSearchForm handleSubmitWithProps={this.handleSubmitWithProps} />
 
         <div>
           {this.props.playlist.songList.map(index => {
@@ -133,6 +139,20 @@ class Playlist extends Component {
                     </button>{' '}
                   </div>
                 )}
+                {this.props.room.host.id &&
+                  this.props.room.host.id === this.props.user.id && (
+                    <button
+                      type="button"
+                      onClick={(songId, roomId) =>
+                        this.props.deleteSong(
+                          index.id,
+                          this.props.room.room.roomInfo.rooms[0].id
+                        )
+                      }
+                    >
+                      Delete song
+                    </button>
+                  )}
               </div>
             );
           })}
@@ -154,10 +174,13 @@ const mapDispatchToProps = dispatch => ({
   addedToPlaylist: () => dispatch(listenForAddPlaylistThunk()),
   updateVote: (room, song, voteValue) =>
     dispatch(voteThunk(room, song, voteValue)),
+
   listenForVotes: () => dispatch(listenForVoteThunk()),
   listenForSongEnd: () => dispatch(listenForEndSongThunk()),
   fetchRoomPlaylist: () => dispatch(listenForUpdatePlaylistThunk()),
-  closeRoom: roomId => dispatch(closeRoomThunk(roomId))
+  closeRoom: roomId => dispatch(closeRoomThunk(roomId)),
+  songPlayed: (songid, roomid) => dispatch(songPlayed(songid, roomid)),
+  deleteSong: (songId, roomId) => dispatch(deleteSongThunk(songId, roomId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Playlist);
