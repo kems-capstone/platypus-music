@@ -28,11 +28,14 @@ h1 {
   font-size: 12px;
 }
 
+#navBar {
+  display: flex;
+}
 .homepage {
   text-align: center;
-  background-image: url('./yvette-de-wit-118721-unsplash.jpg');
+  background-image: url('./concert_crowd.jpg');
+  background-attachment: fixed;
   min-height: 100vh;
-  background-size: cover;
   background-size: cover;
   background-attachment: fixed;
   width: 100vw;
@@ -41,9 +44,19 @@ h1 {
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
+  font-size: 2em;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .homepageText {
   padding: 60px;
+}
+#homePage-h1 {
+  font-weight: normal;
+  font-size: 3em;
+  margin-top: 1vm;
 }
 
 .music-box {
@@ -72,30 +85,63 @@ h1 {
 /* CREATE ROOM COMPONENT */
 
 #createRoom-formContainer {
-  padding: 10px;
+  padding: 5%;
   display: flex;
 
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  background-color: orange;
+  /* background-color: orange; */
+  text-align: center;
 }
 
 /* ROOM COMPONENT */
+
 .roomComponent-roomName {
   font-size: 2em;
   font-weight: bolder;
   text-align: center;
   margin: 25px 0px;
+  color: #6435c9;
 }
+
 #roomComponent-roomKey-code {
   font-family: 'Bree Serif', serif;
   font-size: 1.25em;
   letter-spacing: 0.2em;
   padding: 7px;
   text-align: center;
+  color: #6435c9;
+}
+
+.roomComponent-roomKey-header {
+  text-align: center;
+  color: #6435c9;
 }
 #close {
-  background-color: rgba(255, 0, 0, 0.637);
+  background-color: rgb(255, 0, 0);
   border-radius: 10%;
+  margin: 15px;
+}
+
+h1 {
+  text-align: center;
+  color: #6435c9;
+}
+
+#dashboard-buttons {
+  text-align: center;
+}
+
+.ui.basic.primary.button {
+  margin: 5%;
+}
+
+.vote-count {
+  text-align: center;
+  color: #6435c9;
+}
+
+.ui.icon.button {
+  outline-color: #6435c9;
 }

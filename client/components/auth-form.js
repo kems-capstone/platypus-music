@@ -1,8 +1,8 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import PropTypes from 'prop-types'
-import {auth} from '../store'
-import {Link} from 'react-router-dom'
+import React from 'react';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import {auth} from '../store';
+import {Link} from 'react-router-dom';
 import {
   Button,
   Form,
@@ -13,26 +13,43 @@ import {
   Segment,
   Container,
   Icon
-} from 'semantic-ui-react'
+} from 'semantic-ui-react';
 /**
  * COMPONENT
  */
 const AuthForm = props => {
-  const {name, displayName, handleSubmit, error} = props
+  const {name, displayName, handleSubmit, error} = props;
+  console.log('props in auth form', props);
 
   return (
     <div className="login-form">
-    <Grid textAlign="center" style={{height: '100%'}} verticalAlign="middle">
-          <Image src="/patty.jpeg" style={{textAlign: 'center', maxWidth: 350, maxHeight: 200}}/>{' '}
-    </Grid>
-    <Grid textAlign="center" style={{height: '100%'}} verticalAlign="middle" divided>
-      <Grid.Column style={{maxWidth: 450}}>
-        <Header as="h2" textAlign="center">
-          {name === 'signup'
-            ? 'Sign up for your account'
-            : 'Log into your account'}
-        </Header>
-        <Form size="large" color="blue" onSubmit={handleSubmit} name={name}>
+      <Grid textAlign="center" style={{height: '100%'}} verticalAlign="middle">
+        <Image
+          src="/patty.jpeg"
+          style={{textAlign: 'center', maxWidth: 350, maxHeight: 200}}
+        />{' '}
+      </Grid>
+      <Grid
+        textAlign="center"
+        style={{height: '100%'}}
+        verticalAlign="middle"
+        divided
+      >
+        <Grid.Column style={{maxWidth: 450}}>
+          <Header as="h2" textAlign="center">
+            {name === 'signup'
+              ? 'Sign up for your account'
+              : 'Log into your account'}
+          </Header>
+
+          <Form
+            size="large"
+            color="blue"
+            onSubmit={handleSubmit}
+            name={name}
+            // method="get"
+            // action="/auth/google"
+          >
             <Segment stacked>
               {name === 'signup' ? (
                 <div>
@@ -64,58 +81,49 @@ const AuthForm = props => {
                 <label htmlFor="email">
                   <div>E-mail Address</div>
                 </label>
-                <input
-                  name="email"
-                  type="text"
-                  placeholder="E-mail Address"
-                />
+                <input name="email" type="text" placeholder="E-mail Address" />
               </Form.Field>
 
               <Form.Field>
                 <label htmlFor="password">
                   <div>Password</div>
                 </label>
-                <input
-                  name="password"
-                  type="password"
-                  placeholder="Password"
-                />
+                <input name="password" type="password" placeholder="Password" />
               </Form.Field>
             </Segment>
             <br />
 
-              <Button color="purple" size="large" type="submit">
-                {displayName}
-              </Button>
-
+            <Button color="purple" size="large" type="submit">
+              {displayName}
+            </Button>
 
             {error && error.response && <div> {error.response.data} </div>}
 
-          <br />
-          <Button>
-            <a href="/auth/google">
+            <br />
+
+            <Button as="a" href="/auth/google">
               <font size="2">
                 {displayName} with {'                  '}
               </font>
               <Icon name="google" />
-            </a>
-          </Button>
-          <br/>
-          {name === 'signup' ? (
-            <Message>
-              Already have an account? <Link to="/login">Log In</Link>
-            </Message>
-          ) : (
-            <Message>
-            New to us? <Link to="/signup">Sign Up</Link>
-            </Message>
-          )}
-        </Form>
-      </Grid.Column>
-    </Grid>
-  </div>
-)
-}
+            </Button>
+
+            <br />
+            {/* {name === 'signup' ? (
+              <Message>
+                Already have an account? <Link to="/login">Log In</Link>
+              </Message>
+            ) : (
+              <Message>
+                New to us? <Link to="/signup">Sign Up</Link>
+              </Message>
+            )} */}
+          </Form>
+        </Grid.Column>
+      </Grid>
+    </div>
+  );
+};
 
 /**
  * CONTAINER
@@ -129,44 +137,44 @@ const mapLogin = state => {
     name: 'login',
     displayName: 'Login',
     error: state.user.error
-  }
-}
+  };
+};
 
 const mapSignup = state => {
   return {
     name: 'signup',
     displayName: 'Sign Up',
     error: state.user.error
-  }
-}
+  };
+};
 
 const mapDispatchLogin = dispatch => {
   return {
     handleSubmit(evt) {
-      evt.preventDefault()
-      const formName = evt.target.name
-      const email = evt.target.email.value.toLowerCase()
-      const password = evt.target.password.value.toLowerCase()
-      dispatch(auth(email, password, formName))
+      evt.preventDefault();
+      const formName = evt.target.name;
+      const email = evt.target.email.value.toLowerCase();
+      const password = evt.target.password.value.toLowerCase();
+      dispatch(auth(email, password, formName));
     }
-  }
-}
+  };
+};
 const mapDispatchSignup = dispatch => {
   return {
     handleSubmit(evt) {
-      evt.preventDefault()
-      const formName = evt.target.name
-      const email = evt.target.email.value.toLowerCase()
-      const firstName = evt.target.firstName.value.toLowerCase()
-      const lastName = evt.target.lastName.value.toLowerCase()
-      const password = evt.target.password.value.toLowerCase()
-      dispatch(auth(email, password, formName, firstName, lastName))
+      evt.preventDefault();
+      const formName = evt.target.name;
+      const email = evt.target.email.value.toLowerCase();
+      const firstName = evt.target.firstName.value.toLowerCase();
+      const lastName = evt.target.lastName.value.toLowerCase();
+      const password = evt.target.password.value.toLowerCase();
+      dispatch(auth(email, password, formName, firstName, lastName));
     }
-  }
-}
+  };
+};
 
-export const Login = connect(mapLogin, mapDispatchLogin)(AuthForm)
-export const Signup = connect(mapSignup, mapDispatchSignup)(AuthForm)
+export const Login = connect(mapLogin, mapDispatchLogin)(AuthForm);
+export const Signup = connect(mapSignup, mapDispatchSignup)(AuthForm);
 
 /**
  * PROP TYPES
@@ -176,4 +184,4 @@ AuthForm.propTypes = {
   displayName: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   error: PropTypes.object
-}
+};

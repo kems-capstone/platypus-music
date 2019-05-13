@@ -1,17 +1,47 @@
 const router = require('express').Router();
 const {Room, Music, Room_Music, User_Rooms, User} = require('../db/models');
 
+//CREATE ROOM ROUTE
+//If host change Closed to true   If guest- destory assoc
+
+
+
+
 router.post('/', async (req, res, next) => {
 
-  //See if a room is open and if so close it
-  const  user = await User.findAll({where: {
-    id: req.user.id,
-  }, include: [{model: Room, where: {closed: false}}]
-})
+  //FIND IF THEY ARE HOST
+  const roomsHosted = await User_Rooms.findAll({
+    where: {userId: req.user.id, isHost: true}
+  })
+  console.log('*****userRoomInstance: ', roomsHosted);
+//ARE THEY HOST? Yes? Close the room
+  if (roomsHosted.length){
+   const hostedRoom = await Room.findAll({
+      where: {
+        id: roomsHosted[0].roomId
+      }
+    })
+    hostedRoom[0].closed = true
+    hostedRoom[0].save()
+  }
 
-console.log('*****userrr: ', user[0].datas);
+//IF YOU ARE A GUEST
+// find all rooms they in that are open
+  const allOpenRooms = await Room.findAll({
+    where: {closed: false},
+    include: [{model: User}]
+  });
 
-
+  //LOOP THRU THE ROOMS AND DESTROY ASSOCIATIONS
+  for (let i = 0; i < allOpenRooms.length; i++) {
+    for (let j = 0; j < allOpenRooms[i].users.length; j++) {
+      if (allOpenRooms[i].users[j].id === req.user.id) {
+        await User_Rooms.destroy({
+          where: {roomId: allOpenRooms[i].id, userId: req.user.id}
+        });
+      }
+    }
+  }
 
   function generateCode() {
     let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
@@ -23,8 +53,6 @@ console.log('*****userrr: ', user[0].datas);
     }
     return roomCode;
   }
-
-
 
   const roomName = req.body.name;
   const roomKey = generateCode();
@@ -39,10 +67,10 @@ console.log('*****userrr: ', user[0].datas);
     isHost: true
   });
   const members = await createdRoom.getUsers();
-  let host = {};
+  let host = false;
   members.forEach(member => {
     if (member.user_rooms.isHost === true) {
-      host = member;
+      host = true;
     }
   });
   let roomInfo = {room: createdRoom, host: host, members: members};
@@ -129,10 +157,15 @@ router.get('/current-room/:userId', async (req, res, next) => {
   }
 });
 
-router.post('/:roomId/music/:musicId', async (req, res, next) => {
+router.post('/:roomId/music/:song', async (req, res, next) => {
   try {
     const room = await Room.findByPk(req.params.roomId);
-    const song = await Music.findByPk(req.params.musicId);
+    let songToSearch = req.params.song.replace(/([a-z])([A-Z])/g, '$1 $2');
+    const song = await Music.findOne({
+      where: {
+        name: songToSearch
+      }
+    });
     if (!room || !song) {
       res.sendStatus(404);
     } else {
@@ -191,7 +224,30 @@ router.put('/:roomId', async (req, res, next) => {
   try {
     const room = await Room.findByPk(req.params.roomId);
     room.update({closed: true});
-    res.sendStatus(203);
+    res.sendStatus(200);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/refresh', async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const roomInfo = await User.findOne({
+      where: {
+        id: userId
+      },
+      include: [
+        {
+          model: Room,
+          where: {
+            closed: false
+          }
+        }
+      ]
+    });
+
+    res.json(roomInfo);
   } catch (error) {
     next(error);
   }

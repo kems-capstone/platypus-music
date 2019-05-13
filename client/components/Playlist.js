@@ -7,9 +7,12 @@ import {
   voteThunk,
   listenForVoteThunk,
   listenForEndSongThunk,
-  listenForUpdatePlaylistThunk
+  listenForUpdatePlaylistThunk,
+  songPlayed,
+  deleteSongThunk
 } from '../store/playlist';
 import SearchForm from './SearchForm';
+import UiSearchForm from './UiSearchForm';
 import io from 'socket.io-client';
 import {closeRoomThunk} from '../store';
 
@@ -23,10 +26,11 @@ class Playlist extends Component {
     };
 
     this.nextTrack = this.nextTrack.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmitWithProps = this.handleSubmitWithProps.bind(this);
   }
 
   componentDidMount() {
+    console.log('CDM playlist', this.props)
     this.props.addedToPlaylist();
     this.props.listenForVotes();
     this.props.listenForSongEnd();
@@ -43,14 +47,14 @@ class Playlist extends Component {
     }
   }
 
-  handleSubmit(event) {
+  handleSubmitWithProps(event, result, props) {
+    result.title = result.title.replace(/\s/g, '');
+
     try {
       event.preventDefault();
 
-      this.props.addSong(
-        this.props.form.search.values.trackSearch,
-        this.props.room.room.roomInfo.rooms[0].id
-      );
+
+      props.addSong(result.title, this.props.room.room.roomInfo.rooms[0].id);
     } catch (error) {
       console.error(error.message);
     }
@@ -58,8 +62,12 @@ class Playlist extends Component {
 
   nextTrack() {
     if (this.props.playlist.songList.length >= 1) {
+      this.props.songPlayed(
+        this.props.playlist.songList[0].id,
+        this.props.room.room.roomInfo.rooms[0].id
+      );
       socket.emit('endedSong', this.props.playlist.songList);
-      console.log('***** socket endedSong fired on PlayC  id = ', socket.id);
+
 
       this.setState({selectedSong: this.props.playlist.songList[0].audioUrl});
     }
@@ -67,16 +75,11 @@ class Playlist extends Component {
 
   render() {
     const roomId = this.props.room.room.roomInfo.rooms[0].id;
-    console.log('roomid', roomId);
+    console.log('*****this.props.room.host: ', this.props.room.host);
     return (
       <div>
-        {this.props.room.host.id &&
-        this.props.room.host.id === this.props.user.id ? (
+        {this.props.room.host === true ? (
           <div>
-            <Player
-              selectedSong={this.state.selectedSong}
-              nextTrack={this.nextTrack}
-            />
             <button
               type="button"
               id="close"
@@ -86,6 +89,10 @@ class Playlist extends Component {
             >
               Close this room
             </button>
+            <Player
+              selectedSong={this.state.selectedSong}
+              nextTrack={this.nextTrack}
+            />
           </div>
         ) : (
           <div>
@@ -93,46 +100,70 @@ class Playlist extends Component {
           </div>
         )}
 
-        <SearchForm handleSubmit={this.handleSubmit} />
+        <UiSearchForm handleSubmitWithProps={this.handleSubmitWithProps} />
 
-        <div>
+        <div className="ui cards">
           {this.props.playlist.songList.map(index => {
             return (
-              <div key={index.id}>
-                <h4>{index.name}</h4>
-                <h1>{index.voteCount}</h1>
+              <div className="card" key={index.id}>
+                <div className="content">
+                  <h4 className="header">{index.name}</h4>
+                  <img
+                    className="right floated mini ui image"
+                    src={index.artworkUrl}
+                  />
+                  <h3 className="vote-count">{index.voteCount}</h3>
+                </div>
                 {this.props.playlist.songList[0].id !== index.id && (
-                  <div>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        this.props.updateVote(
-                          this.props.room.room.roomInfo.rooms[0].id,
-                          index.id,
-                          {
-                            upVote: 'upVote'
-                          }
-                        )
-                      }
-                    >
-                      upvote
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        this.props.updateVote(
-                          this.props.room.room.roomInfo.rooms[0].id,
-                          index.id,
-                          {
-                            downVote: 'downVote'
-                          }
-                        )
-                      }
-                    >
-                      downvote
-                    </button>{' '}
+                  <div className="extra content">
+                    <div className="ui two buttons">
+                      <button
+                        className="ui basic green button"
+                        type="button"
+                        onClick={() =>
+                          this.props.updateVote(
+                            this.props.room.room.roomInfo.rooms[0].id,
+                            index.id,
+                            {
+                              upVote: 'upVote'
+                            }
+                          )
+                        }
+                      >
+                        <i className="thumbs up icon" />
+                      </button>
+                      <button
+                        className="ui basic orange button"
+                        type="button"
+                        onClick={() =>
+                          this.props.updateVote(
+                            this.props.room.room.roomInfo.rooms[0].id,
+                            index.id,
+                            {
+                              downVote: 'downVote'
+                            }
+                          )
+                        }
+                      >
+                        <i className="thumbs down icon" />
+                      </button>{' '}
+                    </div>
                   </div>
                 )}
+                {this.props.room.host.id &&
+                  this.props.room.host.id === this.props.user.id && (
+                    <button
+                      type="button"
+                      onClick={(songId, roomId) =>
+                        this.props.deleteSong(
+                          index.id,
+                          this.props.room.room.roomInfo.rooms[0].id
+                        )
+                      }
+                    >
+                      Delete song
+                    </button>
+                  )}
               </div>
             );
           })}
@@ -154,10 +185,13 @@ const mapDispatchToProps = dispatch => ({
   addedToPlaylist: () => dispatch(listenForAddPlaylistThunk()),
   updateVote: (room, song, voteValue) =>
     dispatch(voteThunk(room, song, voteValue)),
+
   listenForVotes: () => dispatch(listenForVoteThunk()),
   listenForSongEnd: () => dispatch(listenForEndSongThunk()),
   fetchRoomPlaylist: () => dispatch(listenForUpdatePlaylistThunk()),
-  closeRoom: roomId => dispatch(closeRoomThunk(roomId))
+  closeRoom: roomId => dispatch(closeRoomThunk(roomId)),
+  songPlayed: (songid, roomid) => dispatch(songPlayed(songid, roomid)),
+  deleteSong: (songId, roomId) => dispatch(deleteSongThunk(songId, roomId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Playlist);

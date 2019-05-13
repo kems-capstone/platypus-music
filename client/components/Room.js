@@ -17,8 +17,8 @@ class Room extends Component {
   componentDidMount() {
     const userId = this.props.user.id;
 
-
     this.props.getRoomThunk(userId);
+
     console.log('*****this.props in CDM ROom: ', this.props);
 
   }
@@ -33,9 +33,9 @@ class Room extends Component {
             </div>
             <div className="roomComponent-roomKey-header">
               Room Key:{'  '}
-              <span id="roomComponent-roomKey-code">
+              <div id="roomComponent-roomKey-code">
                 {this.props.room.roomInfo.rooms[0].roomKey}
-              </span>
+              </div>
               <br />
               <Playlist />
             </div>
@@ -55,8 +55,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return {
     // getRoomThunk: key => dispatch(joinRoomThunk(key))
-    getRoomThunk: userId => dispatch(getRoomThunk(userId)),
-
+    getRoomThunk: userId => dispatch(getRoomThunk(userId))
   };
 };
 

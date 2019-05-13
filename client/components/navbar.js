@@ -7,7 +7,7 @@ import {logout} from '../store';
 import {Menu, Icon, Dropdown, Image, Button} from 'semantic-ui-react';
 
 const Navbar = ({handleClick, isLoggedIn}) => (
-  <Menu color="purple" inverted id="navBar" fixed="top">
+  <Menu color="violet" inverted id="navBar" fixed="top">
     <Link className="nav-text" to="/home">
       <Menu.Item id="navbar-title-and-image-container">
         <div id="nav-title">
@@ -15,27 +15,28 @@ const Navbar = ({handleClick, isLoggedIn}) => (
         </div>
       </Menu.Item>
     </Link>
-    <Menu.Item>
-      <Link className="nav-text" to="/dashboard">
-        Dashboard
-      </Link>
-    </Menu.Item>
     {isLoggedIn ? (
       <Menu.Menu position="right">
+        <Menu.Item>
+          <Link className="nav-text" to="/dashboard">
+            Dashboard
+          </Link>
+        </Menu.Item>
         <Menu.Item id="menu-dropdown">
-          <Button size="huge">
-            <Dropdown text="User" labeled button>
-              <Dropdown.Menu>
-                <Dropdown.Header
-                  content={<Link to="/userProfile">User Profile</Link>}
-                />
-                <Dropdown.Header
-                  onClick={handleClick}
-                  content={<Link to="/userProfile">Log Out</Link>}
-                />
-              </Dropdown.Menu>
-            </Dropdown>
-          </Button>
+          {/* <Button class="ui icon button"> */}
+          <Dropdown icon="user" button className="icon">
+            <Dropdown.Menu>
+              <Dropdown.Header
+                className="user"
+                content={<Link to="/userProfile">User Profile</Link>}
+              />
+              <Dropdown.Header
+                onClick={handleClick}
+                content={<Link to="/userProfile">Log Out</Link>}
+              />
+            </Dropdown.Menu>
+          </Dropdown>
+          {/* </Button> */}
         </Menu.Item>
       </Menu.Menu>
     ) : (
