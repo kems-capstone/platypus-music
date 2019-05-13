@@ -1,14 +1,18 @@
 const router = require('express').Router();
 const {Music, Room_Music} = require('../db/models');
 
-router.get('/:id', async (req, res, next) => {
-  const song = await Music.findOne({
-    where: {
-      id: req.params.id
-    }
-  });
-
-  res.json(song);
+router.get('/:song', async (req, res, next) => {
+  try {
+    let songName = req.params.song.replace(/([a-z])([A-Z])/g, '$1 $2');
+    const song = await Music.findOne({
+      where: {
+        name: songName
+      }
+    });
+    res.json(song);
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.put('/:songId/room/:roomId', async (req, res, next) => {
@@ -21,6 +25,20 @@ router.put('/:songId/room/:roomId', async (req, res, next) => {
     });
     await song.update({hasPlayed: true});
     res.json(song);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.delete('/:musicId/room/:roomId', async (req, res, next) => {
+  try {
+    await Room_Music.destroy({
+      where: {
+        musicId: req.params.musicId,
+        roomId: req.params.roomId
+      }
+    });
+    res.sendStatus(204);
   } catch (error) {
     next(error);
   }
