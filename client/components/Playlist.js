@@ -80,10 +80,6 @@ class Playlist extends Component {
       <div>
         {this.props.room.host === true ? (
           <div>
-            <Player
-              selectedSong={this.state.selectedSong}
-              nextTrack={this.nextTrack}
-            />
             <button
               type="button"
               id="close"
@@ -93,6 +89,10 @@ class Playlist extends Component {
             >
               Close this room
             </button>
+            <Player
+              selectedSong={this.state.selectedSong}
+              nextTrack={this.nextTrack}
+            />
           </div>
         ) : (
           <div>
@@ -102,42 +102,52 @@ class Playlist extends Component {
 
         <UiSearchForm handleSubmitWithProps={this.handleSubmitWithProps} />
 
-        <div>
+        <div className="ui cards">
           {this.props.playlist.songList.map(index => {
             return (
-              <div key={index.id}>
-                <h4>{index.name}</h4>
-                <h1>{index.voteCount}</h1>
+              <div className="card" key={index.id}>
+                <div className="content">
+                  <h4 className="header">{index.name}</h4>
+                  <img
+                    className="right floated mini ui image"
+                    src={index.artworkUrl}
+                  />
+                  <h3 className="vote-count">{index.voteCount}</h3>
+                </div>
                 {this.props.playlist.songList[0].id !== index.id && (
-                  <div>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        this.props.updateVote(
-                          this.props.room.room.roomInfo.rooms[0].id,
-                          index.id,
-                          {
-                            upVote: 'upVote'
-                          }
-                        )
-                      }
-                    >
-                      upvote
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        this.props.updateVote(
-                          this.props.room.room.roomInfo.rooms[0].id,
-                          index.id,
-                          {
-                            downVote: 'downVote'
-                          }
-                        )
-                      }
-                    >
-                      downvote
-                    </button>{' '}
+                  <div className="extra content">
+                    <div className="ui two buttons">
+                      <button
+                        className="ui basic green button"
+                        type="button"
+                        onClick={() =>
+                          this.props.updateVote(
+                            this.props.room.room.roomInfo.rooms[0].id,
+                            index.id,
+                            {
+                              upVote: 'upVote'
+                            }
+                          )
+                        }
+                      >
+                        <i className="thumbs up icon" />
+                      </button>
+                      <button
+                        className="ui basic orange button"
+                        type="button"
+                        onClick={() =>
+                          this.props.updateVote(
+                            this.props.room.room.roomInfo.rooms[0].id,
+                            index.id,
+                            {
+                              downVote: 'downVote'
+                            }
+                          )
+                        }
+                      >
+                        <i className="thumbs down icon" />
+                      </button>{' '}
+                    </div>
                   </div>
                 )}
                 {this.props.room.host.id &&
