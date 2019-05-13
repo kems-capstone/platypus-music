@@ -79,10 +79,6 @@ class Playlist extends Component {
       <div>
         {this.props.room.host ? (
           <div>
-            <Player
-              selectedSong={this.state.selectedSong}
-              nextTrack={this.nextTrack}
-            />
             <button
               type="button"
               id="close"
@@ -92,6 +88,10 @@ class Playlist extends Component {
             >
               Close this room
             </button>
+            <Player
+              selectedSong={this.state.selectedSong}
+              nextTrack={this.nextTrack}
+            />
           </div>
         ) : (
           <div>
@@ -129,10 +129,10 @@ class Playlist extends Component {
                           )
                         }
                       >
-                        +
+                        <i className="thumbs up icon" />
                       </button>
                       <button
-                        className="ui basic red button"
+                        className="ui basic orange button"
                         type="button"
                         onClick={() =>
                           this.props.updateVote(
@@ -144,7 +144,7 @@ class Playlist extends Component {
                           )
                         }
                       >
-                        -
+                        <i className="thumbs down icon" />
                       </button>{' '}
                     </div>
                   </div>

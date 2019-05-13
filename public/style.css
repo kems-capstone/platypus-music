@@ -102,6 +102,7 @@ h1 {
   font-weight: bolder;
   text-align: center;
   margin: 25px 0px;
+  color: #6435c9;
 }
 
 #roomComponent-roomKey-code {
@@ -110,10 +111,17 @@ h1 {
   letter-spacing: 0.2em;
   padding: 7px;
   text-align: center;
+  color: #6435c9;
+}
+
+.roomComponent-roomKey-header {
+  text-align: center;
+  color: #6435c9;
 }
 #close {
-  background-color: rgba(255, 0, 0, 0.637);
+  background-color: rgb(255, 0, 0);
   border-radius: 10%;
+  margin: 15px;
 }
 
 h1 {
@@ -132,4 +140,8 @@ h1 {
 .vote-count {
   text-align: center;
   color: #6435c9;
+}
+
+.ui.icon.button {
+  outline-color: #6435c9;
 }
