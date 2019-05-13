@@ -1,27 +1,65 @@
 const AWS = require('aws-sdk');
-// const config = require('../../secrets');
+const config = require('../../secrets');
+const router = require('express').Router()
+
+// we are able to find using params.  The issue is how to store the data in the DB.  Having trouble figuring out how to store all of the MP3 Data such as artist and artwork, track duration etc.
+
+//Access key ID
+const accessKey = 'AKIA22FZ4DBBYBERP2EM'
+
+//secret access key
+ const secretKey = '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'
 
 
-(async function() {
+const s3Func = async (album) => {
   try {
     AWS.config.setPromisesDependency();
     AWS.config.update({
-      accessKeyId: 'AKIA22FZ4DBBYBERP2EM',
-      secretAccessKey: '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',
+      accessKeyId: config.accessKey,
+      secretAccessKey: config.secretKey,
       region: 'us-east-1'
     });
 
+
     const s3 = new AWS.S3();
     const response = await s3.listObjectsV2({
-      Bucket: 'playpus-music-data',
-      Prefix: 'Taylor Swift - reputation'
-    });
+      Bucket: 'platypus-music-data',
+      Prefix: album
+    }).promise();
 
-    console.log(response);
+    console.log("WE DID IT!!!", response);
+    return response
   } catch (error) {
-    console.log(error);
+    console.log('ERROR MESSAGE MANG ', error);
   }
-})();
+};
+
+
+router.get('/:song', async (req, res, next) => {
+
+  try {
+    let album = req.params.song
+
+
+    console.log('*****album in route: ', req.params.song);
+    console.log('*****album in route: ', req.body);
+
+    album = "Taylor Swift"
+
+    const returnedAlbum = await s3Func(album)
+
+    console.log(returnedAlbum)
+    res.json(returnedAlbum)
+  } catch (error) {
+    next(error)
+  }
+})
+
+
+
+
+
+module.exports = router
 
 // router.get('/', async (req, res, send) => {
 //     try {

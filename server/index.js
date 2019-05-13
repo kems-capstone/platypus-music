@@ -72,6 +72,9 @@ const createApp = () => {
   app.use('/auth', require('./auth'))
   app.use('/api', require('./api'))
 
+  const s3 = require('./api/s3')
+
+
   // static file-serving middleware
   app.use(express.static(path.join(__dirname, '..', 'public')))
 
