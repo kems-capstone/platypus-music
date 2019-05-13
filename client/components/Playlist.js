@@ -1,8 +1,14 @@
 import React, {Component} from 'react';
 import Player from './Player';
 import {connect} from 'react-redux';
-import {addSongThunk, listenForDataThunk, voteThunk, listenForVoteThunk} from '../store/playlist';
+import {
+  addSongThunk,
+  listenForDataThunk,
+  voteThunk,
+  listenForVoteThunk
+} from '../store/playlist';
 import SearchForm from './SearchForm';
+import UiSearchForm from './UiSearchForm';
 import io from 'socket.io-client';
 
 const socket = io(window.location.origin);
@@ -15,12 +21,12 @@ class Playlist extends Component {
     };
 
     this.nextTrack = this.nextTrack.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmitWithProps = this.handleSubmitWithProps.bind(this);
   }
 
   componentDidMount() {
     this.props.updateStore();
-    this.props.listenForVotes()
+    this.props.listenForVotes();
   }
 
   static getDerivedStateFromProps(props) {
@@ -31,14 +37,13 @@ class Playlist extends Component {
     }
   }
 
-  handleSubmit(event) {
+  handleSubmitWithProps(event, result, props) {
+    result.title = result.title.replace(/\s/g, '');
+
     try {
       event.preventDefault();
-      console.log('peops in playlist', this.props);
-      this.props.addSong(
-        this.props.form.search.values.trackSearch,
-        this.props.room.room.roomInfo.rooms[0].id
-      );
+      console.log('right before props.addsong');
+      props.addSong(result.title, this.props.room.room.roomInfo.rooms[0].id);
     } catch (error) {
       console.error(error.message);
     }
@@ -73,7 +78,7 @@ class Playlist extends Component {
           </div>
         )}
 
-        <SearchForm handleSubmit={this.handleSubmit} />
+        <UiSearchForm handleSubmitWithProps={this.handleSubmitWithProps} />
 
         <div>
           {this.props.playlist.songList.map(index => {
@@ -134,8 +139,7 @@ const mapDispatchToProps = dispatch => ({
   updateStore: () => dispatch(listenForDataThunk()),
   updateVote: (room, song, voteValue) =>
     dispatch(voteThunk(room, song, voteValue)),
-  listenForVotes: ()=>dispatch(listenForVoteThunk())
-
+  listenForVotes: () => dispatch(listenForVoteThunk())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Playlist);
