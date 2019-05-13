@@ -128,3 +128,8 @@ h1 {
 .ui.basic.primary.button {
   margin: 5%;
 }
+
+.vote-count {
+  text-align: center;
+  color: #6435c9;
+}
