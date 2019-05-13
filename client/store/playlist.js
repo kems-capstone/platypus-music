@@ -10,17 +10,31 @@ const inititalState = {
 };
 
 const ADD_SONG = 'ADD_SONG';
-const UPDATE_STATE = 'UPDATE_STATE';
+const REMOVE_PLAYLIST_SONG = 'REMOVE_PLAYLIST_SONG';
 const UPDATE_VOTE = 'UPDATE_VOTE';
+const UPDATE_PLAYLIST = 'UPDATE_PLAYLIST';
 
-const updateState = otherProps => {
+const addPlaylistSong = songList => {
   return {
-    type: UPDATE_STATE,
-    otherProps
+    type: ADD_PLAYLIST_SONG,
+    songList
+  };
+};
+const removePlaylistSong = songList => {
+  return {
+    type: REMOVE_PLAYLIST_SONG,
+    songList
   };
 };
 
-const getSong = song => {
+const updatePlaylist = playlist => {
+  return {
+    type: UPDATE_PLAYLIST,
+    playlist
+  };
+};
+
+const addSong = song => {
   return {
     type: ADD_SONG,
     song
@@ -34,9 +48,16 @@ const updateVote = newSongData => {
   };
 };
 
-export const listenForDataThunk = () => dispatch => {
-  socket.on('updateRoom', data => {
-    dispatch(updateState(data));
+//////SOCKETS
+
+export const listenForAddPlaylistThunk = () => dispatch => {
+  socket.on('songAdded', data => {
+    dispatch(addSong(data));
+  });
+};
+export const listenForEndSongThunk = () => dispatch => {
+  socket.on('songEnded', data => {
+    dispatch(removePlaylistSong(data));
   });
 };
 export const listenForVoteThunk = () => dispatch => {
@@ -44,14 +65,35 @@ export const listenForVoteThunk = () => dispatch => {
     dispatch(updateVote(updatedSong));
   });
 };
+export const listenForUpdatePlaylistThunk = () => dispatch => {
+  socket.on('getRoomGotPlaylist', playlist => {
+    let unplayedMusic = playlist.playlistInfo; // has votes
+    let allMusic = playlist.roomInfo.rooms[0].music; //Has info
+
+    let list = [];
+    for (let i = 0; i < unplayedMusic.length; i++) {
+      allMusic.forEach(index => {
+        if (index.id === unplayedMusic[i].musicId) {
+          let item = index;
+          item.voteCount = unplayedMusic[i].voteCount;
+          list.push(item);
+        }
+      });
+    }
+
+    dispatch(updatePlaylist(list));
+  });
+};
+
+/////////////
 
 export const addSongThunk = (song, roomId = null) => async dispatch => {
   try {
+
     let {data} = await axios.get('/api/music/' + song);
     await axios.post(`/api/rooms/${roomId}/music/${song}`);
     socket.emit('addedSong', data);
 
-    dispatch(getSong(data));
   } catch (error) {
     console.error(error.message);
   }
@@ -66,7 +108,6 @@ export const voteThunk = (roomId, songId, voteValue) => async dispatch => {
 
     let songVote = data.song;
     songVote.voteCount = data.change[0][0][0].voteCount;
-
     socket.emit('songVoted', songVote);
 
     dispatch(updateVote(songVote));
@@ -83,10 +124,18 @@ export default function(state = inititalState, action) {
         currentSong: action.song,
         songList: [...state.songList, action.song]
       };
-    case UPDATE_STATE:
+
+    case REMOVE_PLAYLIST_SONG:
+      let newSonglist = state.songList.slice(1);
       return {
-        currentSong: action.otherProps.audioUrl,
-        songList: [...state.songList, action.otherProps]
+        currentSong: newSonglist,
+        songList: newSonglist
+      };
+
+    case UPDATE_PLAYLIST:
+      return {
+        ...state,
+        songList: action.playlist
       };
 
     case UPDATE_VOTE:

@@ -5,7 +5,6 @@ import {getRoomThunk} from '../store';
 import {connect} from 'react-redux';
 
 const Dashboard = props => {
-  console.log('props in dashboard', props);
   return (
     <div>
       <h1>Welcome back user</h1>
@@ -17,8 +16,12 @@ const Dashboard = props => {
         <Link to="/joinroom">Join a room</Link>
 
         <br />
-        <Link to="/playlist">Go to Playlist</Link>
-        {/* <button type="button">Join a room</button> */}
+        <button
+          type="button"
+          onClick={id => props.getCurrentRoom(props.user.id)}
+        >
+          <Link to="/room">Go to current room</Link>
+        </button>
       </div>
     </div>
   );
@@ -30,4 +33,10 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, null)(Dashboard);
+const mapDispatchToProps = dispatch => {
+  return {
+    getCurrentRoom: id => dispatch(getRoomThunk(id))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
