@@ -6,18 +6,23 @@ import {connect} from 'react-redux';
 
 const Dashboard = props => {
   return (
-    <div>
+    <div id="dashboard-buttons">
       <h1>Welcome back user</h1>
       <div>
         <Link to="/create-room">
-          <button type="button">Create a room</button>
+          <button className="ui primary basic button" type="button">
+            Create a room
+          </button>
         </Link>
         <br />
-        <Link to="/joinroom">Join a room</Link>
+        <Link className="ui primary basic button" to="/joinroom">
+          Join a room
+        </Link>
 
         <br />
         <button
           type="button"
+          className="ui primary basic button"
           onClick={id => props.getCurrentRoom(props.user.id)}
         >
           <Link to="/room">Go to current room</Link>
