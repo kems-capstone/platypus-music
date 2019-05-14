@@ -3,7 +3,7 @@ const {Music, Room_Music} = require('../db/models');
 
 router.get('/:song', async (req, res, next) => {
   try {
-    let songName = req.params.song.replace(/([a-z])([A-Z])/g, '$1 $2');
+    let songName = decodeURI(req.params.song);
     const song = await Music.findOne({
       where: {
         name: songName
