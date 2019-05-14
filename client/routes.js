@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {withRouter, Route, Switch} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {Login, Signup, UserHome} from './components';
-import {me, refreshRoom} from './store';
+import {me, getRoomThunk, refreshRoom} from './store';
 import {
   Playlist,
   Dashboard,
@@ -25,8 +25,8 @@ class Routes extends Component {
     const {isLoggedIn} = this.props;
 
 
-    let num = this.props.location.pathname.slice(6)
-
+    let num = this.props.roomState.room.id
+    console.log('Router', this.props)
     return (
       <Switch>
         {/* Routes placed here are available to all visitors */}
@@ -41,8 +41,12 @@ class Routes extends Component {
             <Route exact path="/playlist" component={Playlist} />
             <Route exact path="/create-room" component={CreateRoom} />
             <Route exact path="/joinroom" component={JoinRoom} />
-            <Route exact path='/room/' component={Room} />
+            {/* <Route exact path='/room/' component={Room} /> */}
+            {this.props.roomState.room.id ?
             <Route exact path={`/room/${num}`} component={Room} />
+            :
+            null
+            }
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}
@@ -66,8 +70,7 @@ const mapState = state => {
     // Being 'logged in' for our purposes will be defined has having a state.user that has a truthy id.
     // Otherwise, state.user will be an empty object, and state.user.id will be falsey
     isLoggedIn: !!state.user.id,
-
-
+    roomState: state.room
   };
 };
 
