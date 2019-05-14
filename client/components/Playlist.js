@@ -32,6 +32,7 @@ class Playlist extends Component {
   }
 
   componentDidMount() {
+    socket.emit('joinSocketRoom', window.location.pathname)
     this.props.addedToPlaylist();
     this.props.listenForVotes();
     this.props.listenForSongEnd();
@@ -133,7 +134,7 @@ class Playlist extends Component {
                         type="button"
                         onClick={() =>
                           this.props.updateVote(
-                            this.props.room.room.roomInfo.rooms[0].id,
+                            this.props.roomState.room.id,
                             song.id,
                             {
                               downVote: 'downVote'
