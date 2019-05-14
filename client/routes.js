@@ -26,7 +26,7 @@ class Routes extends Component {
 
 
     let num = this.props.roomState.room.id
-    console.log('Router', this.props)
+
     return (
       <Switch>
         {/* Routes placed here are available to all visitors */}
