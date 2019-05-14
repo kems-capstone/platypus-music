@@ -11,7 +11,7 @@ import {
   CreateRoom,
   Room,
   JoinRoom
-} from './components';
+} from './components';s
 
 /**
  * COMPONENT
