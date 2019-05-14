@@ -31,7 +31,6 @@ class Playlist extends Component {
   }
 
   componentDidMount() {
-    console.log('CDM playlist', this.props);
     this.props.addedToPlaylist();
     this.props.listenForVotes();
     this.props.listenForSongEnd();
@@ -73,11 +72,9 @@ class Playlist extends Component {
   }
 
   render() {
-    const roomId = this.props.room.room.roomInfo.rooms[0].id;
-    console.log('*****this.props.room.host: ', this.props.room.host);
     return (
       <div id="playlist-info">
-        {this.props.room.host === true ? (
+        {this.props.roomState.room.host === true ? (
           <div>
             <Player
               selectedSong={this.state.selectedSong}
@@ -118,7 +115,7 @@ class Playlist extends Component {
                         type="button"
                         onClick={() =>
                           this.props.updateVote(
-                            this.props.room.room.roomInfo.rooms[0].id,
+                            this.props.roomState.room.id,
                             song.id,
                             {
                               upVote: 'upVote'
@@ -146,14 +143,13 @@ class Playlist extends Component {
                     </div>
                   </div>
                 )}
-                {this.props.room.host.id &&
-                  this.props.room.host.id === this.props.user.id && (
+                {this.props.roomState.host (
                     <button
                       type="button"
                       onClick={(songId, roomId) =>
                         this.props.deleteSong(
-                          index.id,
-                          this.props.room.room.roomInfo.rooms[0].id
+                          song.id,
+                          this.props.roomState.room.id
                         )
                       }
                     >
@@ -172,7 +168,7 @@ class Playlist extends Component {
 const mapStateToProps = state => ({
   playlist: state.playlist,
   form: state.form,
-  room: state.room,
+  roomState: state.room,
   user: state.user
 });
 
