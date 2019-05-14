@@ -47,10 +47,10 @@ const closeRoom = roomId => {
   };
 };
 
-const refreshHost = isHost => {
+const refreshRoomState = roomState => {
   return {
     type: REFRESH_ROOM,
-    isHost
+   roomState
   };
 };
 
@@ -105,15 +105,13 @@ export const getRoomThunk = userId => {
 export const closeRoomThunk = roomId => async dispatch => {
   await axios.put(`/api/rooms/${roomId}`);
   dispatch(closeRoom(roomId));
+  history.push('/dashboard');
 };
 
 export const refreshRoom = () => async dispatch => {
-  let isHost = false;
   const roomData = await axios.get('/api/rooms/refresh');
-  if (roomData.data.rooms[0].user_rooms.isHost === true) {
-    isHost = true;
-  }
-  dispatch(refreshHost(isHost));
+
+  dispatch(refreshRoomState(roomData.data));
 };
 
 const initialState = {
@@ -127,7 +125,7 @@ export default function(state = initialState, action) {
     case GET_ROOM:
       return action.roomData;
     case REFRESH_ROOM:
-      return {...state, host: action.isHost};
+      return action.roomState
     case ADD_ROOM:
       return action.roomObject;
     case JOIN_ROOM:

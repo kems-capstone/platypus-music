@@ -13,7 +13,7 @@ router.post('/', async (req, res, next) => {
   const roomsHosted = await User_Rooms.findAll({
     where: {userId: req.user.id, isHost: true}
   })
-  console.log('*****userRoomInstance: ', roomsHosted);
+
 //ARE THEY HOST? Yes? Close the room
   if (roomsHosted.length){
    const hostedRoom = await Room.findAll({
@@ -153,9 +153,9 @@ router.get('/current-room/:userId', async (req, res, next) => {
       }
     });
     const members = await roomInfo.rooms[0].getUsers()
-    console.log('*****members: ', members);
 
-    console.log('playlist info', playlistInfo)
+
+
     res.json({playlistInfo: playlistInfo, roomInfo: roomInfo, members: members});
   } catch (error) {
     next(error);
@@ -247,12 +247,25 @@ router.get('/refresh', async (req, res, next) => {
           model: Room,
           where: {
             closed: false
-          }
+          },
+          include: [{model: Music}]
         }
       ]
     });
+    console.log('rooom info', roomInfo.rooms[0])
+    const members = await roomInfo.rooms[0].getUsers()
+    let isHost = false;
+    if (roomInfo.rooms[0].user_rooms.isHost === true) {
+      isHost = true;
+    }
 
-    res.json(roomInfo);
+    let state = {members: members, room: roomInfo.rooms[0], host: isHost}
+    console.log('*****members: ', members);
+
+
+
+
+    res.json(state);
   } catch (error) {
     next(error);
   }

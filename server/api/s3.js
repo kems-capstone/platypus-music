@@ -27,10 +27,10 @@ const s3Func = async (album) => {
       Prefix: album
     }).promise();
 
-    console.log("WE DID IT!!!", response);
+
     return response
   } catch (error) {
-    console.log('ERROR MESSAGE MANG ', error);
+    console.log('ERROR MESSAGE ', error);
   }
 };
 
@@ -41,14 +41,14 @@ router.get('/:song', async (req, res, next) => {
     let album = req.params.song
 
 
-    console.log('*****album in route: ', req.params.song);
-    console.log('*****album in route: ', req.body);
+
+
 
     album = "Taylor Swift"
 
     const returnedAlbum = await s3Func(album)
 
-    console.log(returnedAlbum)
+
     res.json(returnedAlbum)
   } catch (error) {
     next(error)
@@ -75,7 +75,7 @@ module.exports = router
 //         Bucket: 'playpus-music-data'
 //       })
 
-//       console.log(response)
+
 
 //     } catch (error) {
 //       console.error('this is the error s3', error)
