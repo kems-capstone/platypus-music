@@ -31,7 +31,7 @@ class Room extends Component {
               type="button"
               id="close"
               onClick={roomId =>
-                this.props.closeRoom(this.props.room.roomInfo.rooms[0].id)
+                this.props.closeRoom(this.props.roomState.room.id)
               }
             >
               Close room
