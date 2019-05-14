@@ -7,11 +7,10 @@ import {
   voteThunk,
   listenForVoteThunk,
   listenForEndSongThunk,
-
   songPlayed,
-  deleteSongThunk,
+  deleteSongThunk
 } from '../store/playlist';
-import {refreshRoom} from '../store/roomReducer'
+import {refreshRoom} from '../store/roomReducer';
 import SearchForm from './SearchForm';
 import UiSearchForm from './UiSearchForm';
 import io from 'socket.io-client';
@@ -36,7 +35,7 @@ class Playlist extends Component {
     this.props.listenForVotes();
     this.props.listenForSongEnd();
 
-    this.props.refreshRoom()
+    this.props.refreshRoom();
   }
 
   static getDerivedStateFromProps(props) {
@@ -74,7 +73,6 @@ class Playlist extends Component {
   }
 
   render() {
-
     return (
       <div id="playlist-info">
         {this.props.roomState.host === true ? (
@@ -133,7 +131,7 @@ class Playlist extends Component {
                         type="button"
                         onClick={() =>
                           this.props.updateVote(
-                            this.props.room.room.roomInfo.rooms[0].id,
+                            this.props.roomState.room.id,
                             song.id,
                             {
                               downVote: 'downVote'
@@ -147,18 +145,18 @@ class Playlist extends Component {
                   </div>
                 )}
                 {this.props.roomState.host && (
-                    <button
-                      type="button"
-                      onClick={(songId, roomId) =>
-                        this.props.deleteSong(
-                          song.id,
-                          this.props.roomState.room.id
-                        )
-                      }
-                    >
-                      Delete song
-                    </button>
-                  )}
+                  <button
+                    type="button"
+                    onClick={(songId, roomId) =>
+                      this.props.deleteSong(
+                        song.id,
+                        this.props.roomState.room.id
+                      )
+                    }
+                  >
+                    Delete song
+                  </button>
+                )}
               </div>
             );
           })}
