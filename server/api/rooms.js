@@ -260,7 +260,7 @@ router.get('/refresh', async (req, res, next) => {
     }
 
     let state = {members: members, room: roomInfo.rooms[0], host: isHost}
-    console.log('*****members: ', members);
+
 
 
 
