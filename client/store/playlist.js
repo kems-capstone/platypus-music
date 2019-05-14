@@ -100,6 +100,7 @@ export const addSongThunk = (song, roomId = null) => async dispatch => {
     let {data} = await axios.get('/api/music/' + song);
     await axios.post(`/api/rooms/${roomId}/music/${song}`);
     socket.emit('addedSong', data);
+    dispatch(addSong(data))
   } catch (error) {
     console.error(error.message);
   }

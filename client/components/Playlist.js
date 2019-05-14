@@ -9,8 +9,9 @@ import {
   listenForEndSongThunk,
   listenForUpdatePlaylistThunk,
   songPlayed,
-  deleteSongThunk
+  deleteSongThunk,
 } from '../store/playlist';
+import {refreshRoom} from '../store/roomReducer'
 import SearchForm from './SearchForm';
 import UiSearchForm from './UiSearchForm';
 import io from 'socket.io-client';
@@ -35,6 +36,7 @@ class Playlist extends Component {
     this.props.listenForVotes();
     this.props.listenForSongEnd();
     this.props.fetchRoomPlaylist();
+    this.props.refreshRoom()
   }
 
   static getDerivedStateFromProps(props) {
@@ -53,7 +55,7 @@ class Playlist extends Component {
     try {
       event.preventDefault();
 
-      props.addSong(result.title, this.props.room.room.roomInfo.rooms[0].id);
+      props.addSong(result.title, this.props.roomState.room.id);
     } catch (error) {
       console.error(error.message);
     }
@@ -63,7 +65,7 @@ class Playlist extends Component {
     if (this.props.playlist.songList.length >= 1) {
       this.props.songPlayed(
         this.props.playlist.songList[0].id,
-        this.props.room.room.roomInfo.rooms[0].id
+        this.props.roomState.room.id
       );
       socket.emit('endedSong', this.props.playlist.songList);
 
@@ -72,9 +74,10 @@ class Playlist extends Component {
   }
 
   render() {
+    console.log('*****playlistProps: ', this.props);
     return (
       <div id="playlist-info">
-        {this.props.roomState.room.host === true ? (
+        {this.props.roomState.host === true ? (
           <div>
             <Player
               selectedSong={this.state.selectedSong}
@@ -143,7 +146,7 @@ class Playlist extends Component {
                     </div>
                   </div>
                 )}
-                {this.props.roomState.host (
+                {this.props.roomState.host && (
                     <button
                       type="button"
                       onClick={(songId, roomId) =>
@@ -183,7 +186,8 @@ const mapDispatchToProps = dispatch => ({
   fetchRoomPlaylist: () => dispatch(listenForUpdatePlaylistThunk()),
   closeRoom: roomId => dispatch(closeRoomThunk(roomId)),
   songPlayed: (songid, roomid) => dispatch(songPlayed(songid, roomid)),
-  deleteSong: (songId, roomId) => dispatch(deleteSongThunk(songId, roomId))
+  deleteSong: (songId, roomId) => dispatch(deleteSongThunk(songId, roomId)),
+  refreshRoom: () => dispatch(refreshRoom())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Playlist);

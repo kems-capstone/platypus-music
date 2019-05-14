@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {joinRoomThunk, getRoomThunk, closeRoomThunk} from '../store';
+import {joinRoomThunk, getRoomThunk, closeRoomThunk, refreshRoom} from '../store';
 
 import {JoinRoom, Playlist, Player, SearchForm} from '../components';
 import {
@@ -17,7 +17,7 @@ class Room extends Component {
   componentDidMount() {
     const userId = this.props.user.id;
 
-    this.props.getRoomThunk(userId);
+    this.props.refreshRoom()
   }
 
   render() {
@@ -63,8 +63,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return {
     // getRoomThunk: key => dispatch(joinRoomThunk(key))
-    getRoomThunk: userId => dispatch(getRoomThunk(userId)),
-    closeRoom: roomId => dispatch(closeRoomThunk(roomId))
+    // getRoomThunk: userId => dispatch(getRoomThunk(userId)),
+    closeRoom: roomId => dispatch(closeRoomThunk(roomId)),
+    refreshRoom: () => dispatch(refreshRoom())
   };
 };
 
