@@ -252,7 +252,7 @@ router.get('/refresh', async (req, res, next) => {
         }
       ]
     });
-    console.log('rooom info', roomInfo.rooms[0])
+
     const members = await roomInfo.rooms[0].getUsers()
     let isHost = false;
     if (roomInfo.rooms[0].user_rooms.isHost === true) {
