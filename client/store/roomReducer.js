@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import listenForUpdatePlaylistThunk from './playlist';
 import history from '../history';
 
-const socket = io(window.location.origin);
+import socket from '../socket'
 
 const ADD_ROOM = 'ADD_ROOM';
 const GET_ROOM = 'GET_ROOM';
@@ -104,12 +104,15 @@ export const getRoomThunk = userId => {
 
 export const closeRoomThunk = roomId => async dispatch => {
   await axios.put(`/api/rooms/${roomId}`);
+
   dispatch(closeRoom(roomId));
   history.push('/dashboard');
 };
 
 export const refreshRoom = () => async dispatch => {
   const roomData = await axios.get('/api/rooms/refresh');
+
+  socket.emit('getRoomGotPlaylist', roomData.data.room.music);
 
   dispatch(refreshRoomState(roomData.data));
 };

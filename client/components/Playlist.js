@@ -7,7 +7,7 @@ import {
   voteThunk,
   listenForVoteThunk,
   listenForEndSongThunk,
-  listenForUpdatePlaylistThunk,
+
   songPlayed,
   deleteSongThunk,
 } from '../store/playlist';
@@ -35,7 +35,7 @@ class Playlist extends Component {
     this.props.addedToPlaylist();
     this.props.listenForVotes();
     this.props.listenForSongEnd();
-    this.props.fetchRoomPlaylist();
+
     this.props.refreshRoom()
   }
 
@@ -183,7 +183,7 @@ const mapDispatchToProps = dispatch => ({
 
   listenForVotes: () => dispatch(listenForVoteThunk()),
   listenForSongEnd: () => dispatch(listenForEndSongThunk()),
-  fetchRoomPlaylist: () => dispatch(listenForUpdatePlaylistThunk()),
+
   closeRoom: roomId => dispatch(closeRoomThunk(roomId)),
   songPlayed: (songid, roomid) => dispatch(songPlayed(songid, roomid)),
   deleteSong: (songId, roomId) => dispatch(deleteSongThunk(songId, roomId)),
