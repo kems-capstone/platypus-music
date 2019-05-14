@@ -15,6 +15,7 @@ import SearchForm from './SearchForm';
 import UiSearchForm from './UiSearchForm';
 import io from 'socket.io-client';
 import {closeRoomThunk} from '../store';
+import {Button} from 'semantic-ui-react';
 
 const socket = io(window.location.origin);
 
@@ -30,7 +31,7 @@ class Playlist extends Component {
   }
 
   componentDidMount() {
-    console.log('CDM playlist', this.props)
+    console.log('CDM playlist', this.props);
     this.props.addedToPlaylist();
     this.props.listenForVotes();
     this.props.listenForSongEnd();
@@ -53,7 +54,6 @@ class Playlist extends Component {
     try {
       event.preventDefault();
 
-
       props.addSong(result.title, this.props.room.room.roomInfo.rooms[0].id);
     } catch (error) {
       console.error(error.message);
@@ -68,7 +68,6 @@ class Playlist extends Component {
       );
       socket.emit('endedSong', this.props.playlist.songList);
 
-
       this.setState({selectedSong: this.props.playlist.songList[0].audioUrl});
     }
   }
@@ -77,18 +76,9 @@ class Playlist extends Component {
     const roomId = this.props.room.room.roomInfo.rooms[0].id;
     console.log('*****this.props.room.host: ', this.props.room.host);
     return (
-      <div>
+      <div id="playlist-info">
         {this.props.room.host === true ? (
           <div>
-            <button
-              type="button"
-              id="close"
-              onClick={roomId =>
-                this.props.closeRoom(this.props.room.room.roomInfo.rooms[0].id)
-              }
-            >
-              Close this room
-            </button>
             <Player
               selectedSong={this.state.selectedSong}
               nextTrack={this.nextTrack}
@@ -102,19 +92,25 @@ class Playlist extends Component {
 
         <UiSearchForm handleSubmitWithProps={this.handleSubmitWithProps} />
 
-        <div className="ui cards">
-          {this.props.playlist.songList.map(index => {
+        <div id="playlist-info" className="ui cards">
+          {this.props.playlist.songList.map(song => {
             return (
-              <div className="card" key={index.id}>
+              <div className="card" key={song.id}>
                 <div className="content">
-                  <h4 className="header">{index.name}</h4>
                   <img
-                    className="right floated mini ui image"
-                    src={index.artworkUrl}
+                    className="left floated mini ui image"
+                    src={song.artworkUrl}
                   />
-                  <h3 className="vote-count">{index.voteCount}</h3>
+                  <div
+                    id="vote-number"
+                    className="vote-count right floated mini ui image"
+                  >
+                    {song.voteCount}
+                  </div>
+                  <div className="header">{song.name}</div>
+                  <div id="artist">{song.artist}</div>
                 </div>
-                {this.props.playlist.songList[0].id !== index.id && (
+                {this.props.playlist.songList[0].id !== song.id && (
                   <div className="extra content">
                     <div className="ui two buttons">
                       <button
@@ -123,7 +119,7 @@ class Playlist extends Component {
                         onClick={() =>
                           this.props.updateVote(
                             this.props.room.room.roomInfo.rooms[0].id,
-                            index.id,
+                            song.id,
                             {
                               upVote: 'upVote'
                             }
@@ -138,7 +134,7 @@ class Playlist extends Component {
                         onClick={() =>
                           this.props.updateVote(
                             this.props.room.room.roomInfo.rooms[0].id,
-                            index.id,
+                            song.id,
                             {
                               downVote: 'downVote'
                             }
