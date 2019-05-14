@@ -100,9 +100,9 @@ h1 {
 .roomComponent-roomName {
   font-size: 2em;
   font-weight: bolder;
-  text-align: center;
+  text-align: left;
   margin: 25px 0px;
-  color: #6435c9;
+  color: black;
 }
 
 #roomComponent-roomKey-code {
@@ -110,18 +110,21 @@ h1 {
   font-size: 1.25em;
   letter-spacing: 0.2em;
   padding: 7px;
-  text-align: center;
-  color: #6435c9;
+  text-align: left;
+  color: black;
+  padding-bottom: 5px;
 }
 
 .roomComponent-roomKey-header {
-  text-align: center;
-  color: #6435c9;
+  text-align: left;
+  color: black;
+  padding-bottom: 5px;
 }
 #close {
-  background-color: rgb(255, 0, 0);
+  background-color: rgb(199, 24, 24);
   border-radius: 10%;
-  margin: 15px;
+  font-size: 0.75em;
+  color: white;
 }
 
 h1 {
@@ -144,4 +147,24 @@ h1 {
 
 .ui.icon.button {
   outline-color: #6435c9;
+}
+
+#vote-number {
+  font-size: 1.5em;
+  color: black;
+}
+
+#playlist-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#ui-search-form {
+  margin: 5px;
+}
+
+#artist {
+  color: #6435c9;
 }

@@ -50,7 +50,7 @@ class UiSearchForm extends Component {
     const {isLoading, value, results} = this.state;
 
     return (
-      <Grid>
+      <Grid id="ui-search-form">
         <Grid.Column width={6}>
           {/* <Form onSubmit={this.props.handleSubmit}> */}
           <Search
