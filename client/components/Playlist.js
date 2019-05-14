@@ -74,7 +74,7 @@ class Playlist extends Component {
   }
 
   render() {
-    console.log('*****playlistProps: ', this.props);
+
     return (
       <div id="playlist-info">
         {this.props.roomState.host === true ? (

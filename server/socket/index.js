@@ -9,14 +9,14 @@ module.exports = io => {
     );
     let room;
     socket.on('joinSocketRoom', function(roomName){
-      console.log('room NAME in join', roomName)
+
       room = roomName
-      console.log('*****room: ', room);
+
         socket.join(roomName)
     });
 
     const addSongToPlaylist = songList => {
-      console.log('room in add song -------->', room)
+
       socket.broadcast.to(room).emit('songAdded', songList);
     };
     const removeSongFromPlaylist = songList => {
@@ -27,7 +27,7 @@ module.exports = io => {
       socket.broadcast.to(room).emit('voteUpdated', updatedSong)
     }
     const updatePlaylist = (roomPlaylist) => {
-      console.log('room in update -------->', room)
+
       socket.broadcast.to(room).emit('getRoomGotPlaylist', roomPlaylist)
     }
 
