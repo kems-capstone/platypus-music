@@ -1,8 +1,6 @@
 /* eslint-disable no-case-declarations */
 import axios from 'axios';
-import io from 'socket.io-client';
-
-const socket = io(window.location.origin);
+import socket from '../socket'
 
 const inititalState = {
   songList: [],
@@ -75,21 +73,22 @@ export const listenForVoteThunk = () => dispatch => {
 };
 export const listenForUpdatePlaylistThunk = () => dispatch => {
   socket.on('getRoomGotPlaylist', playlist => {
-    let unplayedMusic = playlist.playlistInfo; // has votes
-    let allMusic = playlist.roomInfo.rooms[0].music; //Has info
+    // let unplayedMusic = playlist.playlistInfo; // has votes
+    // let allMusic = playlist.roomInfo.rooms[0].music; //Has info
+    console.log('SL"IDKJFHS:DLKFJH:DSLKFHSDL')
 
-    let list = [];
-    for (let i = 0; i < unplayedMusic.length; i++) {
-      allMusic.forEach(index => {
-        if (index.id === unplayedMusic[i].musicId) {
-          let item = index;
-          item.voteCount = unplayedMusic[i].voteCount;
-          list.push(item);
-        }
-      });
+    let newPlaylist = []
+    for (let i = 0; i < playlist.length; i++) {
+      let song = playlist[i]
+      song.voteCount = song.room_music.voteCount
+      newPlaylist.push(song)
+
     }
+    console.log('***** playlist in THE THUNKKKKK: ',  newPlaylist);
 
-    dispatch(updatePlaylist(list));
+
+
+    dispatch(updatePlaylist(newPlaylist));
   });
 };
 
@@ -127,7 +126,7 @@ export const songPlayed = (songId, roomId) => async dispatch => {
   try {
     await axios.put(`/api/music/${songId}/room/${roomId}`);
   } catch (error) {
-    next(error);
+   console.error(error.message);
   }
 };
 
