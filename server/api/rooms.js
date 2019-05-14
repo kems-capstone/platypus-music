@@ -73,6 +73,7 @@ router.post('/', async (req, res, next) => {
       host = true;
     }
   });
+  createdRoom.music = []
   let roomInfo = {room: createdRoom, host: host, members: members};
 
   res.json(roomInfo);
@@ -86,7 +87,8 @@ router.get('/join/:id', async (req, res, next) => {
       where: {
         roomKey: joinCode,
         closed: false
-      }
+      },
+      include: [{model: Music}]
     });
 
     let host = {};
@@ -150,8 +152,11 @@ router.get('/current-room/:userId', async (req, res, next) => {
         hasPlayed: false
       }
     });
+    const members = await roomInfo.rooms[0].getUsers()
+    console.log('*****members: ', members);
 
-    res.json({playlistInfo: playlistInfo, roomInfo: roomInfo});
+    console.log('playlist info', playlistInfo)
+    res.json({playlistInfo: playlistInfo, roomInfo: roomInfo, members: members});
   } catch (error) {
     next(error);
   }

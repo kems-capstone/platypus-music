@@ -18,34 +18,32 @@ class Room extends Component {
     const userId = this.props.user.id;
 
     this.props.getRoomThunk(userId);
-
-    console.log('*****this.props in CDM ROom: ', this.props);
   }
 
   render() {
-    console.log('THE PROPS WE ARE LOOKING AT', this.props);
+
     return (
       <Container>
-        {this.props.room.roomInfo && this.props.room.roomInfo.rooms[0].id ? (
+        {this.props.roomState.room && this.props.roomState.room.id ? (
           <div>
             <Button
               className="right floated mini ui"
               type="button"
               id="close"
               onClick={roomId =>
-                this.props.closeRoom(this.props.room.roomInfo.rooms[0].id)
+                this.props.closeRoom(this.props.roomState.room.id)
               }
             >
               Close room
             </Button>
             <div className="roomComponent-roomName">
-              {this.props.room.roomInfo.rooms[0].name}
+              {this.props.roomState.room.name}
             </div>
             <div className="roomComponent-roomKey-header">
               Room Key:{'  '}
-              <span id="roomComponent-roomKey-code">
-                {this.props.room.roomInfo.rooms[0].roomKey}
-              </span>
+              <div id="roomComponent-roomKey-code">
+                {this.props.roomState.room.roomKey}
+              </div>
               <br />
               <Playlist />
             </div>
@@ -58,7 +56,7 @@ class Room extends Component {
   }
 }
 const mapStateToProps = state => ({
-  room: state.room.room,
+  roomState: state.room,
   user: state.user,
   playlist: state.playlist
 });

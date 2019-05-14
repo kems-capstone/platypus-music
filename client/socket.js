@@ -6,4 +6,6 @@ socket.on('connect', () => {
   console.log('Connected!')
 })
 
+socket.emit('joinSocketRoom', window.location.pathname)
+
 export default socket
