@@ -1,7 +1,7 @@
 import axios from 'axios';
 import io from 'socket.io-client';
 import listenForUpdatePlaylistThunk from './playlist';
-import history from '../history'
+import history from '../history';
 
 const socket = io(window.location.origin);
 
@@ -36,7 +36,7 @@ const joinRoom = roomInfo => {
 const getRoom = roomData => {
   return {
     type: GET_ROOM,
-    payload: roomData
+    roomData
   };
 };
 
@@ -63,8 +63,10 @@ export const listenForRoomDataThunk = () => dispatch => {
 export const addRoomThunk = (roomName, user) => {
   return async function(dispatch) {
     const createdRoom = await axios.post('/api/rooms', {name: roomName});
+
     dispatch(addRoom(createdRoom.data));
-    history.push('/room');
+
+    history.push(`/room/${createdRoom.data.room.id}`);
   };
 };
 
@@ -73,11 +75,12 @@ export const joinRoomThunk = key => async dispatch => {
   const roomInfo = {
     room: room.data.room,
     members: room.data.members,
-    host: room.data.host
+    host: false
   };
+
   if (roomInfo.room) {
     dispatch(joinRoom(roomInfo));
-   history.push('/room');
+    history.push(`/room/${roomInfo.room.id}`);
   } else {
     return 'INVALID';
   }
@@ -88,7 +91,14 @@ export const getRoomThunk = userId => {
     const roomData = await axios.get('/api/rooms/current-room/' + userId);
     socket.emit('getRoomGotPlaylist', roomData.data);
 
-    dispatch(getRoom(roomData.data));
+    //Maybe dispatch grab playlist
+    let state = {
+      room: roomData.data.roomInfo.rooms[0],
+      host: roomData.data.roomInfo.rooms[0].user_rooms.isHost,
+      members: roomData.data.members
+    };
+
+    dispatch(getRoom(state));
   };
 };
 
@@ -104,7 +114,6 @@ export const refreshRoom = () => async dispatch => {
     isHost = true;
   }
   dispatch(refreshHost(isHost));
-
 };
 
 const initialState = {
@@ -116,7 +125,7 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case GET_ROOM:
-      return {...state, room: action.payload};
+      return action.roomData;
     case REFRESH_ROOM:
       return {...state, host: action.isHost};
     case ADD_ROOM:

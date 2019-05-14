@@ -5,10 +5,10 @@ const router = require('express').Router()
 // we are able to find using params.  The issue is how to store the data in the DB.  Having trouble figuring out how to store all of the MP3 Data such as artist and artwork, track duration etc.
 
 //Access key ID
-const accessKey = 'AKIA22FZ4DBBYBERP2EM'
+const accessKey = config.accessKey
 
 //secret access key
- const secretKey = '0aS804wsOX/MUGnYhXG0KOoE6Dp5qZLFXs3v3oma'
+ const secretKey = config.secretKey
 
 
 const s3Func = async (album) => {
