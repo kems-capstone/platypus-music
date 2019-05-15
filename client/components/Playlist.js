@@ -31,6 +31,7 @@ class Playlist extends Component {
   }
 
   componentDidMount() {
+    socket.emit('joinSocketRoom', window.location.pathname);
     this.props.addedToPlaylist();
     this.props.listenForVotes();
     this.props.listenForSongEnd();
@@ -49,8 +50,6 @@ class Playlist extends Component {
   }
 
   handleSubmitWithProps(event, result, props) {
-    result.title = result.title.replace(/\s/g, '');
-
     try {
       event.preventDefault();
 
