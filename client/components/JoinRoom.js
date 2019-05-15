@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Field, reduxForm} from 'redux-form';
 import {joinRoomThunk, listenForRoomDataThunk, getRoomThunk} from '../store';
+import {Button} from 'semantic-ui-react'
 
 class JoinRoom extends Component {
   constructor(props) {
@@ -22,20 +23,23 @@ handleSubmit() {
   }
   render() {
     return (
-      <div>
-        <form
+      <div >
+
+        <form id='joinRoomContainer'
           className="form-popup"
           name="createRoomForm"
           onSubmit={this.handleSubmit}
         >
+
           <Field
+          id='joinRoomField'
             className="form-input"
             type="text"
             component="input"
             name="joinRoom"
-            placeholder="Enter your rooms Unique Code"
+            placeholder="Enter your room key"
           />
-          <button type="submit">Join Room</button>
+          <Button id='joinRoomButton'color='violet' type="submit">Join Room</Button>
         </form>
       </div>
     );

@@ -9,7 +9,7 @@ const Dashboard = props => {
   console.log('*****props: ', props);
   return (
     <div id="dashboard-buttons">
-      <h1>Welcome back user</h1>
+      <h1>Dashboard</h1>
       <div>
         <Link to="/create-room">
           <Button className="ui primary basic B" type="button">

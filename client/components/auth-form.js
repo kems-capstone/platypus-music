@@ -23,26 +23,12 @@ const AuthForm = props => {
 
   return (
     <div className="login-form">
-      <Grid textAlign="center" style={{height: '100%'}} verticalAlign="middle">
-        <Image
-          src="/patty.jpeg"
-          style={{textAlign: 'center', maxWidth: 350, maxHeight: 200}}
-        />{' '}
-      </Grid>
       <Grid
         textAlign="center"
-        style={{height: '100%'}}
-        verticalAlign="middle"
-        divided
+
 
       >
         <Grid.Column style={{maxWidth: 450}}>
-          <Header as="h2" textAlign="center">
-            {name === 'signup'
-              ? 'Sign up for your account'
-              : 'Log into your account'}
-          </Header>
-
           <Form
             size="large"
             color="blue"
@@ -55,7 +41,7 @@ const AuthForm = props => {
               {name === 'signup' ? (
                 <div>
                   <Form.Field>
-                    <label htmlFor="firstName">
+                    <label className='formLabel' htmlFor="firstName">
                       <div>First Name</div>
                     </label>
                     <input
@@ -67,7 +53,7 @@ const AuthForm = props => {
                   </Form.Field>
 
                   <Form.Field>
-                    <label htmlFor="lastName">
+                    <label className='formLabel' htmlFor="lastName">
                       <div>Last Name</div>
                     </label>
                     <input
@@ -81,7 +67,7 @@ const AuthForm = props => {
               ) : null}
 
               <Form.Field>
-                <label htmlFor="email">
+                <label className='formLabel' htmlFor="email">
                   <div>E-mail Address</div>
                 </label>
                 <input
@@ -89,7 +75,7 @@ const AuthForm = props => {
               </Form.Field>
 
               <Form.Field>
-                <label htmlFor="password">
+                <label className='formLabel' htmlFor="password">
                   <div>Password</div>
                 </label>
                 <input
@@ -116,11 +102,11 @@ const AuthForm = props => {
 
 
             {name === 'signup' ? (
-              <Message>
+              <Message id='message'>
                 Already have an account? <Link to="/login">Log In</Link>
               </Message>
             ) : (
-              <Message>
+              <Message id='message'>
                 New to us? <Link to="/signup">Sign Up</Link>
               </Message>
             )}
