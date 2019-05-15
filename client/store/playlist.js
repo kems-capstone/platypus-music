@@ -1,6 +1,6 @@
 /* eslint-disable no-case-declarations */
 import axios from 'axios';
-import socket from '../socket';
+import socket from '../socket'
 
 const inititalState = {
   songList: [],
@@ -75,15 +75,18 @@ export const listenForUpdatePlaylistThunk = () => dispatch => {
   socket.on('getRoomGotPlaylist', playlist => {
     // let unplayedMusic = playlist.playlistInfo; // has votes
     // let allMusic = playlist.roomInfo.rooms[0].music; //Has info
-    console.log('SL"IDKJFHS:DLKFJH:DSLKFHSDL');
+    console.log('SL"IDKJFHS:DLKFJH:DSLKFHSDL')
 
-    let newPlaylist = [];
+    let newPlaylist = []
     for (let i = 0; i < playlist.length; i++) {
-      let song = playlist[i];
-      song.voteCount = song.room_music.voteCount;
-      newPlaylist.push(song);
+      let song = playlist[i]
+      song.voteCount = song.room_music.voteCount
+      newPlaylist.push(song)
+
     }
-    console.log('***** playlist in THE THUNKKKKK: ', newPlaylist);
+    console.log('***** playlist in THE THUNKKKKK: ',  newPlaylist);
+
+
 
     dispatch(updatePlaylist(newPlaylist));
   });
@@ -96,23 +99,24 @@ export const addSongThunk = (song, roomId = null) => async dispatch => {
     let {data} = await axios.get('/api/music/' + song);
     await axios.post(`/api/rooms/${roomId}/music/${song}`);
     socket.emit('addedSong', data);
-    dispatch(addSong(data));
+    dispatch(addSong(data))
   } catch (error) {
     console.error(error.message);
   }
 };
 
-export const voteThunk = (roomId, song, voteValue) => async dispatch => {
+export const voteThunk = (roomId, songId, voteValue) => async dispatch => {
   try {
-    let {data} = await axios.post(`/api/rooms/${roomId}/vote/${song.id}`, {
-      voteValue: voteValue
-    });
+    let {data} = await axios.put(
+      `/api/rooms/${roomId}/music/${songId}`,
+      voteValue
+    );
 
-    song.voteCount = data;
+    let songVote = data.song;
+    songVote.voteCount = data.change[0][0][0].voteCount;
+    socket.emit('songVoted', songVote);
 
-    socket.emit('songVoted', song);
-
-    dispatch(updateVote(song));
+    dispatch(updateVote(songVote));
   } catch (error) {
     console.error(error.message);
   }
@@ -122,7 +126,7 @@ export const songPlayed = (songId, roomId) => async dispatch => {
   try {
     await axios.put(`/api/music/${songId}/room/${roomId}`);
   } catch (error) {
-    console.error(error.message);
+   console.error(error.message);
   }
 };
 

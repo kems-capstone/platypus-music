@@ -1,18 +1,15 @@
-const User = require('./user');
-const Room = require('./room');
-const Music = require('./music');
-const User_Rooms = require('./user_rooms');
-const Room_Music = require('./Room_Music');
-const User_Music_Room = require('./User_Music_Room');
+const User = require('./user')
+const Room = require('./room')
+const Music = require('./music')
+const User_Rooms = require('./user_rooms')
+const Room_Music = require('./Room_Music')
 
-Room.belongsToMany(User, {through: User_Rooms});
-User.belongsToMany(Room, {through: User_Rooms});
+Room.belongsToMany(User, {through: User_Rooms})
+User.belongsToMany(Room, {through: User_Rooms})
 
-Music.belongsToMany(Room, {through: Room_Music});
-Room.belongsToMany(Music, {through: Room_Music});
 
-User.belongsToMany(Room_Music, {through: User_Music_Room});
-Room_Music.belongsToMany(User, {through: User_Music_Room});
+Music.belongsToMany(Room, {through: Room_Music})
+Room.belongsToMany(Music, {through: Room_Music})
 
 /**
  * If we had any associations to make, this would be a great place to put them!
@@ -32,6 +29,5 @@ module.exports = {
   Room,
   Music,
   User_Rooms,
-  Room_Music,
-  User_Music_Room
-};
+  Room_Music
+}
