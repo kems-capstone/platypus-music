@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Field, reduxForm} from 'redux-form';
-import {Message} from 'semantic-ui-react';
+import {Message, Button} from 'semantic-ui-react';
 import roomReducer, {addRoomThunk} from '../store/roomReducer';
 
 class CreateRoom extends Component {
@@ -21,8 +21,9 @@ class CreateRoom extends Component {
     return (
       <div>
         <h1>Create Room</h1>
-        <div id="createRoom-formContainer">
+        <div >
           <form
+          id="createRoom-formContainer"
             className="form-popup"
             name="createRoomForm"
             onSubmit={this.handleSubmit}
@@ -35,7 +36,7 @@ class CreateRoom extends Component {
               placeholder="room name"
             />
 
-            <button type="submit">Create Room</button>
+            <Button color='violet' type="submit">Create Room</Button>
             <Message>
               <p id="createRoom-codeExplanation">
                 Your room code will be displayed in your room
