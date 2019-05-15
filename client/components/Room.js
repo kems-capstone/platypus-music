@@ -1,6 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {joinRoomThunk, getRoomThunk, closeRoomThunk, refreshRoom, listenForUpdatePlaylistThunk,} from '../store';
+import {
+  joinRoomThunk,
+  getRoomThunk,
+  closeRoomThunk,
+  refreshRoom,
+  listenForUpdatePlaylistThunk
+} from '../store';
 
 import {JoinRoom, Playlist, Player, SearchForm} from '../components';
 import {
@@ -13,20 +19,19 @@ import {
   Message
 } from 'semantic-ui-react';
 
-import socket from '../socket'
+import socket from '../socket';
 
 class Room extends Component {
   componentDidMount() {
-    socket.emit('joinSocketRoom', window.location.pathname)
+    socket.emit('joinSocketRoom', window.location.pathname);
     const userId = this.props.user.id;
-    this.props.fetchRoomPlaylist()
-    this.props.refreshRoom()
+    this.props.fetchRoomPlaylist();
+    this.props.refreshRoom();
   }
 
   render() {
-
     return (
-      <Container>
+      <div>
         {this.props.roomState.room && this.props.roomState.room.id ? (
           <div>
             <Button
@@ -54,7 +59,7 @@ class Room extends Component {
         ) : (
           ''
         )}
-      </Container>
+      </div>
     );
   }
 }
@@ -69,7 +74,7 @@ const mapDispatchToProps = dispatch => {
     // getRoomThunk: userId => dispatch(getRoomThunk(userId)),
     closeRoom: roomId => dispatch(closeRoomThunk(roomId)),
     refreshRoom: () => dispatch(refreshRoom()),
-    fetchRoomPlaylist: () => dispatch(listenForUpdatePlaylistThunk()),
+    fetchRoomPlaylist: () => dispatch(listenForUpdatePlaylistThunk())
   };
 };
 
