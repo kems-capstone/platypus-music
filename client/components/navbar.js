@@ -14,30 +14,43 @@ import {
   Input
 } from 'semantic-ui-react';
 
-const Navbar = props => (
-  <div>
-    <Menu pointing>
-      <Menu.Item as="a" href="/home" name="home" />
-      <Menu.Menu position="right">
-        <Menu.Item as="a" href="/dashboard" name="dashboard" />
-        <Menu.Item id="menu-dropdown">
-          <Button className="ui icon button">
-            <Dropdown icon="user" button className="icon">
-              <Dropdown.Menu>
-                <Dropdown.Header
-                  className="user"
-                  content={<Link to="/userProfile">User Profile</Link>}
-                />
-                <Dropdown.Header
-                  onClick={props.handleClick}
-                  content={<Link to="/userProfile">Log Out</Link>}
-                />
-              </Dropdown.Menu>
-            </Dropdown>
-          </Button>
-        </Menu.Item>
-      </Menu.Menu>
-    </Menu>
+const Navbar = ({handleClick, isLoggedIn}) => (
+  <div id="navbar">
+    {isLoggedIn ? (
+      <Menu id="navbar-menu" pointing fixed="bottom">
+        <Menu.Item id="navbar-menuitem" as="a" href="/home" icon="home" />
+
+        <Menu.Item
+          id="navbar-menuitem"
+          as="a"
+          href="/dashboard"
+          icon="dashboard"
+        />
+        <div id="navbar-menuitem">
+          <Dropdown icon="user" className="user-icon">
+            <Dropdown.Menu>
+              {/* <Dropdown.Item as="a" href="/userProfile" text="User Profile" /> */}
+              <Dropdown.Item
+                as="a"
+                href="/home"
+                text="Log Out"
+                onClick={handleClick}
+              />
+            </Dropdown.Menu>
+            {/* </Menu.Item> */}
+          </Dropdown>
+        </div>
+      </Menu>
+    ) : (
+      <Menu id="navbar-menu" pointing fixed="bottom">
+        <Menu.Item as="a" href="/home" name="home" />
+        <Menu.Menu position="right">
+          <Menu.Item as="a" href="/login" name="login" />
+
+          <Menu.Item as="a" href="/signup" name="sign up" />
+        </Menu.Menu>
+      </Menu>
+    )}
   </div>
 
   // <Menu color="violet" inverted id="navBar" fixed="top">

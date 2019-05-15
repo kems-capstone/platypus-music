@@ -1,5 +1,6 @@
 body {
   font-family: sans-serif;
+  overflow-x: hidden;
 }
 
 a {
@@ -28,9 +29,29 @@ h1 {
   font-size: 12px;
 }
 
+#navbar-menu {
+  display: flex;
+  height: 10%;
+  align-content: center;
+  align-items: center;
+  /* position: absolute; */
+  bottom: 0;
+  padding-top: 1em;
+  max-width: 100vw;
+}
 #navBar {
   display: flex;
+  justify-content: space-between;
 }
+
+#navbar-menuitem {
+  display: flex;
+  width: 33.3%;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+}
+
 .homepage {
   text-align: center;
   background-attachment: fixed;
@@ -49,8 +70,35 @@ h1 {
   justify-content: center;
   align-items: center;
 }
+
 .homepageText {
-  padding: 60px;
+  overflow: hidden;
+  margin-bottom: 20%;
+}
+.ui.container {
+  margin-bottom: 20%;
+  min-height: 100vh;
+  max-height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.ui.card > .content,
+.ui.cards > .card > .content {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  width: 100%;
+}
+.ui.menu .ui.dropdown .menu > .item {
+  position: relative;
+}
+
+.ui.cards {
+  display: flex;
+  align-content: center;
+  align-items: center;
 }
 #homePage-h1 {
   font-weight: normal;
@@ -66,11 +114,6 @@ h1 {
   background-color: green;
   height: 100px;
   width: 250px;
-}
-
-#navBar {
-  display: flex;
-  position: sticky;
 }
 
 .nav-title-text {
@@ -104,7 +147,7 @@ h1 {
   font-size: 2em;
   font-weight: bolder;
   text-align: left;
-  margin: 25px 0px;
+  margin: 25px 10px;
   color: black;
 }
 
@@ -122,12 +165,14 @@ h1 {
   text-align: left;
   color: black;
   padding-bottom: 5px;
+  margin: 0px 10px;
 }
 #close {
   background-color: rgb(199, 24, 24);
   border-radius: 10%;
   font-size: 0.75em;
   color: white;
+  margin: 0px 10px;
 }
 
 h1 {
@@ -162,6 +207,7 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-bottom: 10%;
 }
 
 #ui-search-form {
