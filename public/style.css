@@ -1,6 +1,7 @@
 body {
   font-family: sans-serif;
   overflow-x: hidden;
+
 }
 
 a {
@@ -16,9 +17,25 @@ nav a {
   margin: 1em;
 }
 
+#joinRoomContainer{
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+}
+#joinRoomField{
+  max-width: 250px;
+  padding: 10px;
+  margin: 50% 20%;
+}
+#joinRoomButton{
+  margin: -40% 20% 0% 20%;
+  max-width: 250px;
+}
+
 form div {
   margin: 1em;
   display: inline-block;
+
 }
 
 h1 {
@@ -27,6 +44,7 @@ h1 {
 
 :root {
   font-size: 12px;
+
 }
 
 #navbar-menu {
@@ -38,6 +56,8 @@ h1 {
   bottom: 0;
   padding-top: 1em;
   max-width: 100vw;
+
+
 }
 #navBar {
   display: flex;
@@ -51,9 +71,13 @@ h1 {
   align-items: center;
   justify-content: center;
 }
+#patty {
 
-.homepage {
-  text-align: center;
+  height: 40vh;
+  width: 55vw;
+}
+#homepageBackground {
+  /* text-align: center;
   background-attachment: fixed;
   min-height: 100vh;
   background-size: cover;
@@ -64,16 +88,39 @@ h1 {
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
-  font-size: 2em;
+  font-size: 2em; */
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+}
+#message{
+  margin: 0 0 -50 0 !important;
 }
 
-.homepageText {
+.formLabel{
+  margin: -5px !important
+}
+
+.homepageBlurb{
+  border: 3px solid  #6435c9;
+  margin: 2% 10%;
+  padding: 5%;
+  text-align: center;
+  border-radius: 10px;
+  color: rgb(68, 22, 68);
+  font-weight: bolder;
+
+
+
+}
+
+.homepage {
+
   overflow: hidden;
   margin-bottom: 20%;
+  display: flex ;
+  flex-direction: column ;
+  justify-content: center ;
+  align-items: center;
 }
 .ui.container {
   margin-bottom: 20%;
@@ -102,13 +149,10 @@ h1 {
 }
 #homePage-h1 {
   font-weight: normal;
-  font-size: 3em;
+  font-size: 2em;
   margin-top: 1vm;
 }
-#patty {
-  height: 200px;
-  width: 150px;
-}
+
 
 .music-box {
   background-color: green;
@@ -126,19 +170,16 @@ h1 {
 .form-popup,
 .form-input {
   margin-top: 50px;
+  max-width: 250px;
+  padding: 10px;
 }
 
 /* CREATE ROOM COMPONENT */
 
 #createRoom-formContainer {
-  padding: 5%;
   display: flex;
-
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  /* background-color: orange; */
-  text-align: center;
+  align-content: center;
 }
 
 /* ROOM COMPONENT */
@@ -216,4 +257,67 @@ h1 {
 
 #artist {
   color: #6435c9;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.card{
+padding-top: 3px;
+}
+
+
+#signUpLoginInput{
+  background-color: rgb(233, 234, 248);
+}
+#currentSongCard{
+  /* background-color: rgb(0, 98, 255) !important */
+}
+#currentSongContent{
+  background-color: rgb(230, 225, 225);
+  box-shadow: 5px 5px 2px grey;
+
 }

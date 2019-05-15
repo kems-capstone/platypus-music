@@ -15,7 +15,7 @@ import SearchForm from './SearchForm';
 import UiSearchForm from './UiSearchForm';
 import io from 'socket.io-client';
 import {closeRoomThunk} from '../store';
-import {Button} from 'semantic-ui-react';
+import {Button, Divider} from 'semantic-ui-react';
 
 const socket = io(window.location.origin);
 
@@ -72,6 +72,8 @@ class Playlist extends Component {
   }
 
   render() {
+    let currentSong = this.props.playlist.songList[0] || {}
+    let queuedSongs = this.props.playlist.songList.slice(1) || []
     return (
       <div id="playlist-info">
         {this.props.roomState.host === true ? (
@@ -90,10 +92,29 @@ class Playlist extends Component {
         <UiSearchForm handleSubmitWithProps={this.handleSubmitWithProps} />
 
         <div id="playlist-info" className="ui cards">
-          {this.props.playlist.songList.map(song => {
+        <Divider horizontal color="purple">Currently Playing</Divider>
+
+        <div className="card " id="currentSongCard" key={currentSong.id}>
+                <div className="content " id="currentSongContent">
+                  <img
+                    className="left floated mini ui image"
+                    src={currentSong.artworkUrl}
+                    />
+                  <div
+                    id="vote-number"
+                    className="vote-count right floated mini ui image"
+                    >
+                    {currentSong.voteCount}
+                  </div>
+                  <div className="header">{currentSong.name}</div>
+                  <div id="artist">{currentSong.artist}</div>
+                </div>
+        </div>
+          <Divider horizontal color="red">Next Up</Divider>
+          {queuedSongs.map(song => {
             return (
               <div className="card" key={song.id}>
-                <div className="content">
+                <div className="contentCard">
                   <img
                     className="left floated mini ui image"
                     src={song.artworkUrl}
@@ -107,7 +128,7 @@ class Playlist extends Component {
                   <div className="header">{song.name}</div>
                   <div id="artist">{song.artist}</div>
                 </div>
-                {this.props.playlist.songList[0].id !== song.id && (
+
                   <div className="extra content">
                     <div className="ui two buttons">
                       <button
@@ -138,7 +159,7 @@ class Playlist extends Component {
                       </button>{' '}
                     </div>
                   </div>
-                )}
+
                 {this.props.roomState.host && (
                   <button
                     type="button"

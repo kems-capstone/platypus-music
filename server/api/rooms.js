@@ -85,6 +85,7 @@ router.post('/', async (req, res, next) => {
 //Authenticate Key Route for Join Room
 router.get('/join/:id', async (req, res, next) => {
   try {
+    console.log('in authenticate Router')
     const joinCode = req.params.id;
     const room = await Room.findOne({
       where: {
@@ -93,6 +94,8 @@ router.get('/join/:id', async (req, res, next) => {
       },
       include: [{model: Music}]
     });
+
+    console.log('*****room in routes: ', room);
 
     let host = {};
 
@@ -120,6 +123,7 @@ router.get('/join/:id', async (req, res, next) => {
         const newMembers = await room.getUsers();
 
         const roomInfo = {room: room, members: newMembers, host: host};
+        console.log('*****roomInfo In router: ', roomInfo);
         res.json(roomInfo);
       }
     } else {
