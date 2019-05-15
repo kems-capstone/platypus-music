@@ -3,30 +3,35 @@ import user from '../store/user';
 import {Link} from 'react-router-dom';
 import {getRoomThunk} from '../store';
 import {connect} from 'react-redux';
+import {Button} from 'semantic-ui-react';
 
 const Dashboard = props => {
+  console.log('*****props: ', props);
   return (
     <div id="dashboard-buttons">
       <h1>Welcome back user</h1>
       <div>
         <Link to="/create-room">
-          <button className="ui primary basic button" type="button">
+          <Button className="ui primary basic B" type="button">
             Create a room
-          </button>
+          </Button>
         </Link>
         <br />
-        <Link className="ui primary basic button" to="/joinroom">
-          Join a room
+        <Link to={`/room/${props.roomState.room.id}`}>
+          <Button
+            type="button"
+            className="ui primary basic button"
+            onClick={id => props.getCurrentRoom(props.user.id)}
+          >
+            Go to current room
+          </Button>
         </Link>
-
         <br />
-        <button
-          type="button"
-          className="ui primary basic button"
-          onClick={id => props.getCurrentRoom(props.user.id)}
-        >
-          <Link to="/room">Go to current room</Link>
-        </button>
+        <Link to="/joinroom">
+          <Button type="button" className="ui primary basic button">
+            Join a room
+          </Button>
+        </Link>
       </div>
     </div>
   );
@@ -34,7 +39,8 @@ const Dashboard = props => {
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    roomState: state.room
   };
 };
 

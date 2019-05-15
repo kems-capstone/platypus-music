@@ -34,6 +34,7 @@ const AuthForm = props => {
         style={{height: '100%'}}
         verticalAlign="middle"
         divided
+
       >
         <Grid.Column style={{maxWidth: 450}}>
           <Header as="h2" textAlign="center">
@@ -58,6 +59,7 @@ const AuthForm = props => {
                       <div>First Name</div>
                     </label>
                     <input
+                    id='signUpLoginInput'
                       name="firstName"
                       type="text"
                       placeholder="First Name"
@@ -69,6 +71,7 @@ const AuthForm = props => {
                       <div>Last Name</div>
                     </label>
                     <input
+                    id='signUpLoginInput'
                       name="lastName"
                       type="text"
                       placeholder="Last Name"
@@ -76,30 +79,33 @@ const AuthForm = props => {
                   </Form.Field>
                 </div>
               ) : null}
-              <br />
+
               <Form.Field>
                 <label htmlFor="email">
                   <div>E-mail Address</div>
                 </label>
-                <input name="email" type="text" placeholder="E-mail Address" />
+                <input
+                id='signUpLoginInput' name="email" type="text" placeholder="E-mail Address" />
               </Form.Field>
 
               <Form.Field>
                 <label htmlFor="password">
                   <div>Password</div>
                 </label>
-                <input name="password" type="password" placeholder="Password" />
+                <input
+                id='signUpLoginInput' name="password" type="password" placeholder="Password" />
               </Form.Field>
             </Segment>
-            <br />
 
-            <Button color="purple" size="large" type="submit">
+
+            <Button color='violet' size="large" type="submit">
               {displayName}
             </Button>
 
+
             {error && error.response && <div> {error.response.data} </div>}
 
-            <br />
+
 
             <Button as="a" href="/auth/google">
               <font size="2">
@@ -108,8 +114,8 @@ const AuthForm = props => {
               <Icon name="google" />
             </Button>
 
-            <br />
-            {/* {name === 'signup' ? (
+
+            {name === 'signup' ? (
               <Message>
                 Already have an account? <Link to="/login">Log In</Link>
               </Message>
@@ -117,7 +123,7 @@ const AuthForm = props => {
               <Message>
                 New to us? <Link to="/signup">Sign Up</Link>
               </Message>
-            )} */}
+            )}
           </Form>
         </Grid.Column>
       </Grid>

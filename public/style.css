@@ -168,3 +168,66 @@ h1 {
 #artist {
   color: #6435c9;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.card{
+padding-top: 3px;
+}
+
+
+#signUpLoginInput{
+  background-color: rgb(233, 234, 248);
+}
+#currentSongCard{
+  /* background-color: rgb(0, 98, 255) !important */
+}
+#currentSongContent{
+  background-color: rgb(230, 225, 225);
+  box-shadow: 5px 5px 2px grey;
+
+}

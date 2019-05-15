@@ -71,12 +71,15 @@ export const addRoomThunk = (roomName, user) => {
 };
 
 export const joinRoomThunk = key => async dispatch => {
+  console.log('In Join Room Thunk')
   const room = await axios.get('/api/rooms/join/' + key);
+  console.log('room in join room thunk', room)
   const roomInfo = {
     room: room.data.room,
     members: room.data.members,
     host: false
   };
+  console.log('roomInfo in join room thunk', roomInfo)
 
   if (roomInfo.room) {
     dispatch(joinRoom(roomInfo));
