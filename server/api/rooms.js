@@ -1,32 +1,35 @@
 const router = require('express').Router();
-const {Room, Music, Room_Music, User_Rooms, User} = require('../db/models');
+const {
+  Room,
+  Music,
+  Room_Music,
+  User_Rooms,
+  User,
+  User_Music_Room
+} = require('../db/models');
 
 //CREATE ROOM ROUTE
 //If host change Closed to true   If guest- destory assoc
 
-
-
-
 router.post('/', async (req, res, next) => {
-
   //FIND IF THEY ARE HOST
   const roomsHosted = await User_Rooms.findAll({
     where: {userId: req.user.id, isHost: true}
-  })
+  });
 
-//ARE THEY HOST? Yes? Close the room
-  if (roomsHosted.length){
-   const hostedRoom = await Room.findAll({
+  //ARE THEY HOST? Yes? Close the room
+  if (roomsHosted.length) {
+    const hostedRoom = await Room.findAll({
       where: {
         id: roomsHosted[0].roomId
       }
-    })
-    hostedRoom[0].closed = true
-    hostedRoom[0].save()
+    });
+    hostedRoom[0].closed = true;
+    hostedRoom[0].save();
   }
 
-//IF YOU ARE A GUEST
-// find all rooms they in that are open
+  //IF YOU ARE A GUEST
+  // find all rooms they in that are open
   const allOpenRooms = await Room.findAll({
     where: {closed: false},
     include: [{model: User}]
@@ -73,7 +76,7 @@ router.post('/', async (req, res, next) => {
       host = true;
     }
   });
-  createdRoom.music = []
+  createdRoom.music = [];
   let roomInfo = {room: createdRoom, host: host, members: members};
 
   res.json(roomInfo);
@@ -152,11 +155,13 @@ router.get('/current-room/:userId', async (req, res, next) => {
         hasPlayed: false
       }
     });
-    const members = await roomInfo.rooms[0].getUsers()
+    const members = await roomInfo.rooms[0].getUsers();
 
-
-
-    res.json({playlistInfo: playlistInfo, roomInfo: roomInfo, members: members});
+    res.json({
+      playlistInfo: playlistInfo,
+      roomInfo: roomInfo,
+      members: members
+    });
   } catch (error) {
     next(error);
   }
@@ -195,31 +200,71 @@ router.put('/close', async (req, res, next) => {
   res.json(closedRoom);
 });
 
-router.put('/:roomId/music/:musicId', async (req, res, next) => {
+// router.put('/:roomId/music/:musicId', async (req, res, next) => {
+//   try {
+//     if (req.body.upVote === 'upVote') {
+//       let change = await Room_Music.increment('voteCount', {
+//         by: 1,
+//         where: {
+//           roomId: req.params.roomId,
+//           musicId: req.params.musicId
+//         },
+//         include: [{model: Music}]
+//       });
+//       const song = await Music.findByPk(req.params.musicId);
+//       res.send({change, song});
+//     } else {
+//       let change = await Room_Music.decrement('voteCount', {
+//         by: 1,
+//         where: {
+//           roomId: req.params.roomId,
+//           musicId: req.params.musicId
+//         },
+//         include: [{model: Music}]
+//       });
+//       const song = await Music.findByPk(req.params.musicId);
+//       res.send({change, song});
+//     }
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
+router.post('/:roomId/vote/:musicId', async (req, res, next) => {
   try {
-    if (req.body.upVote === 'upVote') {
-      let change = await Room_Music.increment('voteCount', {
-        by: 1,
-        where: {
-          roomId: req.params.roomId,
-          musicId: req.params.musicId
-        },
-        include: [{model: Music}]
-      });
-      const song = await Music.findByPk(req.params.musicId);
-      res.send({change, song});
-    } else {
-      let change = await Room_Music.decrement('voteCount', {
-        by: 1,
-        where: {
-          roomId: req.params.roomId,
-          musicId: req.params.musicId
-        },
-        include: [{model: Music}]
-      });
-      const song = await Music.findByPk(req.params.musicId);
-      res.send({change, song});
-    }
+    const mrId = await Room_Music.findOne({
+      where: {
+        roomId: req.params.roomId,
+        musicId: req.params.musicId,
+        hasPlayed: false
+      }
+    });
+
+    const userVote = await User_Music_Room.findOrCreate({
+      where: {
+        userId: req.user.id,
+        roomMusicId: mrId.id,
+        voteValue: req.body.voteValue
+      }
+    });
+
+    const allVotes = await User_Music_Room.findAll({
+      where: {
+        roomMusicId: mrId.id
+      }
+    });
+
+    const voteCount = allVotes.reduce((accum, curr) => {
+      console.log('curr', curr.dataValues, 'accum', accum);
+      if (curr.dataValues.voteValue === 'upvote') {
+        accum += 1;
+      } else {
+        accum -= 1;
+      }
+      return accum;
+    }, 1);
+
+    res.json(voteCount);
   } catch (error) {
     next(error);
   }
@@ -253,17 +298,14 @@ router.get('/refresh', async (req, res, next) => {
       ]
     });
 
-    const members = await roomInfo.rooms[0].getUsers()
+    const members = await roomInfo.rooms[0].getUsers();
     let isHost = false;
     if (roomInfo.rooms[0].user_rooms.isHost === true) {
       isHost = true;
     }
 
-    let state = {members: members, room: roomInfo.rooms[0], host: isHost}
+    let state = {members: members, room: roomInfo.rooms[0], host: isHost};
     console.log('*****members: ', members);
-
-
-
 
     res.json(state);
   } catch (error) {

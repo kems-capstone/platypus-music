@@ -117,10 +117,8 @@ class Playlist extends Component {
                         onClick={() =>
                           this.props.updateVote(
                             this.props.roomState.room.id,
-                            song.id,
-                            {
-                              upVote: 'upVote'
-                            }
+                            song,
+                            'upvote'
                           )
                         }
                       >
@@ -132,10 +130,8 @@ class Playlist extends Component {
                         onClick={() =>
                           this.props.updateVote(
                             this.props.roomState.room.id,
-                            song.id,
-                            {
-                              downVote: 'downVote'
-                            }
+                            song,
+                            'downvote'
                           )
                         }
                       >
