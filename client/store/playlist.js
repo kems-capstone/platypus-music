@@ -147,7 +147,7 @@ export default function(state = inititalState, action) {
     case REMOVE_PLAYLIST_SONG:
       let newSonglist = state.songList.slice(1);
       return {
-        currentSong: newSonglist,
+        currentSong: newSonglist[0],
         songList: newSonglist
       };
 

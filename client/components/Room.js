@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import history from '../history'
 import {
   joinRoomThunk,
   getRoomThunk,
@@ -25,22 +26,24 @@ class Room extends Component {
   constructor(props){
     super(props)
 
-    this.leaveRoom = this.leaveRoom.bind(this)
-    this.showSocketRooms = this.showSocketRooms.bind(this)
+    // this.leaveRoom = this.leaveRoom.bind(this)
+    // this.showSocketRooms = this.showSocketRooms.bind(this)
   }
   componentDidMount() {
     socket.emit('joinSocketRoom', window.location.pathname);
-    const userId = this.props.user.id;
+    socket.on('partyEnded', function(){
+      history.push('/dashboard')
+    })
     this.props.fetchRoomPlaylist();
     this.props.refreshRoom();
   }
-  showSocketRooms(){
-    socket.emit('showRoom')
-  }
-  leaveRoom(){
-    console.log('*****: leaving socket room front', socket.rooms);
-    socket.emit('leaveSocketRoom', socket.rooms)
-  }
+  // showSocketRooms(){
+  //   socket.emit('showRoom')
+  // }
+  // leaveRoom(){
+  //   console.log('*****: leaving socket room front', socket.rooms);
+  //   socket.emit('leaveSocketRoom', socket.rooms)
+  // }
 
   render() {
     console.log(this.props)

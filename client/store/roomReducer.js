@@ -109,6 +109,7 @@ export const closeRoomThunk = roomId => async dispatch => {
   await axios.put(`/api/rooms/${roomId}`);
 
   dispatch(closeRoom(roomId));
+  socket.emit('hostEnded')
   history.push('/dashboard');
 };
 
