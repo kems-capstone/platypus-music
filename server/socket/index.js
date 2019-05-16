@@ -14,10 +14,9 @@ module.exports = io => {
     socket.on('showRoom', function(){
       console.log('socketrooms', socket.rooms)
     })
-    socket.on('leaveSocketRoom', function(){
-      console.log( 'roomName : ', socket.rooms)
+    socket.on('roomClosed', function(){
+     //emits a signal that tells all people in room to redirect to dashboard and closes the room on the db
 
-      console.log('socket room after', socket.rooms)
     })
 
 
