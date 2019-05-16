@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {auth} from '../store';
 import {Link} from 'react-router-dom';
-import history from '../history'
+import history from '../history';
 import {
   Button,
   Form,
@@ -21,14 +21,9 @@ import {
 const AuthForm = props => {
   const {name, displayName, handleSubmit, error} = props;
 
-
   return (
     <div className="login-form">
-      <Grid
-        textAlign="center"
-
-
-      >
+      <Grid textAlign="center">
         <Grid.Column style={{maxWidth: 450}}>
           <Form
             size="large"
@@ -42,11 +37,11 @@ const AuthForm = props => {
               {name === 'signup' ? (
                 <div>
                   <Form.Field>
-                    <label className='formLabel' htmlFor="firstName">
+                    <label className="formLabel" htmlFor="firstName">
                       <div>First Name</div>
                     </label>
                     <input
-                    id='signUpLoginInput'
+                      id="signUpLoginInput"
                       name="firstName"
                       type="text"
                       placeholder="First Name"
@@ -54,11 +49,11 @@ const AuthForm = props => {
                   </Form.Field>
 
                   <Form.Field>
-                    <label className='formLabel' htmlFor="lastName">
+                    <label className="formLabel" htmlFor="lastName">
                       <div>Last Name</div>
                     </label>
                     <input
-                    id='signUpLoginInput'
+                      id="signUpLoginInput"
                       name="lastName"
                       type="text"
                       placeholder="Last Name"
@@ -68,49 +63,55 @@ const AuthForm = props => {
               ) : null}
 
               <Form.Field>
-                <label className='formLabel' htmlFor="email">
+                <label className="formLabel" htmlFor="email">
                   <div>E-mail Address</div>
                 </label>
                 <input
-                id='signUpLoginInput' name="email" type="text" placeholder="E-mail Address" />
+                  id="signUpLoginInput"
+                  name="email"
+                  type="text"
+                  placeholder="E-mail Address"
+                />
               </Form.Field>
 
               <Form.Field>
-                <label className='formLabel' htmlFor="password">
+                <label className="formLabel" htmlFor="password">
                   <div>Password</div>
                 </label>
                 <input
-                id='signUpLoginInput' name="password" type="password" placeholder="Password" />
+                  id="signUpLoginInput"
+                  name="password"
+                  type="password"
+                  placeholder="Password"
+                />
               </Form.Field>
             </Segment>
 
+            <div id="login-signup-buttons">
+              <div id="first-buttons">
+                <Button color="violet" size="large" type="submit">
+                  {displayName}
+                </Button>
 
-            <Button color='violet' size="large" type="submit">
-              {displayName}
-            </Button>
+                {error && error.response && <div> {error.response.data} </div>}
 
-
-            {error && error.response && <div> {error.response.data} </div>}
-
-
-
-            <Button as="a" href="/auth/google">
-              <font size="2">
-                {displayName} with {'                  '}
-              </font>
-              <Icon name="google" />
-            </Button>
-
-
-            {name === 'signup' ? (
-              <Message id='message'>
-                Already have an account? <Link to="/login">Log In</Link>
-              </Message>
-            ) : (
-              <Message id='message'>
-                New to us? <Link to="/signup">Sign Up</Link>
-              </Message>
-            )}
+                <Button as="a" href="/auth/google">
+                  <font size="2">
+                    {displayName} with {'                  '}
+                  </font>
+                  <Icon name="google" />
+                </Button>
+              </div>
+              {name === 'signup' ? (
+                <Message id="message">
+                  Already have an account? <Link to="/login">Log In</Link>
+                </Message>
+              ) : (
+                <Message id="message">
+                  New to us? <Link to="/signup">Sign Up</Link>
+                </Message>
+              )}
+            </div>
           </Form>
         </Grid.Column>
       </Grid>
@@ -149,6 +150,7 @@ const mapDispatchLogin = dispatch => {
       const email = evt.target.email.value.toLowerCase();
       const password = evt.target.password.value.toLowerCase();
       dispatch(auth(email, password, formName));
+      history.push('/dashboard');
     }
   };
 };
@@ -162,6 +164,7 @@ const mapDispatchSignup = dispatch => {
       const lastName = evt.target.lastName.value.toLowerCase();
       const password = evt.target.password.value.toLowerCase();
       dispatch(auth(email, password, formName, firstName, lastName));
+      history.push('/dashboard');
     }
   };
 };

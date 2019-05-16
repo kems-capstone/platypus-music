@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Field, reduxForm} from 'redux-form';
 import {joinRoomThunk, listenForRoomDataThunk, getRoomThunk} from '../store';
-import {Button} from 'semantic-ui-react'
+import {Button} from 'semantic-ui-react';
 
 class JoinRoom extends Component {
   constructor(props) {
@@ -12,34 +12,34 @@ class JoinRoom extends Component {
   componentDidMount() {
     // this.props.updateRoomStore();
   }
-handleSubmit() {
+  handleSubmit() {
     event.preventDefault();
     let key = this.props.form.joinRoom.values.joinRoom;
 
     key = key.toUpperCase();
 
-  this.props.authenticate(key);
-
+    this.props.authenticate(key);
   }
   render() {
     return (
-      <div >
-
-        <form id='joinRoomContainer'
-          className="form-popup"
+      <div>
+        <form
+          id="joinRoomContainer"
+          className="center aligned form-popup"
           name="createRoomForm"
           onSubmit={this.handleSubmit}
         >
-
           <Field
-          id='joinRoomField'
+            id="joinRoomField"
             className="form-input"
             type="text"
             component="input"
             name="joinRoom"
-            placeholder="Enter your room key"
+            placeholder="Enter room key"
           />
-          <Button id='joinRoomButton'color='violet' type="submit">Join Room</Button>
+          <Button id="joinRoomButton" color="violet" type="submit">
+            Join Room
+          </Button>
         </form>
       </div>
     );
