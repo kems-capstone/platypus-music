@@ -22,18 +22,36 @@ import {
 import socket from '../socket';
 
 class Room extends Component {
+  constructor(props){
+    super(props)
+
+    this.leaveRoom = this.leaveRoom.bind(this)
+    this.showSocketRooms = this.showSocketRooms.bind(this)
+  }
   componentDidMount() {
     socket.emit('joinSocketRoom', window.location.pathname);
     const userId = this.props.user.id;
     this.props.fetchRoomPlaylist();
     this.props.refreshRoom();
   }
+  showSocketRooms(){
+    socket.emit('showRoom')
+  }
+  leaveRoom(){
+    console.log('*****: leaving socket room front', socket.rooms);
+    socket.emit('leaveSocketRoom', socket.rooms)
+  }
 
   render() {
+    console.log(this.props)
     return (
       <div>
+{/*
+        <button type='button' onClick={this.leaveRoom}>Leave Socket Room</button>
+      <button type='button' onClick={this.showSocketRooms}>Show Socket Room</button> */}
         {this.props.roomState.room && this.props.roomState.room.id ? (
           <div>
+            {this.props.roomState.host === true &&
             <Button
               className="right floated mini ui"
               type="button"
@@ -43,7 +61,7 @@ class Room extends Component {
               }
             >
               Close room
-            </Button>
+            </Button>}
             <div className="roomComponent-roomName">
               {this.props.roomState.room.name}
             </div>
@@ -55,6 +73,8 @@ class Room extends Component {
               <br />
               <Playlist />
             </div>
+
+
           </div>
         ) : (
           ''

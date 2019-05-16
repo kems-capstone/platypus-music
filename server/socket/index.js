@@ -5,11 +5,25 @@ module.exports = io => {
     );
     let room;
     socket.on('joinSocketRoom', function(roomName) {
+      socket.leaveAll()
       room = roomName;
       socket.join(roomName);
+
+
     });
+    socket.on('showRoom', function(){
+      console.log('socketrooms', socket.rooms)
+    })
+    socket.on('leaveSocketRoom', function(){
+      console.log( 'roomName : ', socket.rooms)
+
+      console.log('socket room after', socket.rooms)
+    })
+
+
 
     const addSongToPlaylist = songList => {
+      // console.log('*****socket.rooms: ', socket.rooms);
       socket.broadcast.to(room).emit('songAdded', songList);
     };
     const removeSongFromPlaylist = songList => {
@@ -22,6 +36,7 @@ module.exports = io => {
     const updatePlaylist = roomPlaylist => {
       io.to(room).emit('getRoomGotPlaylist', roomPlaylist);
     };
+
 
     socket.on('addedSong', addSongToPlaylist);
     socket.on('endedSong', removeSongFromPlaylist);
