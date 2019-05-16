@@ -85,7 +85,7 @@ router.post('/', async (req, res, next) => {
 //Authenticate Key Route for Join Room
 router.get('/join/:id', async (req, res, next) => {
   try {
-    console.log('in authenticate Router')
+    console.log('in authenticate Router');
     const joinCode = req.params.id;
     const room = await Room.findOne({
       where: {
@@ -236,39 +236,57 @@ router.put('/close', async (req, res, next) => {
 
 router.post('/:roomId/vote/:musicId', async (req, res, next) => {
   try {
-    const mrId = await Room_Music.findOne({
-      where: {
-        roomId: req.params.roomId,
-        musicId: req.params.musicId,
-        hasPlayed: false
-      }
-    });
+    if (req.body.voteValue) {
+      const mrId = await Room_Music.findOne({
+        where: {
+          roomId: req.params.roomId,
+          musicId: req.params.musicId,
+          hasPlayed: false
+        }
+      });
+      console.log('MR IDDDDDD', mrId);
+      const userVote = await User_Music_Room.findOrCreate({
+        where: {
+          userId: req.user.id,
+          roomMusicId: mrId.id,
+          voteValue: req.body.voteValue
+        }
+      });
+      console.log('USER VOTE', userVote);
 
-    const userVote = await User_Music_Room.findOrCreate({
-      where: {
-        userId: req.user.id,
-        roomMusicId: mrId.id,
-        voteValue: req.body.voteValue
-      }
-    });
-
-    const allVotes = await User_Music_Room.findAll({
-      where: {
-        roomMusicId: mrId.id
-      }
-    });
-
-    const voteCount = allVotes.reduce((accum, curr) => {
-      console.log('curr', curr.dataValues, 'accum', accum);
-      if (curr.dataValues.voteValue === 'upvote') {
-        accum += 1;
-      } else {
-        accum -= 1;
-      }
-      return accum;
-    }, 1);
-
-    res.json(voteCount);
+      const allVotes = await User_Music_Room.findAll({
+        where: {
+          roomMusicId: mrId.id
+        }
+      });
+      const voteCount = allVotes.reduce((accum, curr) => {
+        console.log('curr', curr.dataValues, 'accum', accum);
+        if (curr.dataValues.voteValue === 'upvote') {
+          accum += 1;
+        } else {
+          accum -= 1;
+        }
+        return accum;
+      }, 1);
+      res.json(voteCount);
+    } else {
+      let mrId = req.body.mrId;
+      const allVotes = await User_Music_Room.findAll({
+        where: {
+          roomMusicId: mrId
+        }
+      });
+      const voteCount = allVotes.reduce((accum, curr) => {
+        console.log('curr', curr.dataValues, 'accum', accum);
+        if (curr.dataValues.voteValue === 'upvote') {
+          accum += 1;
+        } else {
+          accum -= 1;
+        }
+        return accum;
+      }, 1);
+      res.json(voteCount);
+    }
   } catch (error) {
     next(error);
   }
@@ -307,10 +325,21 @@ router.get('/refresh', async (req, res, next) => {
     if (roomInfo.rooms[0].user_rooms.isHost === true) {
       isHost = true;
     }
+    console.log('roomInfo', roomInfo);
 
+    const mrId = await Room_Music.findAll({
+      where: {
+        roomId: roomInfo.rooms[0].id,
+        hasPlayed: false
+      }
+    });
 
-    let state = {members: members, room: roomInfo.rooms[0], host: isHost}
-
+    let state = {
+      members: members,
+      room: roomInfo.rooms[0],
+      host: isHost,
+      songArray: mrId
+    };
 
     res.json(state);
   } catch (error) {

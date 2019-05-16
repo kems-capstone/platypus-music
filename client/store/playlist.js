@@ -75,17 +75,9 @@ export const listenForUpdatePlaylistThunk = () => dispatch => {
   socket.on('getRoomGotPlaylist', playlist => {
     // let unplayedMusic = playlist.playlistInfo; // has votes
     // let allMusic = playlist.roomInfo.rooms[0].music; //Has info
-    console.log('SL"IDKJFHS:DLKFJH:DSLKFHSDL');
+    console.log('SL"IDKJFHS:DLKFJH:DSLKFHSDL', playlist);
 
-    let newPlaylist = [];
-    for (let i = 0; i < playlist.length; i++) {
-      let song = playlist[i];
-      song.voteCount = song.room_music.voteCount;
-      newPlaylist.push(song);
-    }
-    console.log('***** playlist in THE THUNKKKKK: ', newPlaylist);
-
-    dispatch(updatePlaylist(newPlaylist));
+    dispatch(updatePlaylist(playlist));
   });
 };
 
