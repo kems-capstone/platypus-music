@@ -24,8 +24,7 @@ class Routes extends Component {
   render() {
     const {isLoggedIn} = this.props;
 
-
-    let num = this.props.roomState.room.id
+    let num = this.props.roomState.room.id;
 
     return (
       <Switch>
@@ -41,12 +40,9 @@ class Routes extends Component {
             <Route exact path="/playlist" component={Playlist} />
             <Route exact path="/create-room" component={CreateRoom} />
             <Route exact path="/joinroom" component={JoinRoom} />
-            {/* <Route exact path='/room/' component={Room} /> */}
-            {this.props.roomState.room.id ?
-            <Route exact path={`/room/${num}`} component={Room} />
-            :
-            null
-            }
+            {this.props.roomState.room.id ? (
+              <Route exact path={`/room/${num}`} component={Room} />
+            ) : null}
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}

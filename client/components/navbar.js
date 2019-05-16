@@ -13,6 +13,7 @@ import {
   Segment,
   Input
 } from 'semantic-ui-react';
+import history from '../history';
 
 const Navbar = ({handleClick, isLoggedIn}) => (
   <div id="navbar">
@@ -20,12 +21,7 @@ const Navbar = ({handleClick, isLoggedIn}) => (
       <Menu id="navbar-menu" pointing fixed="bottom">
         <Menu.Item id="navbar-menuitem" as="a" href="/home" icon="home" />
 
-        <Menu.Item
-          id="navbar-menuitem"
-          as="a"
-          href="/dashboard"
-          icon="dashboard"
-        />
+        <Menu.Item id="navbar-menuitem" as="a" href="/dashboard" icon="bars" />
         <div id="navbar-menuitem">
           <Dropdown icon="user" className="user-icon">
             <Dropdown.Menu>
@@ -43,12 +39,18 @@ const Navbar = ({handleClick, isLoggedIn}) => (
       </Menu>
     ) : (
       <Menu id="navbar-menu" pointing fixed="bottom">
-        <Menu.Item as="a" href="/home" name="home" />
-        <Menu.Menu position="right">
-          <Menu.Item as="a" href="/login" name="login" />
+        <Menu.Item id="navbar-menuitem" as="a" href="/home" icon="home" />
 
-          <Menu.Item as="a" href="/signup" name="sign up" />
-        </Menu.Menu>
+        <Menu.Item id="navbar-menuitem" as="a" href="/dashboard" icon="bars" />
+        <div id="navbar-menuitem">
+          <Dropdown icon="user" className="user-icon">
+            <Dropdown.Menu>
+              {/* <Dropdown.Item as="a" href="/userProfile" text="User Profile" /> */}
+              <Dropdown.Item as="a" href="/login" text="Log in" />
+            </Dropdown.Menu>
+            {/* </Menu.Item> */}
+          </Dropdown>
+        </div>
       </Menu>
     )}
   </div>

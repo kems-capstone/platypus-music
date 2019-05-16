@@ -6,7 +6,6 @@ import {connect} from 'react-redux';
 import {Button} from 'semantic-ui-react';
 
 const Dashboard = props => {
-  console.log('*****props: ', props);
   return (
     <div id="dashboard-buttons">
       <h1>Dashboard</h1>

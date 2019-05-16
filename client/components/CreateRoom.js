@@ -11,19 +11,17 @@ class CreateRoom extends Component {
   }
   handleSubmit() {
     event.preventDefault();
-   this.props.addRoomThunk(
+    this.props.addRoomThunk(
       this.props.form.createRoom.values.roomName,
       this.props.user
     );
-
   }
   render() {
     return (
       <div>
-        <h1>Create Room</h1>
-        <div >
+        <div>
           <form
-          id="createRoom-formContainer"
+            id="createRoom-formContainer"
             className="form-popup"
             name="createRoomForm"
             onSubmit={this.handleSubmit}
@@ -36,7 +34,9 @@ class CreateRoom extends Component {
               placeholder="room name"
             />
 
-            <Button color='violet' type="submit">Create Room</Button>
+            <Button color="violet" type="submit">
+              Create Room
+            </Button>
             <Message>
               <p id="createRoom-codeExplanation">
                 Your room code will be displayed in your room
