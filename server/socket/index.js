@@ -14,9 +14,8 @@ module.exports = io => {
     socket.on('showRoom', function(){
       console.log('socketrooms', socket.rooms)
     })
-    socket.on('roomClosed', function(){
-     //emits a signal that tells all people in room to redirect to dashboard and closes the room on the db
-
+    socket.on('hostEnded', function(){
+      socket.broadcast.to(room).emit('partyEnded')
     })
 
 
