@@ -11,7 +11,6 @@ export {default as Homepage} from './Homepage';
 export {default as Dashboard} from './Dashboard';
 export {default as Player} from './Player';
 export {default as Playlist} from './Playlist';
-export {default as SearchForm} from './SearchForm';
 export {default as CreateRoom} from './CreateRoom';
 export {default as Room} from './Room';
 export {default as JoinRoom} from './JoinRoom';

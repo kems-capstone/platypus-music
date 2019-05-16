@@ -11,7 +11,7 @@ import {
   deleteSongThunk
 } from '../store/playlist';
 import {refreshRoom} from '../store/roomReducer';
-import SearchForm from './SearchForm';
+
 import UiSearchForm from './UiSearchForm';
 import io from 'socket.io-client';
 import {closeRoomThunk} from '../store';
@@ -72,8 +72,8 @@ class Playlist extends Component {
   }
 
   render() {
-    let currentSong = this.props.playlist.songList[0] || {}
-    let queuedSongs = this.props.playlist.songList.slice(1) || []
+    let currentSong = this.props.playlist.songList[0] || {};
+    let queuedSongs = this.props.playlist.songList.slice(1) || [];
     return (
       <div id="playlist-info">
         {this.props.roomState.host === true ? (
@@ -92,25 +92,31 @@ class Playlist extends Component {
         <UiSearchForm handleSubmitWithProps={this.handleSubmitWithProps} />
 
         <div id="playlist-info" className="ui cards">
-        <Divider horizontal color="purple">Currently Playing</Divider>
+          <Divider horizontal color="purple">
+            Currently Playing
+          </Divider>
 
-        <div className="card " id="currentSongCard" key={currentSong.id}>
-                <div className="content " id="currentSongContent">
-                  <img
-                    className="left floated mini ui image"
-                    src={currentSong.artworkUrl}
-                    />
-                  <div
-                    id="vote-number"
-                    className="vote-count right floated mini ui image"
-                    >
-                    {currentSong.voteCount}
-                  </div>
-                  <div className="header">{currentSong.name}</div>
-                  <div id="artist">{currentSong.artist}</div>
-                </div>
-        </div>
-          <Divider horizontal color="red">Next Up</Divider>
+          <div className="card " id="currentSongCard" key={currentSong.id}>
+            <div className="contentCard " id="currentSongContent">
+              <img
+                className="left floated mini ui image"
+                src={currentSong.artworkUrl}
+              />
+              {/* <div
+                id="vote-number"
+                className="vote-count right floated mini ui image"
+              >
+                {currentSong.voteCount}
+              </div> */}
+              <div className="center aligned header">{currentSong.name}</div>
+              <div className="center aligned description" id="artist">
+                {currentSong.artist}
+              </div>
+            </div>
+          </div>
+          <Divider horizontal color="red">
+            Next Up
+          </Divider>
           {queuedSongs.map(song => {
             return (
               <div className="card" key={song.id}>
@@ -129,36 +135,36 @@ class Playlist extends Component {
                   <div id="artist">{song.artist}</div>
                 </div>
 
-                  <div className="extra content">
-                    <div className="ui two buttons">
-                      <button
-                        className="ui basic green button"
-                        type="button"
-                        onClick={() =>
-                          this.props.updateVote(
-                            this.props.roomState.room.id,
-                            song,
-                            'upvote'
-                          )
-                        }
-                      >
-                        <i className="thumbs up icon" />
-                      </button>
-                      <button
-                        className="ui basic orange button"
-                        type="button"
-                        onClick={() =>
-                          this.props.updateVote(
-                            this.props.roomState.room.id,
-                            song,
-                            'downvote'
-                          )
-                        }
-                      >
-                        <i className="thumbs down icon" />
-                      </button>{' '}
-                    </div>
+                <div className="extra content">
+                  <div className="ui two buttons">
+                    <button
+                      className="ui basic green button"
+                      type="button"
+                      onClick={() =>
+                        this.props.updateVote(
+                          this.props.roomState.room.id,
+                          song,
+                          'upvote'
+                        )
+                      }
+                    >
+                      <i className="thumbs up icon" />
+                    </button>
+                    <button
+                      className="ui basic orange button"
+                      type="button"
+                      onClick={() =>
+                        this.props.updateVote(
+                          this.props.roomState.room.id,
+                          song,
+                          'downvote'
+                        )
+                      }
+                    >
+                      <i className="thumbs down icon" />
+                    </button>{' '}
                   </div>
+                </div>
 
                 {this.props.roomState.host && (
                   <button
