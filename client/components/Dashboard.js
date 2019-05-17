@@ -11,7 +11,7 @@ const Dashboard = props => {
       <h1>Dashboard</h1>
       <div>
         <Link to="/create-room">
-          <Button className="ui primary basic B" type="button">
+          <Button id="dashboardButton" type="button">
             Create a room
           </Button>
         </Link>
@@ -19,7 +19,7 @@ const Dashboard = props => {
         <Link to={`/room/${props.roomState.room.id}`}>
           <Button
             type="button"
-            className="ui primary basic button"
+            id="dashboardButton"
             onClick={id => props.getCurrentRoom(props.user.id)}
           >
             Go to current room
@@ -27,7 +27,7 @@ const Dashboard = props => {
         </Link>
         <br />
         <Link to="/joinroom">
-          <Button type="button" className="ui primary basic button">
+          <Button type="button" id="dashboardButton">
             Join a room
           </Button>
         </Link>
