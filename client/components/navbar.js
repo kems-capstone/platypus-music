@@ -32,10 +32,10 @@ const Navbar = ({handleClick, isLoggedIn, roomState}) => {
               id="navbar-menuitem"
               as="a"
               href={`/room/${roomState.room.id}`}
-              icon="bars"
+              icon="music"
             />
           ) : (
-            <Menu.Item id="navbar-menuitem" icon="bars" disabled />
+            <Menu.Item id="navbar-menuitem" icon="music" disabled />
           )}
           <div id="navbar-menuitem">
             <Dropdown icon="user" className="user-icon">
@@ -52,52 +52,22 @@ const Navbar = ({handleClick, isLoggedIn, roomState}) => {
             </Dropdown>
           </div>
         </Menu>
-      ) : null}
+      ) : (
+        <Menu id="navbar-menu" pointing fixed="bottom">
+          <Menu.Item id="navbar-menuitem" as="a" href="/home" icon="home" />
+
+          <Menu.Item
+            id="navbar-menuitem"
+            as="a"
+            href="/dashboard"
+            icon="music"
+            disabled
+          />
+
+          <Menu.Item id="navbar-menuitem" as="a" href="/login" icon="user" />
+        </Menu>
+      )}
     </div>
-
-    // <Menu color="violet" inverted id="navBar" fixed="top">
-
-    // <Link className="nav-text" to="/home">
-    //   <Menu.Item id="navbar-title-and-image-container">
-    //     <div id="nav-title">
-    //       <div className="nav-title-text">Platypus</div>
-    //     </div>
-    //   </Menu.Item>
-    // </Link>
-
-    //   {isLoggedIn ? (
-    // <Menu.Menu position="right">
-    //   <Menu.Item>
-    //     <Link className="nav-text" to="/dashboard">
-    //       Dashboard
-    //     </Link>
-    //   </Menu.Item>
-    // <Menu.Item id="menu-dropdown">
-    //   <Button class="ui icon button">
-    //   <Dropdown icon="user" button className="icon">
-    //     <Dropdown.Menu>
-    //       <Dropdown.Header
-    //         className="user"
-    //         content={<Link to="/userProfile">User Profile</Link>}
-    //       />
-    // <Dropdown.Header
-    //   onClick={handleClick}
-    //   content={<Link to="/userProfile">Log Out</Link>}
-    // />
-    //     </Dropdown.Menu>
-    //   </Dropdown>
-    //   </Button>
-    // </Menu.Item>
-    //     </Menu.Menu>
-    //   ) : (
-    //     <Menu.Menu position="right">
-    //
-    //       <Menu.Item>
-    //         <Link to="/signup">Sign Up</Link>
-    //       </Menu.Item>
-    //     </Menu.Menu>
-    //   )}
-    // </Menu>
   );
 };
 /**
