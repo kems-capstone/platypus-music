@@ -275,14 +275,25 @@ h1 {
   color: #6435c9;
   margin-bottom: 10%;
 }
-
-#dashboard-buttons {
-  text-align: center;
-  margin-top: 5em !important;
-}
-#dashboard-buttons:active{
+#dashboardButton-currentRoom{
   background-color: #6435c9;
   color: white;
+  border: 3px solid white;
+  margin: 15px !important;
+  min-height: 60px;
+  font-size: 1.15em;
+  min-width: 75%;
+
+  border-radius: 10px;
+  box-shadow: 0px 0px 0px 4px #6435c9;
+}
+#dashboard-buttons {
+  text-align: center;
+  margin-top: 5em;
+}
+#dashboard-buttons:active{
+
+
 }
 
 .ui.basic.primary.button {
