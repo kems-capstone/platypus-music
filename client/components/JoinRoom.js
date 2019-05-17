@@ -22,9 +22,9 @@ class JoinRoom extends Component {
   }
   render() {
     return (
-      <div>
+      <div  id="joinRoomContainer">
         <form
-          id="joinRoomContainer"
+          id="joinRoom-form"
           className="center aligned form-popup"
           name="createRoomForm"
           onSubmit={this.handleSubmit}

@@ -18,7 +18,7 @@ class Homepage extends Component {
           already playing.
         </div>
         {!this.props.user.id && (
-          <Button as="a" href="/signup" color="violet">
+          <Button color='violet' as="a" href="/signup" id="homepageGetStarted">
             GET STARTED
           </Button>
         )}

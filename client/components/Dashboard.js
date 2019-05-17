@@ -10,24 +10,27 @@ const Dashboard = props => {
     <div id="dashboard-buttons">
       <h1>Dashboard</h1>
       <div>
-        <Link to="/create-room">
-          <Button className="ui primary basic B" type="button">
-            Create a room
-          </Button>
-        </Link>
-        <br />
-        <Link to={`/room/${props.roomState.room.id}`}>
+      {props.roomState.room.id ? <Link to={`/room/${props.roomState.room.id}`}>
           <Button
             type="button"
-            className="ui primary basic button"
+            id="dashboardButton-currentRoom"
             onClick={id => props.getCurrentRoom(props.user.id)}
           >
             Go to current room
           </Button>
+        </Link> : null }
+        <br />
+        <Link to="/create-room">
+          <Button id="dashboardButton" type="button">
+            Create a room
+          </Button>
         </Link>
         <br />
+
+
+
         <Link to="/joinroom">
-          <Button type="button" className="ui primary basic button">
+          <Button type="button" id="dashboardButton">
             Join a room
           </Button>
         </Link>
