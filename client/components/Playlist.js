@@ -72,8 +72,12 @@ class Playlist extends Component {
   }
 
   render() {
-    let currentSong = this.props.playlist.songList[0] || {};
-    let queuedSongs = this.props.playlist.songList.slice(1) || [];
+
+      let currentSong = this.props.playlist.songList[0] || {};
+      let queuedSongs = this.props.playlist.songList.slice(1) || [];
+
+
+
     return (
       <div id="playlist-info">
         {this.props.roomState.host === true ? (
@@ -99,7 +103,7 @@ class Playlist extends Component {
           <div className="card " id="currentSongCard" key={currentSong.id}>
             <div className="contentCard " id="currentSongContent">
               <img
-                className="left floated mini ui image"
+               id="playingSongImage"
                 src={currentSong.artworkUrl}
               />
               {/* <div

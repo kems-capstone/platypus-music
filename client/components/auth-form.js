@@ -22,7 +22,8 @@ const AuthForm = props => {
   const {name, displayName, handleSubmit, error} = props;
 
   return (
-    <div className="login-form">
+    <div className="login-form" id="loginContainer">
+      {name === 'signup' ? null : <div id="loginBuffer" />}
       <Grid textAlign="center">
         <Grid.Column style={{maxWidth: 450}}>
           <Form
@@ -63,7 +64,7 @@ const AuthForm = props => {
               ) : null}
 
               <Form.Field>
-                <label className="formLabel" htmlFor="email">
+                <label htmlFor="email">
                   <div>E-mail Address</div>
                 </label>
                 <input
@@ -94,20 +95,20 @@ const AuthForm = props => {
                 </Button>
 
                 {error && error.response && <div> {error.response.data} </div>}
+                <br />
 
-                <Button as="a" href="/auth/google">
-                  <font size="2">
-                    {displayName} with {'                  '}
-                  </font>
-                  <Icon name="google" />
-                </Button>
+                <button
+                  as="a"
+                  href="/auth/google"
+
+                ><img  id="googleButton" src="/btn_google_signin_dark_normal_web@2x.png"/></button>
               </div>
               {name === 'signup' ? (
                 <Message id="message">
                   Already have an account? <Link to="/login">Log In</Link>
                 </Message>
               ) : (
-                <Message id="message">
+                <Message id="messageSignup">
                   New to us? <Link to="/signup">Sign Up</Link>
                 </Message>
               )}

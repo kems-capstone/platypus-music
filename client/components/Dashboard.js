@@ -16,7 +16,8 @@ const Dashboard = props => {
           </Button>
         </Link>
         <br />
-        <Link to={`/room/${props.roomState.room.id}`}>
+
+        {props.roomState.room.id ? <Link to={`/room/${props.roomState.room.id}`}>
           <Button
             type="button"
             id="dashboardButton"
@@ -24,7 +25,8 @@ const Dashboard = props => {
           >
             Go to current room
           </Button>
-        </Link>
+        </Link> : null }
+
         <br />
         <Link to="/joinroom">
           <Button type="button" id="dashboardButton">
