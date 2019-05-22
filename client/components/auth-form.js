@@ -97,11 +97,16 @@ const AuthForm = props => {
                 {error && error.response && <div> {error.response.data} </div>}
                 <br />
 
-                <button
+                {/* <button
                   as="a"
                   href="/auth/google"
 
-                ><img  id="googleButton" src="/btn_google_signin_dark_normal_web@2x.png"/></button>
+                > */}
+                <img
+                  id="googleButton"
+                  src="/btn_google_signin_dark_normal_web@2x.png"
+                />
+                {/* </button> */}
               </div>
               {name === 'signup' ? (
                 <Message id="message">
