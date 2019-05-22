@@ -1,18 +1,16 @@
-import React from 'react'
+import React from 'react';
 
-import {Navbar} from './components'
-import Routes from './routes'
-import {Container} from 'semantic-ui-react'
+import {Navbar} from './components';
+import Routes from './routes';
+import {Container} from 'semantic-ui-react';
 
 const App = () => {
   return (
     <div>
+      <Routes />
       <Navbar />
-
-        <Routes />
-
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

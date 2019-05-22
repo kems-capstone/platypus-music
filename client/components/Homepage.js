@@ -9,7 +9,7 @@ class Homepage extends Component {
     return (
       <div className="homepage" id="homepage-container">
         <img id="patty" src="/patty.jpeg" />
-        <div className="homepageBlurb">
+        <div className="homepageBlurb" id="homepageBlurb">
           Platypus is a crowd-sourcing playlist app, that lets everyone be the
           DJ.
         </div>

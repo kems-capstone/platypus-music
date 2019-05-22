@@ -58,12 +58,6 @@ h1 {
   width: 60vw;
 }
 
-@media screen and (min-width: 800px) {
-  #patty {
-    width: 25%;
-  }
-}
-
 #messageSignup {
   margin-top: 20%;
 }
@@ -100,6 +94,7 @@ h1 {
   justify-content: center;
   align-items: center;
 }
+
 .ui.container {
   margin-bottom: 20%;
   min-height: 100vh;
@@ -353,10 +348,15 @@ form.ui.largeform {
   float: left;
   max-width: 15%;
 }
+#googleImg {
+  /* max-height: %; */
+  max-width: 100%;
+}
 
 #googleButton {
   margin-top: 5%;
   max-width: 80%;
+  background-color: white;
 }
 #dashboardButton {
   border: 3px solid #6435c9;
@@ -377,4 +377,48 @@ form.ui.largeform {
 #nav-menue-login-text {
   font-size: 1.25;
   font-weight: bold;
+}
+
+@media screen and (min-width: 500px) {
+  #patty {
+    width: 25%;
+  }
+  .homepage {
+    overflow: hidden;
+    margin-bottom: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .homepageBlurb {
+    font-family: 'Expletus Sans', cursive;
+    border: 3px solid #6435c9;
+    margin: 3%;
+    padding: -25% !important;
+    text-align: center;
+    border-radius: 10px;
+    color: rgb(5, 5, 5);
+    font-weight: bolder;
+  }
+  #homepageGetStarted {
+    margin-top: 3%;
+    min-height: 50px;
+    padding-top: 5%;
+    font-size: 1.1em;
+    text-align: center;
+    margin-bottom: 5%;
+    border-radius: 10px;
+  }
+  div#loginContainer.login-form {
+    /* position: absolute; */
+    width: 90%;
+    left: 5%;
+    /* margin-top: -25% !important; */
+    height: 1px;
+    float: top;
+  }
+  #loginBuffer {
+    margin: 0;
+  }
 }
