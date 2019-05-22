@@ -1,8 +1,10 @@
 # PLATYPUS:
 
-• A responsive web application allowing users to collaborate on a playlist
+• A responsive web application allowing users to collaborate on a playlist!
 
 • Hosts can create a private room accessible only by typing in the room's associated secret room key, where they and their guests can add and vote on songs on a collective playlist. The playlist automatically re-orders, ensuring the crowd favorite always plays next.
+
+• Checkout our presentation at https://youtu.be/MjwwKJ3KATU
 
 # INSTALLING:
 
