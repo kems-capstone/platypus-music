@@ -33,6 +33,6 @@
 • Semantic UI
 
 
-![Image of myProject](/public/Screen Shot 2019-05-21 at 6.10.20 PM.png)
-![Image of myProject](/public/Screen Shot 2019-05-21 at 6.10.43 PM.png)
-![Image of myProject](/public/Screen Shot 2019-05-21 at 6.11.17 PM.png)
+![Image of myProject](/public/ScreenShot1.png)
+![Image of myProject](/public/ScreenShot2.png)
+![Image of myProject](/public/ScreenShot3.png)
