@@ -19,10 +19,13 @@
 Deployed Site: Platypus-music.herokuapp.com
 
 # INSTALLATION:
-Clone this project to your local machine
-Run 'npm install'
-You will need to have Postgres open, create your own database named "platypus", and run 'npm run seed'
-Run 'npm run dev-start' and navigate to localhost:8080
+• Clone this project to your local machine
+
+• Run 'npm install'
+
+• You will need to have Postgres open, create your own database named "platypus", and run 'npm run seed'
+
+• Run 'npm run dev-start' and navigate to localhost:8080
 
 # FUTURE GOALS:
 • Integrating the Spotify API and OAuth so users can search and add music from their Spotify accounts.
@@ -41,18 +44,18 @@ Run 'npm run dev-start' and navigate to localhost:8080
 
 # BUGS AND ISSUES:
 • Sometimes songs will be added and deleted multiple times.
-    
-    • This is related to room sockets, and can occur when users interact with multiple rooms in a single session.
-    
-    • To solve this we need to implement a function that closes the socket listeners/emitters for a particular user when they leave the room.
+   
+   • This is related to room sockets, and can occur when users interact with multiple rooms in a single session.
+   
+   • To solve this we need to implement a function that closes the socket listeners/emitters for a particular user when they leave the room.
  
  • Need to examine how the GetRoom function works and whether it should be removed in favor of the refresh room function.
-    
-    • The GetRoom was replaced in many ways by the RefreshRoom function when we implemented room sockets and persistent voting.
+   
+   • The GetRoom was replaced in many ways by the RefreshRoom function when we implemented room sockets and persistent voting.
 
 • On refresh the playlist will change the order and the song playing will change.  Additionally songs with the same amount of votes will shift to alphabetical order by artist.
-    
-    •  These are both issues with sockets and how we are retrieving the playlist information in the RefreshRoom function.  This may be best addressed by using a sorting method on the back end or changing how a rooms playlist is stored on the server. 
+   
+   • These are both issues with sockets and how we are retrieving the playlist information in the RefreshRoom function.  This may be best addressed by using a sorting method on the back end or changing how a rooms playlist is stored on the server. 
 
 # TECH USED:
 
