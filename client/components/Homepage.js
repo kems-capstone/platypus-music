@@ -7,9 +7,9 @@ import PropTypes from 'prop-types';
 class Homepage extends Component {
   render() {
     return (
-      <div className="homepage">
+      <div className="homepage" id="homepage-container">
         <img id="patty" src="/patty.jpeg" />
-        <div className="homepageBlurb">
+        <div className="homepageBlurb" id="homepageBlurb">
           Platypus is a crowd-sourcing playlist app, that lets everyone be the
           DJ.
         </div>
@@ -18,7 +18,7 @@ class Homepage extends Component {
           already playing.
         </div>
         {!this.props.user.id && (
-          <Button color='violet' as="a" href="/signup" id="homepageGetStarted">
+          <Button color="violet" as="a" href="/signup" id="homepageGetStarted">
             GET STARTED
           </Button>
         )}
