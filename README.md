@@ -4,7 +4,6 @@
 
 • Hosts can create a private room accessible only by typing in the room's associated secret room key, where they and their guests can add and vote on songs on a collective playlist. The playlist automatically re-orders, ensuring the crowd favorite always plays next.
 
-
 # INSTALLING:
 
 • Clone this project to your local machine
@@ -32,7 +31,6 @@
 • Google Cloud API
 • Semantic UI
 
-
-![Image of myProject](/public/Screen Shot 2019-05-21 at 6.10.20 PM.png)
-![Image of myProject](/public/Screen Shot 2019-05-21 at 6.10.43 PM.png)
-![Image of myProject](/public/Screen Shot 2019-05-21 at 6.11.17 PM.png)
+![Image of myProject](/public/screenShot1.png)
+![Image of myProject](/public/screenShot2.png)
+![Image of myProject](/public/screenShot3.png)
